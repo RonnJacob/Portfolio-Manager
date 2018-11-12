@@ -37,7 +37,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         case "2": displayPortfolios(portfolioManagerModel, scan);
                   openHomeScreen();
                   break;
-        case "3": openPortfolio(portfolioManagerModel, scan);
+        case "3": if(openPortfolio(portfolioManagerModel, scan).equalsIgnoreCase("q")){
+                    return;
+                  }
                   openHomeScreen();
                   break;
         case "q":
@@ -48,15 +50,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
-  private void openPortfolio(IPortfolioManager<StockPortfolio> portfolioManagerModel,
+  private String openPortfolio(IPortfolioManager<StockPortfolio> portfolioManagerModel,
                              Scanner scan) {
     addToAppendable("\nEnter name of Portfolio to open.\n");
     String pfolioName = scan.next();
+    String applicationRunning = "r";
     openPortfolioMenu();
     try{
       IPortfolio selectedPFolio = portfolioManagerModel.enterPortfolio(pfolioName);
       while (true) {
-        switch (scan.next()) {
+        switch (scan.next().toLowerCase()) {
           case "1": addToAppendable(selectedPFolio.getPortfolioData());
                     openPortfolioMenu();
                     break;
@@ -68,8 +71,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                     addToAppendable(selectedPFolio.getStockCostBasisAndStockValue(date));
                     openPortfolioMenu();
                     break;
-          case "R":
-                    return;
+          case "r":
+                    return "r";
+          case "q":
+                    return "q";
           default:  addToAppendable("Invalid input. Please enter input again.");
                     break;
         }
@@ -78,6 +83,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }catch(IllegalArgumentException ex){
       addToAppendable(ex.getMessage());
     }
+    return "r";
   }
 
   private void buyStockShares(IPortfolio<StockPortfolio> selectedPFolio,
@@ -91,11 +97,11 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       String date = scan.next();
 
       try{
-        selectedPFolio.addStock(stockSymbol,amount,date);
+       addToAppendable(selectedPFolio.addStock(stockSymbol,amount,date));
       }catch (IllegalArgumentException ex){
         addToAppendable(ex.getMessage());
       }
-      addToAppendable("Buy more shares?");
+      addToAppendable("Buy more shares? (Y/N)");
     }
     while(scan.next().equalsIgnoreCase("y"));
   }
@@ -120,7 +126,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       }catch (IllegalArgumentException ex){
         addToAppendable("Portfolio with that name exists");
       }
-      addToAppendable("Add more portfolios?");
+      addToAppendable("Add more portfolios? (Y/N)");
     }
     while(in.next().equalsIgnoreCase("y"));
   }
@@ -137,7 +143,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     addToAppendable("1. Examine composition of portfolio");
     addToAppendable("2. Buy shares of a stock with portfolio.");
     addToAppendable("3. Get Cost Basis/Value of portfolio");
-    addToAppendable("Enter R to return to the main menu.");
+    addToAppendable("Enter R to return to the main menu or q to quit the application.");
   }
 
   /**

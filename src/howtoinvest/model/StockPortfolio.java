@@ -64,15 +64,18 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @param amount the amount for which the stock has to be added to the portfolio.
    */
   @Override
-  public void addStock(String stock, double amount, String date) {
+  public String addStock(String stock, double amount, String date) {
+    String sharesBought = "";
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {
-        this.portfolio.get(key).addShare(amount, date);
-        return;
+        sharesBought = this.portfolio.get(key).addShare(amount, date);
       }
     }
     Stock newStock = new Stock(stock);
-    newStock.addShare(amount, date);
+    if(sharesBought.equals("")){
+      sharesBought = newStock.addShare(amount, date);
+    }
     this.portfolio.put(stock, newStock);
+    return sharesBought;
   }
 }
