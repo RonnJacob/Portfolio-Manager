@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import howtoinvest.model.Share;
@@ -37,19 +36,34 @@ public class ShareTest {
     assertEquals("Number of shares: 0.11\nShare Cost Basis: 0.00\n", share.getShareData());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void TestShareCreationNegative() {
-    share = new Share(-0.01, -0.1);
+    try{
+      share = new Share(-0.01, -0.1);
+      fail();
+    }catch (IllegalArgumentException ex){
+      assertEquals("Invalid input for stock.",ex.getMessage());
+    }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void TestShareCreationNegativeShares() {
-    share = new Share(-0.001, 0);
+    try{
+      share = new Share(-0.001, 0);
+      fail();
+    }catch(IllegalArgumentException ex){
+      assertEquals("Invalid input for stock.",ex.getMessage());
+    }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void TestShareCreationNegativeCostBasis() {
-    share = new Share(0, -0.001);
+    try{
+      share = new Share(0, -0.001);
+      fail();
+    }catch(IllegalArgumentException ex){
+      assertEquals("Invalid input for stock.",ex.getMessage());
+    }
   }
 
   @Test
