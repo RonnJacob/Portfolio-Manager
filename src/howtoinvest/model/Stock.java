@@ -58,6 +58,9 @@ public class Stock implements IStock {
 
   @Override
   public String addShare(double amount, String date) throws IllegalArgumentException {
+    if(amount <= 0){
+      throw new IllegalArgumentException("Invalid amount");
+    }
     double sharePrice;
     Date shareDate;
     String message = "";

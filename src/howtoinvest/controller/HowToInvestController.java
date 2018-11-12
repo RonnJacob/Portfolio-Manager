@@ -57,7 +57,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     String applicationRunning = "r";
     openPortfolioMenu();
     try{
-      IPortfolio selectedPFolio = portfolioManagerModel.enterPortfolio(pfolioName);
+      IPortfolio selectedPFolio = portfolioManagerModel.getPortfolio(Integer.parseInt(pfolioName));
       while (true) {
         switch (scan.next().toLowerCase()) {
           case "1": addToAppendable(selectedPFolio.getPortfolioData());

@@ -1,6 +1,5 @@
 package howtoinvest.model;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> {
@@ -14,8 +13,10 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   @Override
   public String getPortfolios() {
     String s = "";
+    int counter = 1;
     for (String key : this.portfolios.keySet()) {
-      s += key + "\n";
+      s += counter + ". " + key + "\n";
+      counter ++;
     }
     return s;
   }
@@ -32,7 +33,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   }
 
   @Override
-  public StockPortfolio enterPortfolio(int index) {
+  public StockPortfolio getPortfolio(int index) {
     int counter = 1;
     for (String key : this.portfolios.keySet()) {
       if (index == counter) {
