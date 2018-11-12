@@ -86,10 +86,7 @@ public class StockTest {
     assertEquals(0, google.getStockCostBasis("2018-11-12"), 0.01);
 
     assertEquals(0, google.getStockValue("2018-11-12"), 0.01);
-  }
 
-  @Test
-  public void testInvalidAddShareDate2() {
     try {
       String output = google.addShare(1000, "2000-01-01");
       fail();
@@ -97,10 +94,7 @@ public class StockTest {
       assertEquals("Invalid date. Please enter date again.Cannot fetch share price details"
               + " beyond 01/01/2000", ex.getMessage());
     }
-  }
 
-  @Test
-  public void testInvalidAddShareDate3() {
     try {
       String output = google.addShare(1000, "2020-01-01");
       fail();
@@ -118,37 +112,118 @@ public class StockTest {
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
-  }
 
-  @Test
-  public void testInvalidAddShareDateFormat2() {
     try {
       String output = google.addShare(1000, "2018");
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
-  }
 
-  @Test
-  public void testInvalidAddShareDateFormat3() {
     try {
       String output = google.addShare(1000, "");
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
-  }
 
-  @Test
-  public void testInvalidAddShareDateFormat4() {
     try {
       String output = google.addShare(1000, "2018/01/01");
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
+
+    try {
+      String output = google.addShare(1000, "01-2018-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(1000, "01-01-2018");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(1000, "2018-13-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(1000, "2018-12-33");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(1000, "2018-02-30");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
   }
+
+  @Test
+  public void TestAddShareInvalidAmount(){
+    try {
+      String output = google.addShare(0, "2018-01-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid amount", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(-0.0001, "2018-01-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid amount", ex.getMessage());
+    }
+
+    try {
+      String output = google.addShare(-1000, "2018-01-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid amount", ex.getMessage());
+    }
+  }
+
+  @Test
+  public void TestAddShare(){
+    String output = google.addShare(0.0001, "2018-01-01");
+    assertEquals("0.00 shares of GOOG bought on 2018-01-01 for $0.00", output);
+
+    assertEquals("0.00 shares of GOOG for a total investment of $0.00\n", google.getStockData());
+
+    assertEquals(0, google.getNumberOfShares(), 0.01);
+
+    assertEquals(0, google.getStockCostBasis("2018-11-12"), 0.01);
+    assertEquals(0, google.getStockCostBasis("2016-11-12"), 0.01);
+
+    assertEquals(0, google.getStockValue("2018-11-12"), 0.01);
+    assertEquals(0, google.getStockValue("2016-11-12"), 0.01);
+
+    output = google.addShare(10000, "2018-01-01");
+    assertEquals("9.56 shares of GOOG bought on 2018-01-01 for $10000.00", output);
+
+    assertEquals("9.56 shares of GOOG for a total investment of $10000.00\n", google.getStockData());
+
+    assertEquals(9.5565749235474, google.getNumberOfShares(), 0.01);
+
+    assertEquals(10000, google.getStockCostBasis("2018-01-01"), 0.01);
+    assertEquals(10000, google.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(0, google.getStockCostBasis("2016-11-12"), 0.01);
+
+    assertEquals(0, google.getStockValue("2018-11-12"), 0.01);
+    assertEquals(0, google.getStockValue("2016-11-12"), 0.01);
+  }
+
 
 
 }

@@ -94,7 +94,7 @@ public class Stock implements IStock {
     }
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
     shareList.put(shareDate, shareBought);
-    return String.format("%.2f shares of %s bought on %s for %.2f",noOfSharesBought,
+    return String.format("%.2f shares of %s bought on %s for $%.2f",noOfSharesBought,
             this.tickerSymbol,date,amount);
   }
 
