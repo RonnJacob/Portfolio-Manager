@@ -1,11 +1,8 @@
 package howtoinvest.model;
 
 public class Share implements IShare {
-
-
   private double noOfShares;
   private double shareCostBasis;
-
 
   public Share(double shareCostBasis, double noOfShares) {
 
@@ -16,12 +13,10 @@ public class Share implements IShare {
     this.noOfShares = noOfShares;
   }
 
-
   @Override
   public double getShareCostBasis() {
     return this.shareCostBasis;
   }
-
 
   @Override
   public double getNumberOfShares() {
@@ -30,10 +25,9 @@ public class Share implements IShare {
 
   @Override
   public String getShareData() {
-    return String.format("Number of Share: %d\nShare Cost Basis: %.2f\n", this.noOfShares,
+    return String.format("Number of shares: %.2f\nShare Cost Basis: %.2f\n", this.noOfShares,
             this.shareCostBasis);
   }
-
 }
 
 

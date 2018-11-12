@@ -4,6 +4,7 @@ public interface IPortfolio<K> {
 
   /**
    * Returns the portfolio data.
+   *
    * @return the portfolio data in the form a string.
    */
   String getPortfolioData();
@@ -17,8 +18,9 @@ public interface IPortfolio<K> {
 
   /**
    * Adds a stock to the portfolio.
+   *
    * @param identifier the stock that is to be added to the portfolio
-   * @param amount the amount for which the stock has to be added to the portfolio.
+   * @param amount     the amount for which the stock has to be added to the portfolio.
    */
   void addStock(String identifier, double amount, String date);
 }

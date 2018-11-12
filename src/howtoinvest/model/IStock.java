@@ -22,7 +22,7 @@ public interface IStock {
    *
    * @return the number of shares for a particular stock of a company.
    */
-  long getNumberOfShares();
+  double getNumberOfShares();
 
   /**
    * Adding shares to a particular stock of a company worth an input amount.

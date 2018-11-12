@@ -6,12 +6,12 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
 
   private HashMap<String, StockPortfolio> portfolios = new HashMap<>();
 
-  public StockPortfolioManager(){
+  public StockPortfolioManager() {
     this.portfolios.put("Default StockPortfolio", new StockPortfolio());
   }
 
   @Override
-  public String getPortfolios(){
+  public String getPortfolios() {
     String s = "";
     for (String key : this.portfolios.keySet()) {
       s += key + "\n";
@@ -20,7 +20,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   }
 
   @Override
-  public void createPortfolio(String name) throws IllegalArgumentException{
+  public void createPortfolio(String name) throws IllegalArgumentException {
     for (String key : this.portfolios.keySet()) {
       if (name.equals(key)) {
         throw new IllegalArgumentException("StockPortfolio already exists");
@@ -31,7 +31,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   }
 
   @Override
-  public StockPortfolio enterPortfolio(String name){
+  public StockPortfolio enterPortfolio(String name) {
     for (String key : this.portfolios.keySet()) {
       if (name.equals(key)) {
         return this.portfolios.get(key);

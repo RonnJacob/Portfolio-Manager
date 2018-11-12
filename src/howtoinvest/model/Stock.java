@@ -28,20 +28,19 @@ public class Stock implements IStock {
   public double getStockCostBasis(String date) {
     double costBasis = 0.0;
     Date costBasisDate;
-    try{
-      costBasisDate  =new SimpleDateFormat("yyyy-MM-dd").
+    try {
+      costBasisDate = new SimpleDateFormat("yyyy-MM-dd").
               parse(date);
-    } catch(Exception ex){
+    } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid date format. Please enter date again.");
     }
-    for(Map.Entry<Date,Share> entry : shareList.entrySet()) {
+    for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       /**
        * Calculating cost basis up until a particular date.
        */
-      if(entry.getKey().after(costBasisDate)){
+      if (entry.getKey().after(costBasisDate)) {
         break;
-      }
-      else{
+      } else {
         costBasis += entry.getValue().getShareCostBasis();
       }
     }
@@ -55,9 +54,9 @@ public class Stock implements IStock {
 
 
   @Override
-  public long getNumberOfShares(){
-    long numberOfShare = 0;
-    for(Share shares: shareList.values()){
+  public double getNumberOfShares() {
+    double numberOfShare = 0;
+    for (Share shares : shareList.values()) {
       numberOfShare += shares.getNumberOfShares();
     }
     return numberOfShare;
@@ -68,19 +67,17 @@ public class Stock implements IStock {
   public void addShare(double amount, String date) throws IllegalArgumentException {
     double sharePrice;
     Date shareDate;
-    try{
-      shareDate  =new SimpleDateFormat("yyyy-MM-dd").
+    try {
+      shareDate = new SimpleDateFormat("yyyy-MM-dd").
               parse(date);
-    } catch(Exception ex){
+    } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid date format. Please enter date again.");
     }
 
     if (date.equals(dateFormatter.format(new Date()))) {
       shareDate = new Date();
       sharePrice = getSharePrice(this.tickerSymbol);
-    }
-
-    else {
+    } else {
       try {
         sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
       } catch (Exception ex) {
@@ -90,7 +87,7 @@ public class Stock implements IStock {
     }
     double noOfSharesBought = (amount / sharePrice);
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
-    shareList.put(shareDate,shareBought);
+    shareList.put(shareDate, shareBought);
   }
 
 
@@ -99,13 +96,13 @@ public class Stock implements IStock {
     String stockData = "";
     double totalShares = 0;
     double totalCostBasis = 0;
-    for(Map.Entry<Date,Share> entry : shareList.entrySet()) {
+    for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       Share value = entry.getValue();
       totalShares += value.getNumberOfShares();
       totalCostBasis += value.getShareCostBasis();
     }
     stockData += String.format("%.2f shares of %s for a total investment of $%.2f\n",
-            totalShares,this.tickerSymbol,totalCostBasis);
+            totalShares, this.tickerSymbol, totalCostBasis);
     return stockData;
   }
 
