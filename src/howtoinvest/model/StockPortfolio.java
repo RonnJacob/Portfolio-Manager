@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class StockPortfolio implements IPortfolio<Stock> {
 
-  private HashMap<String, IStock> portfolio = new HashMap<>();
+  private HashMap<String, Stock> portfolio;
 
   public StockPortfolio() {
     this.portfolio = new HashMap<>();
@@ -15,6 +15,7 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @return the portfolio data in the form a string.
    */
+  @Override
   public String getPortfolioData() {
     String s = "";
     for (String key : this.portfolio.keySet()) {
@@ -28,10 +29,10 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @return the total cost basis of the portfolio.
    */
-  public double getStockCostBasis() {
+  private double getStockCostBasis(String date) {
     double d = 0;
     for (String key : this.portfolio.keySet()) {
-      d += this.portfolio.get(key).getStockCostBasis();
+      d += this.portfolio.get(key).getStockCostBasis(date);
     }
     return d;
   }
@@ -41,12 +42,19 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @return the value of the portfolio.
    */
-  public double getStockValue() {
+  private double getStockValue(String date) {
     double d = 0;
     for (String key : this.portfolio.keySet()) {
-      d += this.portfolio.get(key).getStockValue();
+      d += this.portfolio.get(key).getStockValue(date);
     }
     return d;
+  }
+
+  @Override
+  public String getStockCostBasisAndStockValue(String date) {
+    String s = "Total portfolio cost basis = " + getStockCostBasis(date) + "\n";
+    s += "Total portfolio value = " + getStockValue(date) + "\n";
+    return s;
   }
 
   /**
@@ -55,15 +63,16 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @param stock  the stock that is to be added to the portfolio
    * @param amount the amount for which the stock has to be added to the portfolio.
    */
-  public void addStock(String stock, double amount) {
+  @Override
+  public void addStock(String stock, double amount, String date) {
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {
-        this.portfolio.get(key).addShare(amount, "");
+        this.portfolio.get(key).addShare(amount, date);
         return;
       }
     }
     Stock newStock = new Stock(stock);
-    newStock.addShare(amount, "");
+    newStock.addShare(amount, date);
     this.portfolio.put(stock, newStock);
   }
 }

@@ -88,7 +88,7 @@ public class Stock implements IStock {
                 + ex.getMessage());
       }
     }
-    long noOfSharesBought = (long) (amount / sharePrice);
+    double noOfSharesBought = (amount / sharePrice);
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
     shareList.put(shareDate,shareBought);
   }
@@ -96,14 +96,17 @@ public class Stock implements IStock {
 
   @Override
   public String getStockData() {
-    String stockTransactions = "";
+    String stockData = "";
+    double totalShares = 0;
+    double totalCostBasis = 0;
     for(Map.Entry<Date,Share> entry : shareList.entrySet()) {
-      Date key = entry.getKey();
       Share value = entry.getValue();
-      stockTransactions += String.format("%d shares bought on %s at %.2f\n",
-              value.getNumberOfShares(),dateFormatter.format(key),value.getShareCostBasis());
+      totalShares += value.getNumberOfShares();
+      totalCostBasis += value.getShareCostBasis();
     }
-    return stockTransactions;
+    stockData += String.format("%.2f shares of %s for a total investment of $%.2f\n",
+            totalShares,this.tickerSymbol,totalCostBasis);
+    return stockData;
   }
 
 

@@ -1,7 +1,7 @@
 package howtoinvest.model;
 
 public interface IPortfolioManager<K> {
-  String getPortfolio();
+  String getPortfolios();
 
   void createPortfolio(String name)throws IllegalArgumentException;
 

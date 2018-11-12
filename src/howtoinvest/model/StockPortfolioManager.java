@@ -10,7 +10,8 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
     this.portfolios.put("Default StockPortfolio", new StockPortfolio());
   }
 
-  public String getPortfolio(){
+  @Override
+  public String getPortfolios(){
     String s = "";
     for (String key : this.portfolios.keySet()) {
       s += key + "\n";
@@ -18,6 +19,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
     return s;
   }
 
+  @Override
   public void createPortfolio(String name) throws IllegalArgumentException{
     for (String key : this.portfolios.keySet()) {
       if (name.equals(key)) {
@@ -28,6 +30,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
     this.portfolios.put(name, newStockPortfolio);
   }
 
+  @Override
   public StockPortfolio enterPortfolio(String name){
     for (String key : this.portfolios.keySet()) {
       if (name.equals(key)) {

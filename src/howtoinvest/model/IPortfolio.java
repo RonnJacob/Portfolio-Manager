@@ -13,20 +13,13 @@ public interface IPortfolio<K> {
    *
    * @return the total cost basis of the portfolio.
    */
-  double getStockCostBasis();
-
-  /**
-   * Returns the value of the portfolio.
-   *
-   * @return the value of the portfolio.
-   */
-  double getStockValue();
+  String getStockCostBasisAndStockValue(String date);
 
   /**
    * Adds a stock to the portfolio.
    * @param identifier the stock that is to be added to the portfolio
    * @param amount the amount for which the stock has to be added to the portfolio.
    */
-  void addStock(String identifier, double amount);
+  void addStock(String identifier, double amount, String date);
 }
 

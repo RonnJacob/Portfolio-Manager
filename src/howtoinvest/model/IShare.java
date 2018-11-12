@@ -4,7 +4,7 @@ public interface IShare {
 
   double getShareCostBasis();
 
-  long getNumberOfShares();
+  double getNumberOfShares();
 
   String getShareData();
 }

@@ -3,11 +3,11 @@ package howtoinvest.model;
 public class Share implements IShare {
 
 
-  private long noOfShares;
+  private double noOfShares;
   private double shareCostBasis;
 
 
-  public Share(double shareCostBasis, long noOfShares) {
+  public Share(double shareCostBasis, double noOfShares) {
 
     if (noOfShares < 0 || shareCostBasis < 0) {
       throw new IllegalArgumentException("Invalid input for stock.");
@@ -24,7 +24,7 @@ public class Share implements IShare {
 
 
   @Override
-  public long getNumberOfShares() {
+  public double getNumberOfShares() {
     return this.noOfShares;
   }
 
