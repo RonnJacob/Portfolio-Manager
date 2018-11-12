@@ -47,7 +47,6 @@ public class AlphaVantageDemo {
     URL url;
     String updateInterval = "1min";
     try {
-
       url = new URL("https://www.alphavantage"
               + ".co/query?function=TIME_SERIES_INTRADAY"
               + "&outputsize=full"
@@ -66,7 +65,7 @@ public class AlphaVantageDemo {
 
       addToOutput(in, output, url);
     } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("No price data found for " + tickerName);
+      return false;
     }
     return !output.toString().toLowerCase().contains("Error Message".toLowerCase());
   }

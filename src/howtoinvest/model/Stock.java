@@ -1,22 +1,17 @@
 package howtoinvest.model;
 
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Stock implements IStock {
-
-
   private final String tickerSymbol;
   private TreeMap<Date, Share> shareList = new TreeMap<>();
   private final AlphaVantageDemo stocksApi = new AlphaVantageDemo();
   private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
-
   public Stock(String tickerSymbol) {
-
     if (!checkStringValidity(tickerSymbol) ||
             !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
       throw new IllegalArgumentException("Invalid stock name or ticker symbol");
@@ -52,7 +47,6 @@ public class Stock implements IStock {
     return this.getNumberOfShares() * getSharePrice(this.tickerSymbol);
   }
 
-
   @Override
   public double getNumberOfShares() {
     double numberOfShare = 0;
@@ -61,7 +55,6 @@ public class Stock implements IStock {
     }
     return numberOfShare;
   }
-
 
   @Override
   public void addShare(double amount, String date) throws IllegalArgumentException {
@@ -86,10 +79,19 @@ public class Stock implements IStock {
       }
     }
     double noOfSharesBought = (amount / sharePrice);
+    for (Date key : shareList.keySet()) {
+      if (shareDate.equals(key)) {
+        Share oldShare = shareList.get(key);
+        Share shareBought = new Share((sharePrice * noOfSharesBought)
+                + oldShare.getShareCostBasis(), noOfSharesBought
+                + oldShare.getNumberOfShares());
+        shareList.put(key, shareBought);
+        return;
+      }
+    }
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
     shareList.put(shareDate, shareBought);
   }
-
 
   @Override
   public String getStockData() {
@@ -106,7 +108,6 @@ public class Stock implements IStock {
     return stockData;
   }
 
-
   /**
    * A private helper method that checks the validity of strings i.e checks whether a string is null
    * or empty.
@@ -115,7 +116,7 @@ public class Stock implements IStock {
    * @return true if the string is valid and false otherwise.
    */
   private boolean checkStringValidity(String string) {
-    if (string == null || string.equals("")) {
+    if (string == null || string.trim().isEmpty()) {
       return false;
     }
     return true;
