@@ -1,10 +1,11 @@
 package howtoinvest.model;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> {
 
-  private HashMap<String, StockPortfolio> portfolios = new HashMap<>();
+  private TreeMap<String, StockPortfolio> portfolios = new TreeMap<>();
 
   public StockPortfolioManager() {
     this.portfolios.put("Default StockPortfolio", new StockPortfolio());
@@ -31,11 +32,13 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   }
 
   @Override
-  public StockPortfolio enterPortfolio(String name) {
+  public StockPortfolio enterPortfolio(int index) {
+    int counter = 1;
     for (String key : this.portfolios.keySet()) {
-      if (name.equals(key)) {
+      if (index == counter) {
         return this.portfolios.get(key);
       }
+      counter++;
     }
     throw new IllegalArgumentException("StockPortfolio does not exist");
   }
