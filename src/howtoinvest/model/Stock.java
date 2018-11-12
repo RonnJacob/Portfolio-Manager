@@ -60,6 +60,7 @@ public class Stock implements IStock {
   public String addShare(double amount, String date) throws IllegalArgumentException {
     double sharePrice;
     Date shareDate;
+    String message = "";
     try {
       shareDate = new SimpleDateFormat("yyyy-MM-dd").
               parse(date);
@@ -86,7 +87,6 @@ public class Stock implements IStock {
                 + oldShare.getShareCostBasis(), noOfSharesBought
                 + oldShare.getNumberOfShares());
         shareList.put(key, shareBought);
-        return;
       }
     }
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
