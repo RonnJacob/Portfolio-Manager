@@ -32,13 +32,7 @@ public class Stock implements IStock {
   @Override
   public double getStockCostBasis(String date) {
     double costBasis = 0.0;
-    Date costBasisDate;
-    try {
-      costBasisDate = new SimpleDateFormat("yyyy-MM-dd").
-              parse(date);
-    } catch (Exception ex) {
-      throw new IllegalArgumentException("Invalid date format. Please enter date again.");
-    }
+    Date costBasisDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       /**
        * Calculating cost basis up until a particular date.
@@ -54,19 +48,12 @@ public class Stock implements IStock {
 
   @Override
   public double getStockValue(String date) {
-
-    return this.getNumberOfShares("") * getSharePrice(this.tickerSymbol);
+    return this.getNumberOfShares(date) * getSharePrice(this.tickerSymbol, date);
   }
 
   private double getNumberOfShares(String date) {
     double numberOfShare = 0;
-    Date costBasisDate;
-    try {
-      costBasisDate = new SimpleDateFormat("yyyy-MM-dd").
-              parse(date);
-    } catch (Exception ex) {
-      throw new IllegalArgumentException("Invalid date format. Please enter date again.");
-    }
+    Date costBasisDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       /**
        * Calculating cost basis up until a particular date.
@@ -80,20 +67,25 @@ public class Stock implements IStock {
     return numberOfShare;
   }
 
+  private Date convertToDate(String date) throws IllegalArgumentException {
+    Date shareDate;
+    try {
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      format.setLenient(false);
+      shareDate = format.parse(date);
+    } catch (Exception ex) {
+      throw new IllegalArgumentException("Invalid date format. Please enter date again.");
+    }
+    return shareDate;
+  }
+
   @Override
   public String addShare(double amount, String date) throws IllegalArgumentException {
     if (amount <= 0) {
       throw new IllegalArgumentException("Invalid amount");
     }
     double sharePrice;
-    Date shareDate;
-    try {
-      shareDate = new SimpleDateFormat("yyyy-MM-dd").
-              parse(date);
-    } catch (Exception ex) {
-      throw new IllegalArgumentException("Invalid date format. Please enter date again.");
-    }
-
+    Date shareDate = convertToDate(date);
 
     try {
       sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
@@ -110,6 +102,8 @@ public class Stock implements IStock {
                 + oldShare.getShareCostBasis(), noOfSharesBought
                 + oldShare.getNumberOfShares());
         shareList.put(key, shareBought);
+        return String.format("%.2f shares of %s bought on %s for $%.2f", noOfSharesBought,
+                this.tickerSymbol, date, amount);
       }
     }
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
@@ -153,8 +147,7 @@ public class Stock implements IStock {
    * @param tickerSymbol the ticker symbol that represents a stock of a company.
    * @return the single share price for a stock.
    */
-  private double getSharePrice(String tickerSymbol) {
-    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+  private double getSharePrice(String tickerSymbol, String date) {
     try {
       return stocksApi.retrieveSharePrice(date, tickerSymbol);
     } catch (ParseException ex) {

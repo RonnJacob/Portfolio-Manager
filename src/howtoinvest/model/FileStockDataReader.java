@@ -67,7 +67,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
      * Cannot fetch share value for a future date that is input.
      */
     else if (dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
-      throw new IllegalArgumentException("Cannot fetch share value for a future date");
+      throw new IllegalArgumentException("Cannot fetch share value for a future date.");
     }
 
 
