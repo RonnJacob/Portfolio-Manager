@@ -5,5 +5,5 @@ public interface IPortfolioManager<K> {
 
   void createPortfolio(String name) throws IllegalArgumentException;
 
-  StockPortfolio getPortfolio(int index) throws IllegalArgumentException;
+  IPortfolio getPortfolio(int index) throws IllegalArgumentException;
 }

@@ -15,8 +15,8 @@ public class FileStockDataReader implements IStockDataRetrieval {
 
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {
-    File f = new File(tickerName+extension);
-    if(f.exists() && !f.isDirectory()) {
+    File f = new File(tickerName + extension);
+    if (f.exists() && !f.isDirectory()) {
       return true;
     }
     return false;
@@ -28,19 +28,18 @@ public class FileStockDataReader implements IStockDataRetrieval {
      * Initializing a scanner object for reading the .csv file.
      */
     Scanner scanner;
-    try{
-      scanner = new Scanner(new File(tickerName+extension));
-    }catch (IOException ex){
+    try {
+      scanner = new Scanner(new File(tickerName + extension));
+    } catch (IOException ex) {
       throw new IllegalArgumentException("Cannot read from file.");
     }
-
 
     /**
      * Storing the output of the csv file to an appendable object i.e StringBuilder in this case.
      */
     scanner.useDelimiter(",");
-    while(scanner.hasNext()){
-        this.output.append(scanner.next()+",");
+    while (scanner.hasNext()) {
+      this.output.append(scanner.next() + ",");
     }
 
     /**
@@ -48,7 +47,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
      */
     String[] dailySharePrices = output.toString().split("\n");
 
-    if(dailySharePrices.length==0){
+    if (dailySharePrices.length == 0) {
       throw new IllegalArgumentException("No share prices provided.");
     }
 
@@ -57,18 +56,17 @@ public class FileStockDataReader implements IStockDataRetrieval {
     double closestShareValue = Double.parseDouble(dailySharePrices[0].split(",")[1]);
 
 
-
     /**
      * If the date to find is today, then return today or the latest share value as the
      * share value.
      */
-    if(dateToFind.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))){
+    if (dateToFind.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       return closestShareValue;
     }
     /**
      * Cannot fetch share value for a future date that is input.
      */
-    else if(dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))){
+    else if (dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       throw new IllegalArgumentException("Cannot fetch share value for a future date");
     }
 
@@ -76,26 +74,24 @@ public class FileStockDataReader implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if(dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length-1].
-            split(",")[0]))){
+    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1].
+            split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 
-    for(int day = dailySharePrices.length-1; day>=0; day--){
+    for (int day = dailySharePrices.length - 1; day >= 0; day--) {
       currentDate = simpleDateFormat.parse(dailySharePrices[day].split(",")[0]);
-      if(dateToFind.equals(currentDate)){
+      if (dateToFind.equals(currentDate)) {
         return Double.parseDouble(dailySharePrices[day].split(",")[1]);
       }
       /**
        * If the date to be found is after the current day's share value then we update
        * the closest share value.
        */
-      else if(dateToFind.after(currentDate)){
+      else if (dateToFind.after(currentDate)) {
         closestShareValue = Double.parseDouble(dailySharePrices[day].split(",")[1]);
       }
     }
-
-
     return closestShareValue;
   }
 }

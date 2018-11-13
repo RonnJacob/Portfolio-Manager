@@ -22,7 +22,6 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
     InputStream in = null;
     StringBuilder output = new StringBuilder();
     try {
-
       addToOutput(in, output, url);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("No price data found for " + tickerName);
@@ -31,14 +30,12 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
   }
 
 
-
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {
     setURL(tickerName, true);
     InputStream in = null;
     StringBuilder output = new StringBuilder();
     try {
-
       addToOutput(in, output, url);
     } catch (IllegalArgumentException e) {
       return false;
@@ -47,16 +44,14 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
   }
 
 
-
   @Override
-  public double retrieveSharePrice(String date, String tickerName) throws ParseException{
+  public double retrieveSharePrice(String date, String tickerName) throws ParseException {
 
     setURL(tickerName, false);
 
     InputStream in = null;
     StringBuilder output = new StringBuilder();
     try {
-
       addToOutput(in, output, url);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("No price data found for " + tickerName);
@@ -68,7 +63,7 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
      */
     String[] dailySharePrices = output.toString().split("\n");
 
-    if(dailySharePrices.length==0 || dailySharePrices.length==1){
+    if (dailySharePrices.length == 0 || dailySharePrices.length == 1) {
       throw new IllegalArgumentException("No share prices provided.");
     }
 
@@ -80,13 +75,13 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
      * If the date to find is today, then return today or the latest share value as the
      * share value.
      */
-    if(dateToFind.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))){
+    if (dateToFind.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       return Double.parseDouble(this.getCurrentSharePrice(tickerName));
     }
     /**
      * Cannot fetch share value for a future date that is input.
      */
-    else if(dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))){
+    else if (dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       throw new IllegalArgumentException("Cannot fetch share value for a future date");
     }
 
@@ -94,22 +89,22 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if(dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length-1].
-            split(",")[0]))){
+    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1].
+            split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 
 
-    for(int day = dailySharePrices.length-1; day>=1; day--){
+    for (int day = dailySharePrices.length - 1; day >= 1; day--) {
       currentDate = simpleDateFormat.parse(dailySharePrices[day].split(",")[0]);
-      if(dateToFind.equals(currentDate)){
+      if (dateToFind.equals(currentDate)) {
         return Double.parseDouble(dailySharePrices[day].split(",")[4]);
       }
       /**
        * If the date to be found is after the current day's share value then we update
        * the closest share value.
        */
-      else if(dateToFind.after(currentDate)){
+      else if (dateToFind.after(currentDate)) {
         closestShareValue = Double.parseDouble(dailySharePrices[day].split(",")[4]);
       }
     }
@@ -117,12 +112,10 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
   }
 
 
-
   private void addToOutput(InputStream in, Appendable out, URL url) {
     try {
       in = url.openStream();
       int b;
-
       while ((b = in.read()) != -1) {
         out.append((char) b);
       }
@@ -132,29 +125,23 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
   }
 
 
-
-  private void setURL(String tickerName, boolean intraday){
+  private void setURL(String tickerName, boolean intraday) {
     String urlSuffix = "";
     String function = "TIME_SERIES_DAILY";
-    if(intraday){
+    if (intraday) {
       urlSuffix = "&interval=" + updateInterval;
       function = "TIME_SERIES_INTRADAY";
     }
     try {
-
       url = new URL("https://www.alphavantage"
               + ".co/query?function=" + function
               + "&outputsize=full"
               + "&symbol"
               + "=" + tickerName + urlSuffix + "&apikey=" + apiKey
               + "&datatype=csv");
-
-
     } catch (MalformedURLException e) {
       throw new RuntimeException("the alphavantage API has either changed or "
               + "no longer works");
     }
   }
-
-
 }

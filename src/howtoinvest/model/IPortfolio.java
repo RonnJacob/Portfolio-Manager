@@ -21,8 +21,8 @@ public interface IPortfolio<K> {
    *
    * @param identifier the stock that is to be added to the portfolio
    * @param amount     the amount for which the stock has to be added to the portfolio.
-   * @return Returns a string that contains the number of shares of a stock bought for an
-   *         amount at a particular date.
+   * @return Returns a string that contains the number of shares of a stock bought for an amount at
+   * a particular date.
    */
   String addStock(String identifier, double amount, String date);
 }

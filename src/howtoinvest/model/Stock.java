@@ -17,10 +17,9 @@ public class Stock implements IStock {
   private final IStockDataRetrieval stocksApi;
 
   public Stock(String tickerSymbol) {
-    if(loadPropertiesFromConfig()){
+    if (loadPropertiesFromConfig()) {
       stocksApi = new AlphaVantageDemo();
-    }
-    else{
+    } else {
       stocksApi = new FileStockDataReader();
     }
     if (!checkStringValidity(tickerSymbol) ||
@@ -83,7 +82,7 @@ public class Stock implements IStock {
 
   @Override
   public String addShare(double amount, String date) throws IllegalArgumentException {
-    if(amount <= 0){
+    if (amount <= 0) {
       throw new IllegalArgumentException("Invalid amount");
     }
     double sharePrice;
@@ -115,8 +114,8 @@ public class Stock implements IStock {
     }
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
     shareList.put(shareDate, shareBought);
-    return String.format("%.2f shares of %s bought on %s for $%.2f",noOfSharesBought,
-            this.tickerSymbol,date,amount);
+    return String.format("%.2f shares of %s bought on %s for $%.2f", noOfSharesBought,
+            this.tickerSymbol, date, amount);
   }
 
   @Override
@@ -156,14 +155,14 @@ public class Stock implements IStock {
    */
   private double getSharePrice(String tickerSymbol) {
     String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-    try{
-      return stocksApi.retrieveSharePrice(date,tickerSymbol);
-    } catch(ParseException ex){
+    try {
+      return stocksApi.retrieveSharePrice(date, tickerSymbol);
+    } catch (ParseException ex) {
       throw new IllegalArgumentException("Cannot fetch current share price due to parse failure.");
     }
   }
 
-  private boolean loadPropertiesFromConfig(){
+  private boolean loadPropertiesFromConfig() {
     Properties prop = new Properties();
     String fileName = "app.config";
     InputStream is = null;
