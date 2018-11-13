@@ -44,14 +44,28 @@ public class Stock implements IStock {
 
   @Override
   public double getStockValue(String date) {
-    return this.getNumberOfShares() * getSharePrice(this.tickerSymbol);
+
+    return this.getNumberOfShares("") * getSharePrice(this.tickerSymbol);
   }
 
-  @Override
-  public double getNumberOfShares() {
+  private double getNumberOfShares(String date) {
     double numberOfShare = 0;
-    for (Share shares : shareList.values()) {
-      numberOfShare += shares.getNumberOfShares();
+    Date costBasisDate;
+    try {
+      costBasisDate = new SimpleDateFormat("yyyy-MM-dd").
+              parse(date);
+    } catch (Exception ex) {
+      throw new IllegalArgumentException("Invalid date format. Please enter date again.");
+    }
+    for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
+      /**
+       * Calculating cost basis up until a particular date.
+       */
+      if (entry.getKey().after(costBasisDate)) {
+        break;
+      } else {
+        numberOfShare += entry.getValue().getNumberOfShares();
+      }
     }
     return numberOfShare;
   }

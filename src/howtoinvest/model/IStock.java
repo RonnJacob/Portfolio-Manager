@@ -17,12 +17,12 @@ public interface IStock {
    */
   double getStockValue(String date);
 
-  /**
-   * Returns the number of shares for a particular stock of a company.
-   *
-   * @return the number of shares for a particular stock of a company.
-   */
-  double getNumberOfShares();
+//  /**
+//   * Returns the number of shares for a particular stock of a company.
+//   *
+//   * @return the number of shares for a particular stock of a company.
+//   */
+//  double getNumberOfShares();
 
   /**
    * Adding shares to a particular stock of a company worth an input amount.
