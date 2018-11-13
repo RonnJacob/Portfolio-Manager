@@ -61,8 +61,6 @@ public class StockTest {
     stock = new Stock("FB");
     assertEquals("0.00 shares of FB for a total investment of $0.00\n", stock.getStockData());
 
-    assertEquals(0, stock.getNumberOfShares(), 0.01);
-
     assertEquals(0, stock.getStockCostBasis("2018-11-12"), 0.01);
     assertEquals(0, stock.getStockCostBasis("2016-11-12"), 0.01);
 
@@ -80,8 +78,6 @@ public class StockTest {
               + " beyond 01/01/0002", ex.getMessage());
     }
     assertEquals("0.00 shares of GOOG for a total investment of $0.00\n", google.getStockData());
-
-    assertEquals(0, google.getNumberOfShares(), 0.01);
 
     assertEquals(0, google.getStockCostBasis("2018-11-12"), 0.01);
 
@@ -201,8 +197,6 @@ public class StockTest {
 
     assertEquals("0.00 shares of GOOG for a total investment of $0.00\n", google.getStockData());
 
-    assertEquals(0, google.getNumberOfShares(), 0.01);
-
     assertEquals(0, google.getStockCostBasis("2018-11-12"), 0.01);
     assertEquals(0, google.getStockCostBasis("2016-11-12"), 0.01);
 
@@ -213,8 +207,6 @@ public class StockTest {
     assertEquals("9.56 shares of GOOG bought on 2018-01-01 for $10000.00", output);
 
     assertEquals("9.56 shares of GOOG for a total investment of $10000.00\n", google.getStockData());
-
-    assertEquals(9.5565749235474, google.getNumberOfShares(), 0.01);
 
     assertEquals(10000, google.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(10000, google.getStockCostBasis("2018-11-11"), 0.01);

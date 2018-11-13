@@ -52,8 +52,8 @@ public class StockPortfolio implements IPortfolio<Stock> {
 
   @Override
   public String getStockCostBasisAndStockValue(String date) {
-    String s = "Total portfolio cost basis = " + getStockCostBasis(date) + "\n";
-    s += "Total portfolio value = " + getStockValue(date) + "\n";
+    String s = String.format("Total portfolio cost basis = %.2f\n", getStockCostBasis(date));
+    s += String.format("Total portfolio value = %.2f\n ", getStockValue(date));
     return s;
   }
 
@@ -69,13 +69,13 @@ public class StockPortfolio implements IPortfolio<Stock> {
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {
         sharesBought = this.portfolio.get(key).addShare(amount, date);
+        return sharesBought;
       }
     }
     Stock newStock = new Stock(stock);
-    if(sharesBought.equals("")){
-      sharesBought = newStock.addShare(amount, date);
-    }
+    sharesBought = newStock.addShare(amount, date);
     this.portfolio.put(stock, newStock);
+
     return sharesBought;
   }
 }
