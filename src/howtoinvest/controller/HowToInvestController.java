@@ -30,6 +30,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     openHomeScreen();
     Scanner scan = new Scanner(this.in);
     while (true) {
+      if(!scan.hasNext()){
+        addToAppendable("Quitting Manager");
+        return;
+      }
       switch (scan.next()) {
         case "1":
           addPortfoliosToManager(portfolioManagerModel, scan);
@@ -64,6 +68,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     try {
       IPortfolio selectedPFolio = portfolioManagerModel.getPortfolio(Integer.parseInt(pfolioName));
       while (true) {
+        if(!scan.hasNext()){
+          return "q";
+        }
         switch (scan.next().toLowerCase()) {
           case "1":
             addToAppendable(selectedPFolio.getPortfolioData());
@@ -112,6 +119,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         addToAppendable(ex.getMessage());
       }
       addToAppendable("Buy more shares? (Y/N)");
+      if(scan.hasNext()){
+        return;
+      }
     }
     while (scan.next().equalsIgnoreCase("y"));
   }
