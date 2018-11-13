@@ -1,17 +1,28 @@
 package howtoinvest.model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 public class Stock implements IStock {
   private final String tickerSymbol;
   private TreeMap<Date, Share> shareList = new TreeMap<>();
-  private final AlphaVantageDemo stocksApi = new AlphaVantageDemo();
-  private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+  private final IStockDataRetrieval stocksApi;
 
   public Stock(String tickerSymbol) {
+    if(loadPropertiesFromConfig()){
+      stocksApi = new AlphaVantageDemo();
+    }
+    else{
+      stocksApi = new FileStockDataReader();
+    }
     if (!checkStringValidity(tickerSymbol) ||
             !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
       throw new IllegalArgumentException("Invalid stock name or ticker symbol");
@@ -77,7 +88,6 @@ public class Stock implements IStock {
     }
     double sharePrice;
     Date shareDate;
-    String message = "";
     try {
       shareDate = new SimpleDateFormat("yyyy-MM-dd").
               parse(date);
@@ -85,17 +95,14 @@ public class Stock implements IStock {
       throw new IllegalArgumentException("Invalid date format. Please enter date again.");
     }
 
-    if (date.equals(dateFormatter.format(new Date()))) {
-      shareDate = new Date();
-      sharePrice = getSharePrice(this.tickerSymbol);
-    } else {
-      try {
-        sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
-      } catch (Exception ex) {
-        throw new IllegalArgumentException("Invalid date. Please enter date again."
-                + ex.getMessage());
-      }
+
+    try {
+      sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
+    } catch (Exception ex) {
+      throw new IllegalArgumentException("Invalid date. Please enter date again."
+              + ex.getMessage());
     }
+
     double noOfSharesBought = (amount / sharePrice);
     for (Date key : shareList.keySet()) {
       if (shareDate.equals(key)) {
@@ -148,6 +155,26 @@ public class Stock implements IStock {
    * @return the single share price for a stock.
    */
   private double getSharePrice(String tickerSymbol) {
-    return Double.parseDouble(stocksApi.getCurrentSharePrice(tickerSymbol));
+    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    try{
+      return stocksApi.retrieveSharePrice(date,tickerSymbol);
+    } catch(ParseException ex){
+      throw new IllegalArgumentException("Cannot fetch current share price due to parse failure.");
+    }
+  }
+
+  private boolean loadPropertiesFromConfig(){
+    Properties prop = new Properties();
+    String fileName = "app.config";
+    InputStream is = null;
+    try {
+      is = new FileInputStream(fileName);
+    } catch (FileNotFoundException ex) {
+    }
+    try {
+      prop.load(is);
+    } catch (IOException ex) {
+    }
+    return prop.getProperty("READ_FROM_API").equalsIgnoreCase("1");
   }
 }
