@@ -59,7 +59,7 @@ public class StockTest {
   @Test
   public void testStockCreationValidTicker() {
     stock = new Stock("FB");
-    assertEquals("0.00 shares of FB for a total investment of $0.00\n", stock.getStockData());
+    assertEquals("0.00 shares of FB for a total investment of $0.00", stock.getStockData());
 
     assertEquals(0, stock.getStockCostBasis("2018-11-12"), 0.01);
     assertEquals(0, stock.getStockCostBasis("2016-11-12"), 0.01);
@@ -68,7 +68,7 @@ public class StockTest {
   }
 
   @Test
-  public void testInvalidAddShareDate1() {
+  public void testInvalidAddShareDate() {
     try {
       String output = microsoft.addShare(1000, "2-1-1");
       fail();
@@ -76,7 +76,7 @@ public class StockTest {
       assertEquals("Invalid date. Please enter date again.Share prices do not exist "
               + "for given date.", ex.getMessage());
     }
-    assertEquals("0.00 shares of MSFT for a total investment of $0.00\n", microsoft.getStockData());
+    assertEquals("0.00 shares of MSFT for a total investment of $0.00", microsoft.getStockData());
 
     assertEquals(0, microsoft.getStockCostBasis("2018-11-12"), 0.01);
 
@@ -96,6 +96,204 @@ public class StockTest {
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid date. Please enter date again.Cannot fetch share value "
               + "for a future date.", ex.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetStockValueDate() {
+    String output = microsoft.addShare(10000, "2018-01-01");
+    assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
+
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", microsoft.getStockData());
+
+    assertEquals(10000.00, microsoft.getStockValue("2018-01-01"), 0.01);
+
+    try {
+      assertEquals(0, microsoft.getStockValue("2-1-1"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Share prices do not exist for given date.", ex.getMessage());
+    }
+
+    try {
+      assertEquals(10000, microsoft.getStockValue("2020-11-11"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Cannot fetch share value for a future date.", ex.getMessage());
+    }
+
+    assertEquals(10942, microsoft.getStockValue("2018-11-12"), 0.01);
+
+    try {
+      assertEquals(0, microsoft.getStockValue("2000-01-01"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Share prices do not exist for given date.", ex.getMessage());
+    }
+
+  }
+
+  @Test
+  public void testGetStockValueInvalidDateFormat() {
+    String output = microsoft.addShare(10000, "2018-01-01");
+    assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
+
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", microsoft.getStockData());
+
+    assertEquals(10000.00, microsoft.getStockCostBasis("2018-01-01"), 0.01);
+
+    try {
+      microsoft.getStockValue("2018-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("2018");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("2018/01/01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("01-2018-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("01-01-2018");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("2018-13-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("2018-12-33");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockValue("2018-02-30");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetStockBasisDate() {
+    String output = microsoft.addShare(10000, "2018-01-01");
+    assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
+
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", microsoft.getStockData());
+
+    assertEquals(10000.00, microsoft.getStockCostBasis("2018-01-01"), 0.01);
+
+    assertEquals(0, microsoft.getStockCostBasis("2-1-1"), 0.01);
+
+    assertEquals(10000, microsoft.getStockCostBasis("2018-11-12"), 0.01);
+
+    assertEquals(10000, microsoft.getStockCostBasis("2020-11-11"), 0.01);
+
+    assertEquals(0, microsoft.getStockCostBasis("2000-01-01"), 0.01);
+  }
+
+  @Test
+  public void testGetStockBasisInvalidDateFormat() {
+    String output = microsoft.addShare(10000, "2018-01-01");
+    assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
+
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", microsoft.getStockData());
+
+    assertEquals(10000.00, microsoft.getStockCostBasis("2018-01-01"), 0.01);
+
+    try {
+      microsoft.getStockCostBasis("2018-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("2018");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("2018/01/01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("01-2018-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("01-01-2018");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("2018-13-01");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("2018-12-33");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
+    }
+
+    try {
+      microsoft.getStockCostBasis("2018-02-30");
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
   }
 
@@ -194,7 +392,7 @@ public class StockTest {
     String output = microsoft.addShare(0.0001, "2018-01-01");
     assertEquals("0.00 shares of MSFT bought on 2018-01-01 for $0.00", output);
 
-    assertEquals("0.00 shares of MSFT for a total investment of $0.00\n", microsoft.getStockData());
+    assertEquals("0.00 shares of MSFT for a total investment of $0.00", microsoft.getStockData());
 
     assertEquals(0, microsoft.getStockCostBasis("2018-11-12"), 0.01);
     assertEquals(0, microsoft.getStockCostBasis("2016-11-12"), 0.01);
@@ -205,7 +403,7 @@ public class StockTest {
     output = microsoft.addShare(10000, "2018-01-01");
     assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
 
-    assertEquals("100.00 shares of MSFT for a total investment of $10000.00\n", microsoft.getStockData());
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", microsoft.getStockData());
 
     assertEquals(10000, microsoft.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(10000, microsoft.getStockCostBasis("2018-11-11"), 0.01);
@@ -224,7 +422,7 @@ public class StockTest {
     output = microsoft.addShare(10000, "2016-12-01");
     assertEquals("200.00 shares of MSFT bought on 2016-12-01 for $10000.00", output);
 
-    assertEquals("300.00 shares of MSFT for a total investment of $20000.00\n", microsoft.getStockData());
+    assertEquals("300.00 shares of MSFT for a total investment of $20000.00", microsoft.getStockData());
 
     assertEquals(20000, microsoft.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(20000, microsoft.getStockCostBasis("2018-11-11"), 0.01);
@@ -246,7 +444,7 @@ public class StockTest {
     output = microsoft.addShare(23.45, "2018-11-11");
     assertEquals("0.21 shares of MSFT bought on 2018-11-11 for $23.45", output);
 
-    assertEquals("300.21 shares of MSFT for a total investment of $20023.45\n", microsoft.getStockData());
+    assertEquals("300.21 shares of MSFT for a total investment of $20023.45", microsoft.getStockData());
 
     assertEquals(20000, microsoft.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(20023.45, microsoft.getStockCostBasis("2018-11-11"), 0.01);
@@ -272,7 +470,7 @@ public class StockTest {
     output = microsoft.addShare(213.45, "2018-11-11");
     assertEquals("1.95 shares of MSFT bought on 2018-11-11 for $213.45", output);
 
-    assertEquals("302.17 shares of MSFT for a total investment of $20236.90\n", microsoft.getStockData());
+    assertEquals("302.17 shares of MSFT for a total investment of $20236.90", microsoft.getStockData());
 
     assertEquals(20000, microsoft.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(20236.9001, microsoft.getStockCostBasis("2018-11-11"), 0.01);
@@ -291,11 +489,17 @@ public class StockTest {
     } catch (IllegalArgumentException ex) {
       assertEquals("Share prices do not exist for given date.", ex.getMessage());
     }
+    try {
+      assertEquals(10000, microsoft.getStockValue("2020-01-01"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Cannot fetch share value for a future date.", ex.getMessage());
+    }
 
     output = microsoft.addShare(5000, "2016-12-01");
     assertEquals("100.00 shares of MSFT bought on 2016-12-01 for $5000.00", output);
 
-    assertEquals("402.17 shares of MSFT for a total investment of $25236.90\n", microsoft.getStockData());
+    assertEquals("402.17 shares of MSFT for a total investment of $25236.90", microsoft.getStockData());
 
     assertEquals(25000, microsoft.getStockCostBasis("2018-01-01"), 0.01);
     assertEquals(25236.9001, microsoft.getStockCostBasis("2018-11-11"), 0.01);

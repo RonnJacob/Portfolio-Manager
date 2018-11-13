@@ -122,7 +122,7 @@ public class Stock implements IStock {
       totalShares += value.getNumberOfShares();
       totalCostBasis += value.getShareCostBasis();
     }
-    stockData += String.format("%.2f shares of %s for a total investment of $%.2f\n",
+    stockData += String.format("%.2f shares of %s for a total investment of $%.2f",
             totalShares, this.tickerSymbol, totalCostBasis);
     return stockData;
   }
