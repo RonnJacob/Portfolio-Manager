@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * This class contains all the tests for the HowToInvestController class.
+ * The following class contains tests pertaining to the HowToInvestController operations.
  */
 public class HowToInvestControllerTest {
 
