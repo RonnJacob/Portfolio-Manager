@@ -41,7 +41,7 @@ public class Stock implements IStock {
    */
   private final String tickerSymbol;
   private TreeMap<Date, Share> shareList = new TreeMap<>();
-  private final IStockDataRetrieval stocksApi;
+  private final IStockDataRetrieval stocksSource;
 
   public Stock(String tickerSymbol) {
     /**
@@ -49,9 +49,9 @@ public class Stock implements IStock {
      * the AlphaVantage API, otherwise retrieve stock data from files.
      */
     if (loadPropertiesFromConfig()) {
-      stocksApi = new AlphaVantage();
+      stocksSource = new AlphaVantage();
     } else {
-      stocksApi = new FileStockDataReader();
+      stocksSource = new FileStockDataReader();
     }
 
     /**
@@ -59,7 +59,7 @@ public class Stock implements IStock {
      * is empty/null or if stock data does not exist for a particular stock symbol.
      */
     if (!checkStringValidity(tickerSymbol)
-            || !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
+            || !stocksSource.checkValidityOfTickerName(tickerSymbol)) {
       throw new IllegalArgumentException("Invalid stock name or ticker symbol");
     }
     this.tickerSymbol = tickerSymbol;
@@ -148,7 +148,7 @@ public class Stock implements IStock {
      * Retrieve the share price for the stock using the stock retrieval object.
      */
     try {
-      sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
+      sharePrice = stocksSource.retrieveSharePrice(date, this.tickerSymbol);
     } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid date. Please enter date again."
               + ex.getMessage());
@@ -217,7 +217,7 @@ public class Stock implements IStock {
    */
   private double getSharePrice(String tickerSymbol, String date) {
     try {
-      return stocksApi.retrieveSharePrice(date, tickerSymbol);
+      return stocksSource.retrieveSharePrice(date, tickerSymbol);
     } catch (ParseException ex) {
       throw new IllegalArgumentException("Cannot fetch current share price due to parse failure.");
     }
