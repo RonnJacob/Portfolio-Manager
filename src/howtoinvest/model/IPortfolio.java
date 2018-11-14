@@ -22,6 +22,7 @@ public interface IPortfolio<K> {
   /**
    * Returns the total cost basis of the portfolio.
    *
+   * @param date for which the cost basis has to be fetched.
    * @return the total cost basis of the portfolio.
    * @throws IllegalArgumentException if the stock cost basis and value cannot be fetched.
    */
@@ -32,6 +33,7 @@ public interface IPortfolio<K> {
    *
    * @param identifier the stock that is to be added to the portfolio
    * @param amount     the amount for which the stock has to be added to the portfolio.
+   * @param date when the stock has to be added.
    * @return Returns a string that contains the number of shares of a stock bought for an amount at
    *         a particular date.
    * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.

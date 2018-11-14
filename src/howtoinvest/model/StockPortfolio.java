@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * <p>This class represents a portfolio made of collection of stocks. Each stock has an individual
  * ticker symbol so they are represented by a hashmap of ticker symbol and stock objects.</p>
- * <p>>This class provides three operations:</p>
+ * <p>This class provides three operations:</p>
  * <ul>
  * <li>
  * View the composition of the portfolio - It returns all the stocks in the portfolio and the amount
