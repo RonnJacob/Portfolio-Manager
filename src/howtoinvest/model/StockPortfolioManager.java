@@ -33,7 +33,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
   }
 
   @Override
-  public StockPortfolio getPortfolio(int index) {
+  public IPortfolio getPortfolio(int index) {
     int counter = 1;
     for (String key : this.portfolios.keySet()) {
       if (index == counter) {
