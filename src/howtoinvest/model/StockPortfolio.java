@@ -2,10 +2,21 @@ package howtoinvest.model;
 
 import java.util.HashMap;
 
+/**
+ * This class represents a portfolio made of collection of stocks. Each stock has an individual
+ * ticker symbol so they are represented by a hashmap of ticker symbol and stock objects.
+ */
 public class StockPortfolio implements IPortfolio<Stock> {
 
+  /**
+   * Hashmap to store the stocks in the portfolio. Key is the ticker symbol of the stock and value
+   * is the corresponding stock object.
+   */
   private HashMap<String, Stock> portfolio;
 
+  /**
+   * Constructs a stock portfolio object with empty hashmap.
+   */
   public StockPortfolio() {
     this.portfolio = new HashMap<>();
   }
@@ -25,8 +36,9 @@ public class StockPortfolio implements IPortfolio<Stock> {
   }
 
   /**
-   * Returns the total cost basis of the portfolio.
+   * Returns the total cost basis of the portfolio at a given date.
    *
+   * @param date date for which the cost basis has to be calculated.
    * @return the total cost basis of the portfolio.
    */
   private double getStockCostBasis(String date) {
@@ -38,9 +50,10 @@ public class StockPortfolio implements IPortfolio<Stock> {
   }
 
   /**
-   * Returns the value of the portfolio.
+   * Returns the total value of the portfolio at a given date.
    *
-   * @return the value of the portfolio.
+   * @param date date for which the value has to be calculated.
+   * @return the total value of the portfolio.
    */
   private double getStockValue(String date) {
     double d = 0;
@@ -50,6 +63,14 @@ public class StockPortfolio implements IPortfolio<Stock> {
     return d;
   }
 
+  /**
+   * Returns the cost basis and the value of the portfolio for a given date as string in a specific
+   * format: Total portfolio cost basis = x \n Total portfolio value = y where x and y are the
+   * portfolios cost basis and the value.
+   *
+   * @param date date for which the cost basis and the value have to be calculated.
+   * @return the cost basis and the value of the portfolio for a given date.
+   */
   @Override
   public String getStockCostBasisAndStockValue(String date) {
     String s = String.format("Total portfolio cost basis = %.2f\n", getStockCostBasis(date));

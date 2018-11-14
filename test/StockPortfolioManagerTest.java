@@ -1,19 +1,18 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.StockPortfolioManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * This class contains all the tests for the StockPortfolioManager class.
+ */
 public class StockPortfolioManagerTest {
 
   private StockPortfolioManager portfolioManager;
   private IPortfolio portfolio;
-
-  @Before
-  public void setUp() throws Exception {
-  }
 
   @Test
   public void TestPortfolioManagerCreationAndGetPortfolio() {
@@ -95,7 +94,8 @@ public class StockPortfolioManagerTest {
 
     portfolio = portfolioManager.getPortfolio(1);
 
-    assertEquals("9.14 shares of MSFT for a total investment of $1000.00", portfolio.getPortfolioData());
+    assertEquals("9.14 shares of MSFT for a total investment of $1000.00",
+            portfolio.getPortfolioData());
 
     assertEquals("Total portfolio cost basis = 1000.00\n"
                     + "Total portfolio value = 1000.00",

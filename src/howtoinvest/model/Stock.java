@@ -18,12 +18,12 @@ public class Stock implements IStock {
 
   public Stock(String tickerSymbol) {
     if (loadPropertiesFromConfig()) {
-      stocksApi = new AlphaVantageDemo();
+      stocksApi = new AlphaVantage();
     } else {
       stocksApi = new FileStockDataReader();
     }
-    if (!checkStringValidity(tickerSymbol) ||
-            !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
+    if (!checkStringValidity(tickerSymbol)
+            || !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
       throw new IllegalArgumentException("Invalid stock name or ticker symbol");
     }
     this.tickerSymbol = tickerSymbol;
@@ -135,10 +135,7 @@ public class Stock implements IStock {
    * @return true if the string is valid and false otherwise.
    */
   private boolean checkStringValidity(String string) {
-    if (string == null || string.trim().isEmpty()) {
-      return false;
-    }
-    return true;
+    return !(string == null || string.trim().isEmpty());
   }
 
   /**

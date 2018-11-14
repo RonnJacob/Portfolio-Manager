@@ -5,6 +5,9 @@ import howtoinvest.model.Share;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * This class contains all the test for the Share class.
+ */
 public class ShareTest {
 
   private Share share;
@@ -43,7 +46,7 @@ public class ShareTest {
       share = new Share(-0.01, -0.1);
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid input for stock.", ex.getMessage());
+      assertEquals("Invalid input for share.", ex.getMessage());
     }
   }
 
@@ -53,7 +56,7 @@ public class ShareTest {
       share = new Share(-0.001, 0);
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid input for stock.", ex.getMessage());
+      assertEquals("Invalid input for share.", ex.getMessage());
     }
   }
 
@@ -63,7 +66,7 @@ public class ShareTest {
       share = new Share(0, -0.001);
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid input for stock.", ex.getMessage());
+      assertEquals("Invalid input for share.", ex.getMessage());
     }
   }
 

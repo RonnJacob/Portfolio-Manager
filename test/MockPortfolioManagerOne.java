@@ -1,6 +1,9 @@
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IPortfolioManager;
 
+/**
+ * Mock model to be used in the HowToInvestController Test.
+ */
 public class MockPortfolioManagerOne implements IPortfolioManager<MockStockPortfolioOne> {
   protected StringBuilder log;
   private int uniqueCode;
@@ -11,23 +14,23 @@ public class MockPortfolioManagerOne implements IPortfolioManager<MockStockPortf
   }
 
   @Override
-  public String getPortfolios(){
-    this.log.append("All Portfolios"+"\n");
+  public String getPortfolios() {
+    this.log.append("All Portfolios" + "\n");
     this.uniqueCode = 1;
     return String.format("%d", uniqueCode);
   }
 
 
   @Override
-  public void createPortfolio(String name) throws IllegalArgumentException{
-    this.log.append("Create Portfolio Name "+name+"\n");
+  public void createPortfolio(String name) throws IllegalArgumentException {
+    this.log.append("Create Portfolio Name " + name + "\n");
     this.uniqueCode = 2;
   }
 
 
   @Override
-  public IPortfolio getPortfolio(int index) throws IllegalArgumentException{
-    this.log.append("Get Portfolio " + index+"\n");
+  public IPortfolio getPortfolio(int index) throws IllegalArgumentException {
+    this.log.append("Get Portfolio " + index + "\n");
     this.uniqueCode = 3;
     return new MockStockPortfolioOne(this.log);
   }

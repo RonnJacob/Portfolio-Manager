@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AlphaVantageDemo implements IStockDataRetrieval {
+public class AlphaVantage implements IStockDataRetrieval {
 
   private final String apiKey = "W0M1JOKC82EZEQA8";
   private final String updateInterval = "1min";
@@ -89,8 +89,8 @@ public class AlphaVantageDemo implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1].
-            split(",")[0]))) {
+    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1]
+            .split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 

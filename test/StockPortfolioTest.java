@@ -1,10 +1,13 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import howtoinvest.model.StockPortfolio;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * This class contains all the tests for the StockPortfolio class.
+ */
 public class StockPortfolioTest {
 
   StockPortfolio portfolio;
@@ -30,7 +33,8 @@ public class StockPortfolioTest {
                     + "Total portfolio value = 1000.00",
             portfolio.getStockCostBasisAndStockValue("2018-11-11"));
 
-    assertEquals("9.14 shares of MSFT for a total investment of $1000.00", portfolio.getPortfolioData());
+    assertEquals("9.14 shares of MSFT for a total investment of $1000.00",
+            portfolio.getPortfolioData());
   }
 
   @Test
@@ -92,7 +96,8 @@ public class StockPortfolioTest {
     String output = portfolio.addStock("MSFT", 10000, "2018-01-01");
     assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
 
-    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", portfolio.getPortfolioData());
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00",
+            portfolio.getPortfolioData());
 
     assertEquals("Total portfolio cost basis = 10000.00\n"
                     + "Total portfolio value = 10000.00",
@@ -105,7 +110,8 @@ public class StockPortfolioTest {
       assertEquals("Invalid date format. Please enter date again.", ex.getMessage());
     }
 
-    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", portfolio.getPortfolioData());
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00",
+            portfolio.getPortfolioData());
 
     assertEquals("Total portfolio cost basis = 10000.00\n"
                     + "Total portfolio value = 10000.00",
@@ -221,7 +227,8 @@ public class StockPortfolioTest {
                     + "Total portfolio value = 1000.00",
             portfolio.getStockCostBasisAndStockValue("2018-11-11"));
 
-    assertEquals("9.14 shares of FB for a total investment of $1000.00", portfolio.getPortfolioData());
+    assertEquals("9.14 shares of FB for a total investment of $1000.00",
+            portfolio.getPortfolioData());
 
 
     try {
@@ -234,7 +241,8 @@ public class StockPortfolioTest {
                     + "Total portfolio value = 1000.00",
             portfolio.getStockCostBasisAndStockValue("2018-11-11"));
 
-    assertEquals("9.14 shares of FB for a total investment of $1000.00", portfolio.getPortfolioData());
+    assertEquals("9.14 shares of FB for a total investment of $1000.00",
+            portfolio.getPortfolioData());
   }
 
   @Test
@@ -244,7 +252,8 @@ public class StockPortfolioTest {
       portfolio.addStock("FB", 1000, "2-1-1");
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid date. Please enter date again.Share prices do not exist for given date.",
+      assertEquals("Invalid date. Please enter date again.Share prices do not "
+                      + "exist for given date.",
               ex.getMessage());
     }
     String output = this.portfolio.addStock("MSFT", 1000, "2018-11-11");
@@ -270,7 +279,8 @@ public class StockPortfolioTest {
       portfolio.addStock("FB", 1500, "2000-10-10");
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid date. Please enter date again.Share prices do not exist for given date.",
+      assertEquals("Invalid date. Please enter date again.Share prices do not"
+                      + " exist for given date.",
               ex.getMessage());
     }
 
@@ -285,7 +295,8 @@ public class StockPortfolioTest {
       portfolio.addStock("MSFT", 2000, "2020-10-10");
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("Invalid date. Please enter date again.Cannot fetch share value for a future date.",
+      assertEquals("Invalid date. Please enter date again.Cannot fetch share value "
+                      + "for a future date.",
               ex.getMessage());
     }
 
@@ -303,7 +314,8 @@ public class StockPortfolioTest {
     String output = portfolio.addStock("MSFT", 10000, "2018-01-01");
     assertEquals("100.00 shares of MSFT bought on 2018-01-01 for $10000.00", output);
 
-    assertEquals("100.00 shares of MSFT for a total investment of $10000.00", portfolio.getPortfolioData());
+    assertEquals("100.00 shares of MSFT for a total investment of $10000.00",
+            portfolio.getPortfolioData());
 
     assertEquals("Total portfolio cost basis = 10000.00\n"
                     + "Total portfolio value = 10000.00",

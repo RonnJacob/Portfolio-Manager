@@ -16,14 +16,14 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
     int counter = 1;
     for (String key : this.portfolios.keySet()) {
       s += counter + ". " + key + "\n";
-      counter ++;
+      counter++;
     }
     return s.trim();
   }
 
   @Override
   public void createPortfolio(String name) throws IllegalArgumentException {
-    if(name == null || name.trim().isEmpty()){
+    if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Invalid Name");
     }
     for (String key : this.portfolios.keySet()) {
