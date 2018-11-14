@@ -18,11 +18,14 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
       s += counter + ". " + key + "\n";
       counter ++;
     }
-    return s;
+    return s.trim();
   }
 
   @Override
   public void createPortfolio(String name) throws IllegalArgumentException {
+    if(name == null || name.trim().isEmpty()){
+      throw new IllegalArgumentException("Invalid Name");
+    }
     for (String key : this.portfolios.keySet()) {
       if (name.equals(key)) {
         throw new IllegalArgumentException("StockPortfolio already exists");
@@ -41,6 +44,6 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
       }
       counter++;
     }
-    throw new IllegalArgumentException("StockPortfolio does not exist");
+    throw new IllegalArgumentException("Invalid index for the Stock Portfolio");
   }
 }

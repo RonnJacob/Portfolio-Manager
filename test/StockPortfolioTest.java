@@ -9,10 +9,6 @@ public class StockPortfolioTest {
 
   StockPortfolio portfolio;
 
-  @Before
-  public void setUp() throws Exception {
-  }
-
   @Test
   public void TestValidPortfolioCreation() {
     portfolio = new StockPortfolio();
