@@ -1,7 +1,6 @@
 package howtoinvest.controller;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Scanner;
 
 import howtoinvest.model.IPortfolio;
@@ -25,7 +24,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
 
   @Override
   public void openPortfolioManager(IPortfolioManager<StockPortfolio> portfolioManagerModel) {
-    Objects.requireNonNull(portfolioManagerModel, "Portfolio manager cannot be a null.");
+    if(portfolioManagerModel == null){
+      throw new IllegalArgumentException("Portfolio manager cannot be a null.");
+    }
     addToAppendable(promptMessage);
     openHomeScreen();
     Scanner scan = new Scanner(this.in);
@@ -44,8 +45,12 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           openHomeScreen();
           break;
         case "3":
-          if (openPortfolio(portfolioManagerModel, scan).equalsIgnoreCase("q")) {
+          String returnCode = openPortfolio(portfolioManagerModel, scan);
+          if (returnCode.equalsIgnoreCase("q")) {
             return;
+          }
+          else if(returnCode.equalsIgnoreCase("i")){
+            addToAppendable("Invalid portfolio. Cannot retrieve portfolio.\n");
           }
           openHomeScreen();
           break;
@@ -61,12 +66,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
 
   private String openPortfolio(IPortfolioManager<StockPortfolio> portfolioManagerModel,
                                Scanner scan) {
-    addToAppendable("\nEnter name of Portfolio to open.\n");
+    addToAppendable("\nEnter index of Portfolio to open.\n");
+    if(!scan.hasNext()){
+      return "q";
+    }
     String pfolioName = scan.next();
-    String applicationRunning = "r";
+    IPortfolio selectedPFolio;
+    try{
+      selectedPFolio = portfolioManagerModel.getPortfolio(Integer.parseInt(pfolioName));
+    } catch(IllegalArgumentException ex){
+      return "i";
+    }
     openPortfolioMenu();
     try {
-      IPortfolio selectedPFolio = portfolioManagerModel.getPortfolio(Integer.parseInt(pfolioName));
       while (true) {
         if(!scan.hasNext()){
           return "q";
@@ -107,10 +119,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                               Scanner scan) {
     do {
       addToAppendable("Enter stock symbol:\n");
+      if(!scan.hasNext()){
+        return;
+      }
       String stockSymbol = scan.next();
       addToAppendable("Enter amount for which shares are to be bought:\n");
+      if(!scan.hasNext()){
+        return;
+      }
       double amount = Double.parseDouble(scan.next());
       addToAppendable("Enter date in format yyyy-mm-dd: \n");
+      if(!scan.hasNext()){
+        return;
+      }
       String date = scan.next();
 
       try {
@@ -119,11 +140,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         addToAppendable(ex.getMessage());
       }
       addToAppendable("Buy more shares? (Y/N)");
-      if(scan.hasNext()){
+      if(!scan.hasNext()){
         return;
       }
-    }
-    while (scan.next().equalsIgnoreCase("y"));
+    } while (scan.next().equalsIgnoreCase("y"));
   }
 
 
@@ -132,13 +152,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     addToAppendable("\nList of Portfolios\n");
     String[] listOfPortfolios = portfolioManagerModel.getPortfolios().split("\n");
     for (int i = 0; i < listOfPortfolios.length; i++) {
-      addToAppendable(String.format("%d. %s\n", i + 1, listOfPortfolios[i]));
+      addToAppendable(String.format("%s\n", listOfPortfolios[i]));
     }
   }
 
   private void addPortfoliosToManager(IPortfolioManager<StockPortfolio> pfolioManager, Scanner in) {
     do {
       addToAppendable("Enter the name of the portfolio to be created.");
+      if(!in.hasNext()){
+        return;
+      }
       String nameOfPortfolio = in.next();
       try {
         pfolioManager.createPortfolio(nameOfPortfolio);
@@ -147,12 +170,15 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         addToAppendable("Portfolio with that name exists");
       }
       addToAppendable("Add more portfolios? (Y/N)");
+      if(!in.hasNext()){
+        return;
+      }
     }
     while (in.next().equalsIgnoreCase("y"));
   }
 
   private void openHomeScreen() {
-    addToAppendable("\nWelcome to Portfolio Manager.");
+    addToAppendable("Welcome to Portfolio Manager.");
     addToAppendable("1. Create new portfolio.");
     addToAppendable("2. Get existing portfolios.");
     addToAppendable("3. Enter portfolio.");
