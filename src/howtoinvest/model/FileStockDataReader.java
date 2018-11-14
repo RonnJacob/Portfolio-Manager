@@ -7,18 +7,60 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * The following class implements IStockDataRetrieval interface and all the methods in the
+ * interface. This class would retrieve stock data from a .csv file based on the ticker symbol which
+ * would be the name of the .csv file. The class offers operations to check the presence of a stock
+ * data file and for retrieving the share price for a given date in string format. An exception
+ * would be thrown if the input date is not in the yyyy-mm-dd format. Stock data retrieval would be
+ * handled depending on the following scenarios:
+ * <ul>
+ * <li>
+ * If the input date is too old for there to be any stock data pertaining to that date, an exception
+ * would be thrown saying that the stock data cannot be fetched.
+ * </li>
+ * <li>
+ * If the input date matches with a date in the retrieved stock data, then the price at closing time
+ * is retrieved.
+ * </li>
+ * <li>
+ * If the input date is not a future date and is not present in the retrieved stock data, then the
+ * price for the last stock exchange working date would be retrieved.
+ * </li>
+ * <li>
+ * If the input date is after the current date, then a share price cannot be retrieved as the share
+ * price for a future date cannot be fetched and an exception would be thrown.
+ * </li>
+ * </ul>
+ */
 public class FileStockDataReader implements IStockDataRetrieval {
   private final String extension = ".csv";
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
   private StringBuilder output = new StringBuilder();
 
+  /**
+   * Checks whether a file for a particular ticker name representing a stock exists.
+   *
+   * @param tickerName the unique symbol representing a particular company/organization.
+   * @return the share price of a company/organization based on the ticker symbol at that date or
+   * the date that is closest to that date.
+   */
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {
     File f = new File(tickerName + extension);
     return (f.exists() && !f.isDirectory());
   }
 
+  /**
+   * Retrieves the share price for a particular date from stock data in a .csv file.
+   *
+   * @param date       the date for which we wish to look up the stock/share price.
+   * @param tickerName a unique symbol representing a company/organization.
+   * @return the share price for a particular date from the file.
+   * @throws ParseException if the input date is of invalid format or if the retrieved content is
+   *                        not in the right format to retrieve the share price for that date.
+   */
   @Override
   public double retrieveSharePrice(String date, String tickerName) throws ParseException {
     /**

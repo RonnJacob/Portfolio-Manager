@@ -11,7 +11,30 @@ import java.util.Date;
 /**
  * The following class implements IStockDataRetrieval interface and all the methods in the
  * interface. This class would retrieve real-time stock data by parsing the web content using the
- * Alpha Vantage API (https://www.alphavantage.co/).
+ * Alpha Vantage API (https://www.alphavantage.co/). Stock data retrieval would be handled depending
+ * on the following scenarios:
+ * <ul>
+ * <li>
+ * If the input date is too old for there to be any stock data pertaining to that date, an exception
+ * would be thrown saying that the stock data cannot be fetched.
+ * </li>
+ * <li>
+ * If the input date is of the current date, then the opening share price for that minute is
+ * returned.
+ * </li>
+ * <li>
+ * If the input date matches with a date in the retrieved stock data, then the price at closing time
+ * is retrieved.
+ * </li>
+ * <li>
+ * If the input date is after the current date, then a share price cannot be retrieved as the share
+ * price for a future date cannot be fetched and an exception would be thrown.
+ * </li>
+ * <li>
+ * If the input date is not a future date and is not present in the retrieved stock data, then the
+ * price for the last stock exchange working date would be retrieved.
+ * </li>
+ * </ul>
  */
 public class AlphaVantage implements IStockDataRetrieval {
 
@@ -30,7 +53,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   *         minute
+   * minute.
    */
   private String getCurrentSharePrice(String tickerName) {
     setURL(tickerName, true);
@@ -70,11 +93,12 @@ public class AlphaVantage implements IStockDataRetrieval {
 
   /**
    * Retrieves the share price for a particular date from the output of the set URL.
-   * @param date the date for which we wish to look up the stock/share price.
+   *
+   * @param date       the date for which we wish to look up the stock/share price.
    * @param tickerName a unique symbol representing a company/organization.
    * @return the share price for a particular date from the output of the set URL
-   * @throws ParseException if the input date is of invalid format or if the retrieved content
-   *                        is not in the right format to retrieve the share price for that date.
+   * @throws ParseException if the input date is of invalid format or if the retrieved content is
+   *                        not in the right format to retrieve the share price for that date.
    */
   @Override
   public double retrieveSharePrice(String date, String tickerName) throws ParseException {
