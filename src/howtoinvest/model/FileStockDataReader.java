@@ -16,10 +16,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {
     File f = new File(tickerName + extension);
-    if (f.exists() && !f.isDirectory()) {
-      return true;
-    }
-    return false;
+    return (f.exists() && !f.isDirectory());
   }
 
   @Override
@@ -74,8 +71,8 @@ public class FileStockDataReader implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1].
-            split(",")[0]))) {
+    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1]
+            .split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 

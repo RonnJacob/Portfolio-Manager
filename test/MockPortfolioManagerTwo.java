@@ -1,5 +1,3 @@
-import howtoinvest.model.IPortfolio;
-
 /**
  * The following mock model extends MockPortfolioManagerOne which is an implementation of
  * HowToInvestController. This mock model would be used to check if the controller transmits a
@@ -26,7 +24,7 @@ public class MockPortfolioManagerTwo extends MockPortfolioManagerOne {
    * @throws IllegalArgumentException every time the getPortfolio method is called.
    */
   @Override
-  public IPortfolio getPortfolio(int index) throws IllegalArgumentException {
+  public MockStockPortfolioOne getPortfolio(int index) throws IllegalArgumentException {
     log.append("Cannot fetch " + index + "th portfolio.\n");
     throw new IllegalArgumentException("Invalid portfolio.");
   }

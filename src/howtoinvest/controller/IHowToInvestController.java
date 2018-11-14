@@ -27,7 +27,7 @@ public interface IHowToInvestController<K> {
    * @throws IllegalArgumentException if the model is a null.
    * @throws IllegalStateException    if the controller is unable to read input or transmit output.
    */
-  void openPortfolioManager(IPortfolioManager<StockPortfolio> model) throws IllegalArgumentException
-          , IllegalStateException;
+  void openPortfolioManager(IPortfolioManager<StockPortfolio> model)
+          throws IllegalArgumentException, IllegalStateException;
 
 }

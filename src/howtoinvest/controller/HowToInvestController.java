@@ -279,7 +279,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       if (!scan.hasNext()) {
         return;
       }
-    } while (scan.next().equalsIgnoreCase("y"));
+    }
+    while (scan.next().equalsIgnoreCase("y"));
   }
 
 

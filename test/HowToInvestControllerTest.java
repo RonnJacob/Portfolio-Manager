@@ -644,8 +644,8 @@ public class HowToInvestControllerTest {
     Reader stringReader = new StringReader("3 1 2 FB 1000 2018-10-10 n 1 q");
     String expectedView = "";
     String indexMessage = "\n\nEnter index of Portfolio to open.\n";
-    String addSharePrompts = "Enter stock symbol:\n" +
-            "\n" + "Enter amount for which shares are to be bought:\n" + "\n"
+    String addSharePrompts = "Enter stock symbol:\n"
+            + "\n" + "Enter amount for which shares are to be bought:\n" + "\n"
             + "Enter date in format yyyy-mm-dd: \n\n";
     StringWriter out = new StringWriter();
     StringBuilder log = new StringBuilder();

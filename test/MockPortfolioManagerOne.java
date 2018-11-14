@@ -1,4 +1,3 @@
-import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IPortfolioManager;
 
 /**
@@ -72,7 +71,7 @@ public class MockPortfolioManagerOne implements IPortfolioManager<MockStockPortf
    * @return a new MockStockPortfolioOne object.
    */
   @Override
-  public IPortfolio getPortfolio(int index) {
+  public MockStockPortfolioOne getPortfolio(int index) {
     this.log.append("Get Portfolio " + index + "\n");
     this.uniqueCode = 3;
     return new MockStockPortfolioOne(this.log);

@@ -8,13 +8,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AlphaVantage implements IStockDataRetrieval {
 /**
  * The following class implements IStockDataRetrieval interface and all the methods in the
  * interface. This class would retrieve real-time stock data by parsing the web content using the
  * Alpha Vantage API (https://www.alphavantage.co/).
  */
-
+public class AlphaVantage implements IStockDataRetrieval {
 
   //The API key provided by the service: : https://www.alphavantage.co/
   private final String apiKey = "W0M1JOKC82EZEQA8";
@@ -31,7 +30,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   * minute
+   *         minute
    */
   private String getCurrentSharePrice(String tickerName) {
     setURL(tickerName, true);
