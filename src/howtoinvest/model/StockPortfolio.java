@@ -3,8 +3,31 @@ package howtoinvest.model;
 import java.util.HashMap;
 
 /**
- * This class represents a portfolio made of collection of stocks. Each stock has an individual
- * ticker symbol so they are represented by a hashmap of ticker symbol and stock objects.
+ * <p>This class represents a portfolio made of collection of stocks. Each stock has an individual
+ * ticker symbol so they are represented by a hashmap of ticker symbol and stock objects.</p>
+ * <p>>This class provides three operations:</p>
+ * <ul>
+ * <li>
+ * View the composition of the portfolio - It returns all the stocks in the portfolio and the amount
+ * that is invested in those stocks.
+ * </li>
+ * <li>
+ * Adding a stock to the portfolio with a unique ticker symbol, the amount which you are investing
+ * that stock and the date of investment. The stock ticker symbol must be valid, the validity is
+ * checked based on the app.config properties if it is set to read from the API it uses the Alpha
+ * vantage api to check the validity of the ticker symbol or if its not set to the API a check is
+ * determined to see if the user has provided a tickersymbol .csv to provide prices for the ticker
+ * symbol. The amount of investment cannot be negative and the date is also restricted like the
+ * tickersymbol. If we use the API we check stock prices exists for the given date(Holidays are
+ * handled by taking the previous working day's closing date). If we don't use the API we check if
+ * the user has provided the values for the given date.
+ * </li>
+ * <li>
+ * Retrieves the cost basis and the stock value at a given time. The total money invested in the
+ * stock (money spent buying it) is called the cost basis of the purchase. The value of the stock on
+ * a particular day is the money the investor would receive if he/she sold the stock on that day.
+ * </li>
+ * </ul>
  */
 public class StockPortfolio implements IPortfolio<Stock> {
 
@@ -83,9 +106,10 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @param stock  the stock that is to be added to the portfolio
    * @param amount the amount for which the stock has to be added to the portfolio.
+   * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
   @Override
-  public String addStock(String stock, double amount, String date) {
+  public String addStock(String stock, double amount, String date) throws IllegalArgumentException {
     String sharesBought = "";
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {

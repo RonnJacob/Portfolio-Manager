@@ -1,7 +1,8 @@
 package howtoinvest.model;
 
 /**
- * This class represents shares of a stock and implements IShare.
+ * This class represents shares of a stock and implements IShare. Each share object contains the no
+ * of shares and the cost basis for it. The number of shares and cost basis cannot be negative.
  */
 public class Share implements IShare {
   /**

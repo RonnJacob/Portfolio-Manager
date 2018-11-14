@@ -7,6 +7,9 @@ import java.util.TreeMap;
  * essentially collection of stocks owned by the user. The portfolios are uniquely identified by
  * their names and are sorted and stored according to the lexicographical order of their identifier.
  * This portfolio manager contains a Default Portfolio which is automatically created for the user.
+ * Users can add stocks, view their composition, get total cost basis and total value of the
+ * portfolio by retrieving a portfolio of their choice from the StockPortfolioManager and performing
+ * the above operations on it..
  */
 public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> {
 
