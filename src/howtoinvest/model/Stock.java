@@ -40,18 +40,25 @@ public class Stock implements IStock {
    * shares and the stock retrieval object.
    */
   private final String tickerSymbol;
-  private TreeMap<Date, Share> shareList = new TreeMap<>();
-  private final IStockDataRetrieval stocksSource;
+  private TreeMap<Date, Share> shareList;
+  private final IStockDataRetrieval stocksApi;
 
+  /**
+   * Constructs a stock object with the given ticker symbol and selects the source to retrieve stock
+   * data based on the config file.
+   *
+   * @param tickerSymbol ticker symbol of the stock.
+   * @throws IllegalArgumentException if the source data cannot be retrieved from the config file.
+   */
   public Stock(String tickerSymbol) {
     /**
      * If the key READ_FROM_API is set to 1 in the app.config file, then retrieve stock data using
      * the AlphaVantage API, otherwise retrieve stock data from files.
      */
     if (loadPropertiesFromConfig()) {
-      stocksSource = new AlphaVantage();
+      stocksApi = new AlphaVantage();
     } else {
-      stocksSource = new FileStockDataReader();
+      stocksApi = new FileStockDataReader();
     }
 
     /**
@@ -59,14 +66,15 @@ public class Stock implements IStock {
      * is empty/null or if stock data does not exist for a particular stock symbol.
      */
     if (!checkStringValidity(tickerSymbol)
-            || !stocksSource.checkValidityOfTickerName(tickerSymbol)) {
+            || !stocksApi.checkValidityOfTickerName(tickerSymbol)) {
       throw new IllegalArgumentException("Invalid stock name or ticker symbol");
     }
     this.tickerSymbol = tickerSymbol;
+    this.shareList = new TreeMap<>();
   }
 
   @Override
-  public double getStockCostBasis(String date) {
+  public double getStockCostBasis(String date) throws IllegalArgumentException {
     double costBasis = 0.0;
     Date costBasisDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
@@ -83,7 +91,7 @@ public class Stock implements IStock {
   }
 
   @Override
-  public double getStockValue(String date) {
+  public double getStockValue(String date) throws IllegalArgumentException {
     return this.getNumberOfShares(date) * getSharePrice(this.tickerSymbol, date);
   }
 
@@ -148,7 +156,7 @@ public class Stock implements IStock {
      * Retrieve the share price for the stock using the stock retrieval object.
      */
     try {
-      sharePrice = stocksSource.retrieveSharePrice(date, this.tickerSymbol);
+      sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
     } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid date. Please enter date again."
               + ex.getMessage());
@@ -214,10 +222,11 @@ public class Stock implements IStock {
    *                     yyyy-mm-dd format as a string.
    * @param tickerSymbol the ticker symbol that represents a stock of a company.
    * @return the single share price for a stock.
+   * @throws IllegalArgumentException if the price data cannot be fetched from its source.
    */
-  private double getSharePrice(String tickerSymbol, String date) {
+  private double getSharePrice(String tickerSymbol, String date) throws IllegalArgumentException {
     try {
-      return stocksSource.retrieveSharePrice(date, tickerSymbol);
+      return stocksApi.retrieveSharePrice(date, tickerSymbol);
     } catch (ParseException ex) {
       throw new IllegalArgumentException("Cannot fetch current share price due to parse failure.");
     }
@@ -227,18 +236,21 @@ public class Stock implements IStock {
    * Returns true if the READ_FROM_API key in the app.config file is set to 1 and false otherwise.
    *
    * @return true if the READ_FROM_API key in the app.config file is set to 1 and false otherwise.
+   * @throws IllegalArgumentException if the properties cannot be loaded from the config file.
    */
-  private boolean loadPropertiesFromConfig() {
+  private boolean loadPropertiesFromConfig() throws IllegalArgumentException {
     Properties prop = new Properties();
     String fileName = "app.config";
     InputStream is = null;
     try {
       is = new FileInputStream(fileName);
     } catch (FileNotFoundException ex) {
+      throw new IllegalArgumentException("Config file not found");
     }
     try {
       prop.load(is);
     } catch (IOException ex) {
+      throw new IllegalArgumentException("Cannot load properties of config file");
     }
     return prop.getProperty("READ_FROM_API").equalsIgnoreCase("1");
   }

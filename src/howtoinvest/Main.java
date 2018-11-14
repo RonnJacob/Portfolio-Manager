@@ -15,6 +15,10 @@ import howtoinvest.model.StockPortfolioManager;
  */
 public class Main {
 
+  /**
+   * Entry point of the application.
+   * @param args arguments of type string.
+   */
   public static void main(String[] args) {
 
     /**

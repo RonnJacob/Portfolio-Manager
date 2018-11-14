@@ -12,6 +12,7 @@ public interface IStockDataRetrieval {
 
   /**
    * Checks the validity or existence of a particular stock for a company.
+   *
    * @param tickerName the unique “ticker symbol" given to a company's stock.
    * @return true if the stock or stock data exists for a given "ticker symbol".
    */
@@ -19,11 +20,15 @@ public interface IStockDataRetrieval {
 
   /**
    * Retrieves the share price for a particular date from stock data retrieved from a source.
-   * @param date the date for which we wish to look up the stock/share price.
+   *
+   * @param date       the date for which we wish to look up the stock/share price.
    * @param tickerName a unique symbol representing a company/organization.
    * @return the share price for a particular date from the source.
-   * @throws ParseException if the input date is of invalid format or if the retrieved content is
-   *                        not in the right format to retrieve the share price for that date.
+   * @throws ParseException           if the input date is of invalid format or if the retrieved
+   *                                  content is not in the right format to retrieve the share price
+   *                                  for that date.
+   * @throws IllegalArgumentException if thr date or tickerName is invalid.
    */
-  double retrieveSharePrice(String date, String tickerName) throws ParseException;
+  double retrieveSharePrice(String date, String tickerName)
+          throws ParseException, IllegalArgumentException;
 }

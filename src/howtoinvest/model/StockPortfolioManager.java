@@ -67,6 +67,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
    *
    * @param index of the portfolio.
    * @return if the index is invalid.
+   * @throws IllegalArgumentException if the portfolio does not exist with the given index.
    */
   @Override
   public StockPortfolio getPortfolio(int index) {

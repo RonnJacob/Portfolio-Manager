@@ -23,6 +23,7 @@ public interface IPortfolio<K> {
    * Returns the total cost basis of the portfolio.
    *
    * @return the total cost basis of the portfolio.
+   * @throws IllegalArgumentException if the stock cost basis and value cannot be fetched.
    */
   String getStockCostBasisAndStockValue(String date);
 
@@ -33,6 +34,7 @@ public interface IPortfolio<K> {
    * @param amount     the amount for which the stock has to be added to the portfolio.
    * @return Returns a string that contains the number of shares of a stock bought for an amount at
    *         a particular date.
+   * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
   String addStock(String identifier, double amount, String date);
 }

@@ -53,9 +53,9 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   * minute.
+   *         minute.
    */
-  private String getCurrentSharePrice(String tickerName) {
+  private String getCurrentSharePrice(String tickerName) throws IllegalArgumentException {
     setURL(tickerName, true);
     InputStream in = null;
     StringBuilder output = new StringBuilder();
@@ -97,11 +97,14 @@ public class AlphaVantage implements IStockDataRetrieval {
    * @param date       the date for which we wish to look up the stock/share price.
    * @param tickerName a unique symbol representing a company/organization.
    * @return the share price for a particular date from the output of the set URL
-   * @throws ParseException if the input date is of invalid format or if the retrieved content is
-   *                        not in the right format to retrieve the share price for that date.
+   * @throws ParseException           if the input date is of invalid format or if the retrieved
+   *                                  content is not in the right format to retrieve the share price
+   *                                  for that date.
+   * @throws IllegalArgumentException if thr date or tickerName is invalid.
    */
   @Override
-  public double retrieveSharePrice(String date, String tickerName) throws ParseException {
+  public double retrieveSharePrice(String date, String tickerName)
+          throws ParseException, IllegalArgumentException {
 
     setURL(tickerName, false);
 
@@ -174,8 +177,10 @@ public class AlphaVantage implements IStockDataRetrieval {
    * @param in  the InputStream object for reading the data.
    * @param out the Appendable object for transmitting data.
    * @param url the URL object for retrieving the content by the set URL.
+   * @throws IllegalArgumentException if the stock data cannot be retrived with the url.
    */
-  private void addToOutput(InputStream in, Appendable out, URL url) {
+  private void addToOutput(InputStream in, Appendable out, URL url)
+          throws IllegalArgumentException {
     try {
       in = url.openStream();
       int b;
@@ -194,8 +199,9 @@ public class AlphaVantage implements IStockDataRetrieval {
    * @param tickerName the unique symbol representing a particular company/organization.
    * @param intraday   true if a minute interval update is required and false if daily updates are
    *                   required.
+   * @throws RuntimeException if the API stops working or errors.
    */
-  private void setURL(String tickerName, boolean intraday) {
+  private void setURL(String tickerName, boolean intraday) throws RuntimeException {
     String urlSuffix = "";
     String function = "TIME_SERIES_DAILY";
     if (intraday) {

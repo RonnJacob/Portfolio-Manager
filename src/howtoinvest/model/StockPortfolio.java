@@ -63,8 +63,9 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @param date date for which the cost basis has to be calculated.
    * @return the total cost basis of the portfolio.
+   * @throws IllegalArgumentException if the stock cost basis cannot be fetched.
    */
-  private double getStockCostBasis(String date) {
+  private double getStockCostBasis(String date) throws IllegalArgumentException {
     double d = 0;
     for (String key : this.portfolio.keySet()) {
       d += this.portfolio.get(key).getStockCostBasis(date);
@@ -77,6 +78,7 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @param date date for which the value has to be calculated.
    * @return the total value of the portfolio.
+   * @throws IllegalArgumentException if the stock value cannot be fetched.
    */
   private double getStockValue(String date) {
     double d = 0;

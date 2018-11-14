@@ -33,6 +33,7 @@ public interface IStock {
    *             pattern in string format.
    * @return the total cost basis of the stock of a company at a particular input date of format
    *         yyyy-mm-dd.
+   * @throws IllegalArgumentException if the cost basis cannot be fetched for the given date.
    */
   double getStockCostBasis(String date);
 
@@ -42,6 +43,7 @@ public interface IStock {
    * @param date the date for which we want to retrieve stock value which is of yyyy-mm-dd pattern
    *             in string format.
    * @return the value of the stock of a company at a particular input date of format yyyy-mm-dd.
+   * @throws IllegalArgumentException if the stock value cannot be fetched from its source.
    */
   double getStockValue(String date);
 
