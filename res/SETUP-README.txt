@@ -11,6 +11,8 @@ files like the csv files for the stock data exist in the same folder as the jar.
 Running the program.
 --------------------
 - Open terminal/cmd and navigate to the folder where the Assignment8 jar exists.
+- Set the READ_FROM_API to 0 in app.config if you want to read the stock data from .csv files
+  else 1 if you want to get the stock data from Alpha Vantage api.
 - Now type java -jar Assignment8.jar and press Enter.
 
 How To Use

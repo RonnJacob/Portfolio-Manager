@@ -106,12 +106,12 @@ public class Stock implements IStock {
    */
   private double getNumberOfShares(String date) {
     double numberOfShare = 0;
-    Date costBasisDate = convertToDate(date);
+    Date sharesDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       /**
        * Calculating cost basis up until a particular date.
        */
-      if (entry.getKey().after(costBasisDate)) {
+      if (entry.getKey().after(sharesDate)) {
         break;
       } else {
         numberOfShare += entry.getValue().getNumberOfShares();
