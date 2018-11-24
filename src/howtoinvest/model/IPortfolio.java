@@ -1,5 +1,7 @@
 package howtoinvest.model;
 
+import java.util.HashMap;
+
 /**
  * This interface represents a financial portfolio. A financial portfolio is used to keep track of
  * the investments you have made. You can invest by buying stocks of a company. Basically a
@@ -17,17 +19,20 @@ public interface IPortfolio<K> {
    *
    * @return the portfolio data in the form a string.
    */
-  String getPortfolioData();
+  HashMap<String, Double> getPortfolioData(String date);
 
-  /**
-   * Returns the total cost basis of the portfolio.
-   *
-   * @param date for which the cost basis has to be fetched.
-   * @return the total cost basis of the portfolio.
-   * @throws IllegalArgumentException if the stock cost basis and value cannot be fetched.
-   */
-  String getStockCostBasisAndStockValue(String date);
+//  /**
+//   * Returns the total cost basis of the portfolio.
+//   *
+//   * @param date for which the cost basis has to be fetched.
+//   * @return the total cost basis of the portfolio.
+//   * @throws IllegalArgumentException if the stock cost basis and value cannot be fetched.
+//   */
+//  String getStockCostBasisAndStockValue(String date);
 
+  double getStockCostBasis(String date) throws IllegalArgumentException;
+
+  double getStockValue(String date) throws IllegalArgumentException;
   /**
    * Adds a stock to the portfolio.
    *
@@ -38,6 +43,6 @@ public interface IPortfolio<K> {
    *         a particular date.
    * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
-  String addStock(String identifier, double amount, String date);
+  double addStock(String identifier, double amount, String date);
 }
 

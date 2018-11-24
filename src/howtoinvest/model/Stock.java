@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -142,7 +143,7 @@ public class Stock implements IStock {
   }
 
   @Override
-  public String addShare(double amount, String date) throws IllegalArgumentException {
+  public double addShare(double amount, String date) throws IllegalArgumentException {
     /**
      * Amount for which shares are to be added cannot be negative or zero.
      */
@@ -173,8 +174,7 @@ public class Stock implements IStock {
                 + oldShare.getShareCostBasis(), noOfSharesBought
                 + oldShare.getNumberOfShares());
         shareList.put(key, shareBought);
-        return String.format("%.2f shares of %s bought on %s for $%.2f", noOfSharesBought,
-                this.tickerSymbol, date, amount);
+        return noOfSharesBought;
       }
     }
 
@@ -184,23 +184,24 @@ public class Stock implements IStock {
      */
     Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
     shareList.put(shareDate, shareBought);
-    return String.format("%.2f shares of %s bought on %s for $%.2f", noOfSharesBought,
-            this.tickerSymbol, date, amount);
+    return noOfSharesBought;
   }
 
   @Override
-  public String getStockData() {
-    String stockData = "";
-    double totalShares = 0;
-    double totalCostBasis = 0;
+  public double getShares(String date) {
+    double shares = 0;
+    Date shareDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
-      Share value = entry.getValue();
-      totalShares += value.getNumberOfShares();
-      totalCostBasis += value.getShareCostBasis();
+      /**
+       * Calculating cost basis up until a particular date.
+       */
+      if (entry.getKey().after(shareDate)) {
+        break;
+      } else {
+        shares += entry.getValue().getNumberOfShares();
+      }
     }
-    stockData += String.format("%.2f shares of %s for a total investment of $%.2f",
-            totalShares, this.tickerSymbol, totalCostBasis);
-    return stockData;
+    return shares;
   }
 
   /**

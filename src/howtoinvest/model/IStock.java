@@ -1,5 +1,7 @@
 package howtoinvest.model;
 
+import java.util.HashMap;
+
 /**
  * The following interface represents a stock of a company and operations pertaining to the stock of
  * a company.In its simplest form, a stock of a company is simply a part of ownership in that
@@ -59,7 +61,7 @@ public interface IStock {
    * @throws IllegalArgumentException if shares cannot be bought successfully for a particular
    *                                  company.
    */
-  String addShare(double amount, String date) throws IllegalArgumentException;
+  double addShare(double amount, String date) throws IllegalArgumentException;
 
   /**
    * Returns the stock data in the form of a string which would be the total cost basis and the
@@ -68,5 +70,5 @@ public interface IStock {
    * @return the stock data in the form of a string which would be the total cost basis and the
    *         total value of the stock up until the current time.
    */
-  String getStockData();
+  double getShares(String date);
 }

@@ -50,12 +50,12 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @return the portfolio data in the form a string.
    */
   @Override
-  public String getPortfolioData() {
-    String s = "";
+  public HashMap<String, Double> getPortfolioData(String date) {
+    HashMap<String, Double> portfolioData = new HashMap<>();
     for (String key : this.portfolio.keySet()) {
-      s += this.portfolio.get(key).getStockData() + "\n";
+      portfolioData.put(key, this.portfolio.get(key).getShares(date));
     }
-    return s.trim();
+    return portfolioData;
   }
 
   /**
@@ -65,7 +65,8 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @return the total cost basis of the portfolio.
    * @throws IllegalArgumentException if the stock cost basis cannot be fetched.
    */
-  private double getStockCostBasis(String date) throws IllegalArgumentException {
+  @Override
+  public double getStockCostBasis(String date) throws IllegalArgumentException {
     double d = 0;
     for (String key : this.portfolio.keySet()) {
       d += this.portfolio.get(key).getStockCostBasis(date);
@@ -80,7 +81,8 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @return the total value of the portfolio.
    * @throws IllegalArgumentException if the stock value cannot be fetched.
    */
-  private double getStockValue(String date) {
+  @Override
+  public double getStockValue(String date) {
     double d = 0;
     for (String key : this.portfolio.keySet()) {
       d += this.portfolio.get(key).getStockValue(date);
@@ -96,12 +98,12 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @param date date for which the cost basis and the value have to be calculated.
    * @return the cost basis and the value of the portfolio for a given date.
    */
-  @Override
-  public String getStockCostBasisAndStockValue(String date) {
-    String s = String.format("Total portfolio cost basis = %.2f\n", getStockCostBasis(date));
-    s += String.format("Total portfolio value = %.2f", getStockValue(date));
-    return s;
-  }
+//  @Override
+//  public String getStockCostBasisAndStockValue(String date) {
+//    String s = String.format("Total portfolio cost basis = %.2f\n", getStockCostBasis(date));
+//    s += String.format("Total portfolio value = %.2f", getStockValue(date));
+//    return s;
+//  }
 
   /**
    * Adds a stock to the portfolio.
@@ -111,8 +113,8 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
   @Override
-  public String addStock(String stock, double amount, String date) throws IllegalArgumentException {
-    String sharesBought = "";
+  public double addStock(String stock, double amount, String date) throws IllegalArgumentException {
+    double sharesBought = 0;
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {
         sharesBought = this.portfolio.get(key).addShare(amount, date);
