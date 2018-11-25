@@ -6,6 +6,8 @@ import howtoinvest.controller.HowToInvestController;
 import howtoinvest.model.IPortfolioManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.model.StockPortfolioManager;
+import howtoinvest.view.IHowToInvestView;
+import howtoinvest.view.IHowToInvestViewImpl;
 
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
@@ -26,10 +28,17 @@ public class Main {
      */
     IPortfolioManager<StockPortfolio> portfolioManager;
     portfolioManager = new StockPortfolioManager();
+
+    /**
+     * Creation of IHowToInvestView object which would be the view of the program.
+     */
+    IHowToInvestView howToInvestView = new IHowToInvestViewImpl();
+
+
     /**
      * Controller is given the control with the above model as the argument.
      */
-    new HowToInvestController<>(new InputStreamReader(System.in), System.out)
+    new HowToInvestController<>(new InputStreamReader(System.in), System.out, howToInvestView)
             .openPortfolioManager(portfolioManager);
 
 

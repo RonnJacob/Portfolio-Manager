@@ -2,6 +2,7 @@ package howtoinvest.controller;
 
 import howtoinvest.model.IPortfolioManager;
 import howtoinvest.model.StockPortfolio;
+import howtoinvest.view.IHowToInvestView;
 
 /**
  * Interface for the how-to-invest-for-dummies application. An implementation would work with

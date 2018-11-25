@@ -1,11 +1,16 @@
 package howtoinvest.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IPortfolioManager;
+import howtoinvest.model.Stock;
 import howtoinvest.model.StockPortfolio;
+import howtoinvest.view.IHowToInvestView;
 
 
 /**
@@ -65,7 +70,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private final Readable in;
   private final Appendable out;
-  private String promptMessage;
+  private final IHowToInvestView view;
 
   /**
    * Constructor that sets the readable and appendable objects.
@@ -73,13 +78,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * @param in  the readable object argument.
    * @param out the appendable object argument.
    */
-  public HowToInvestController(Readable in, Appendable out) {
+  public HowToInvestController(Readable in, Appendable out, IHowToInvestView view) {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Invalid Readable or Appendable object");
     }
     this.in = in;
     this.out = out;
-    this.promptMessage = "";
+    this.view = view;
   }
 
   /**
@@ -93,18 +98,17 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     if (portfolioManagerModel == null) {
       throw new IllegalArgumentException("Portfolio manager cannot be a null.");
     }
-    addToAppendable(promptMessage);
     /**
      * The home screen is appended to the appendable object.
      */
-    openHomeScreen();
+    view.openHomeScreen();
     Scanner scan = new Scanner(this.in);
     while (true) {
       /**
        * Quitting the manager if no more input is available.
        */
       if (!scan.hasNext()) {
-        addToAppendable("Quitting Manager");
+        view.quitManager();
         return;
       }
       switch (scan.next()) {
@@ -114,7 +118,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         case "1":
           addPortfoliosToManager(portfolioManagerModel, scan);
-          openHomeScreen();
+          view.openHomeScreen();
           break;
         /**
          * If a user inputs 2, then the second option which is retrieval of a list of portfolios in
@@ -122,7 +126,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         case "2":
           displayPortfolios(portfolioManagerModel, scan);
-          openHomeScreen();
+          view.openHomeScreen();
           break;
         /**
          * If a user inputs 3, then the third option which is opening a particular portfolio
@@ -138,13 +142,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           } else if (returnCode.equalsIgnoreCase("i")) {
             addToAppendable("Invalid portfolio. Cannot retrieve portfolio.\n");
           }
-          openHomeScreen();
+          view.openHomeScreen();
           break;
         /**
          * Quit from the application if the user inputs 'q'.
          */
         case "q":
-          addToAppendable("Quitting Manager");
+          view.quitManager();
           return;
         /**
          * Any other input is deemed invalid.
@@ -183,7 +187,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     } catch (IllegalArgumentException ex) {
       return "i";
     }
-    openPortfolioMenu();
+    view.openPortfolioMenu();
     try {
       while (true) {
         if (!scan.hasNext()) {
@@ -195,8 +199,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * for a portfolio which is retrieving the composition of a portfolio is performed.
            */
           case "1":
-            addToAppendable(selectedPFolio.getPortfolioData());
-            openPortfolioMenu();
+            addToAppendable("Enter date in format yyyy-mm-dd: \n");
+            if(!scan.hasNext()){
+              return "q";
+            }
+            String dateToExamine = scan.next();
+            HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
+            for (Map.Entry<String, Double> entry :  map.entrySet()) {
+              view.getPortfolioComposition(entry.getKey(), entry.getValue());
+            }
+            view.openPortfolioMenu();
             break;
           /**
            * If the user input is 2 pertaining to operations for a portfolio, the the second option
@@ -204,7 +216,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "2":
             buyStockShares(selectedPFolio, scan);
-            openPortfolioMenu();
+            view.openPortfolioMenu();
             break;
           /**
            * If the user input is 3 pertaining to operations for a portfolio, the the third option
@@ -214,8 +226,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           case "3":
             addToAppendable("Enter date in format yyyy-mm-dd: \n");
             String date = scan.next();
-            addToAppendable(selectedPFolio.getStockCostBasisAndStockValue(date));
-            openPortfolioMenu();
+            view.getCostBasisOfPortfolio(date, selectedPFolio.getStockCostBasis(date));
+            view.openPortfolioMenu();
+            break;
+          case "4":
+            addToAppendable("Enter date in format yyyy-mm-dd: \n");
+            date = scan.next();
+            view.getValueOfPortfolio(date, selectedPFolio.getStockValue(date));
+            view.openPortfolioMenu();
             break;
           /**
            * If a user inputs 'r', the program returns to the portfolio manager menu.
@@ -226,7 +244,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * If the user inputs 'q', the user quits from the portfolio manager program.
            */
           case "q":
-            addToAppendable("Quitting Manager");
+            view.quitManager();
             return "q";
           default:
             addToAppendable("Invalid input. Please enter input again.");
@@ -268,7 +286,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       String date = scan.next();
 
       try {
-        addToAppendable(selectedPFolio.addStock(stockSymbol, amount, date));
+        view.addStockToPortfolio(stockSymbol,selectedPFolio.addStock(stockSymbol,amount,date)
+                , date);
       } catch (IllegalArgumentException ex) {
         addToAppendable(ex.getMessage());
       }
@@ -294,12 +313,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void displayPortfolios(IPortfolioManager<StockPortfolio> portfolioManagerModel,
                                  Scanner scan) {
     addToAppendable("\nList of Portfolios\n");
-    String[] listOfPortfolios = portfolioManagerModel.getPortfolios().split("\n");
-    /**
-     * Iterating through the list of portfolios in the portfolio manager object.
-     */
-    for (int i = 0; i < listOfPortfolios.length; i++) {
-      addToAppendable(String.format("%s\n", listOfPortfolios[i]));
+    int counter = 1;
+    for(String portfolioName: portfolioManagerModel.getPortfolios()){
+      view.getListOfPortfolios(counter, portfolioName);
+      counter++;
     }
   }
 
@@ -319,7 +336,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       String nameOfPortfolio = in.next();
       try {
         pfolioManager.createPortfolio(nameOfPortfolio);
-        addToAppendable("Portfolio " + nameOfPortfolio + " has been created.\n");
+
+        view.addPortfolio(nameOfPortfolio);
       } catch (IllegalArgumentException ex) {
         addToAppendable("Portfolio with that name exists");
       }
@@ -332,27 +350,6 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       }
     }
     while (in.next().equalsIgnoreCase("y"));
-  }
-
-  /**
-   * A private helper that appends the home screen menu.
-   */
-  private void openHomeScreen() {
-    addToAppendable("Welcome to Portfolio Manager.");
-    addToAppendable("1. Create new portfolio.");
-    addToAppendable("2. Get existing portfolios.");
-    addToAppendable("3. Enter portfolio.");
-    addToAppendable("Enter the number for performing operation or q to quit application.");
-  }
-
-  /**
-   * A private helper that appends the portfolio menu.
-   */
-  private void openPortfolioMenu() {
-    addToAppendable("1. Examine composition of portfolio");
-    addToAppendable("2. Buy shares of a stock with portfolio.");
-    addToAppendable("3. Get Cost Basis/Value of portfolio");
-    addToAppendable("Enter R to return to the main menu or q to quit the application.");
   }
 
   /**

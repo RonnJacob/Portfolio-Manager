@@ -1,5 +1,8 @@
 package howtoinvest.model;
 
+import java.util.List;
+import java.util.TreeMap;
+
 /**
  * Represents an interface to manage all portfolios of type K. This interface provides the ability
  * to list all the existing portfolios, create a new portfolio and retrieve a portfolio. The
@@ -9,12 +12,14 @@ package howtoinvest.model;
  * @param <K> data type
  */
 public interface IPortfolioManager<K> {
-  /**
-   * Lists all the existing portfolios.
-   *
-   * @return all existing portfolios.
-   */
-  String getPortfolios();
+//  /**
+//   * Lists all the existing portfolios.
+//   *
+//   * @return all existing portfolios.
+//   */
+//  String getPortfolios();
+
+  List<String> getPortfolios();
 
   /**
    * Creates a portfolio with given name.

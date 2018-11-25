@@ -1,6 +1,9 @@
 package howtoinvest.model;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
+
 
 /**
  * This class represents an Stock Portfolio Manager. This manages Stock Portfolios which are
@@ -31,14 +34,10 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
    * lexicographically ordered based on the names of the stock portfolio.
    */
   @Override
-  public String getPortfolios() {
-    String s = "";
-    int counter = 1;
-    for (String key : this.portfolios.keySet()) {
-      s += counter + ". " + key + "\n";
-      counter++;
-    }
-    return s.trim();
+  public List<String> getPortfolios() {
+    List<String> portfolioNames = new LinkedList<>();
+    portfolioNames.addAll(this.portfolios.keySet());
+    return portfolioNames;
   }
 
   /**
