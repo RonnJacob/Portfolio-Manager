@@ -1,13 +1,11 @@
 package howtoinvest;
 
-import java.io.InputStreamReader;
-
 import howtoinvest.controller.HowToInvestController;
 import howtoinvest.model.IPortfolioManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.model.StockPortfolioManager;
 import howtoinvest.view.IHowToInvestView;
-import howtoinvest.view.IHowToInvestViewImpl;
+import howtoinvest.view.HowToInvestViewImpl;
 
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
@@ -26,20 +24,18 @@ public class Main {
     /**
      * Creation of PortfolioManager object which would be the model of the program.
      */
-    IPortfolioManager<StockPortfolio> portfolioManager;
-    portfolioManager = new StockPortfolioManager();
+    IPortfolioManager<StockPortfolio> portfolioManager = new StockPortfolioManager();
 
     /**
      * Creation of IHowToInvestView object which would be the view of the program.
      */
-    IHowToInvestView howToInvestView = new IHowToInvestViewImpl();
+    IHowToInvestView howToInvestView = new HowToInvestViewImpl();
 
 
     /**
      * Controller is given the control with the above model as the argument.
      */
-    new HowToInvestController<>(new InputStreamReader(System.in), System.out, howToInvestView)
-            .openPortfolioManager(portfolioManager);
+    new HowToInvestController<>(howToInvestView, portfolioManager).openPortfolioManager();
 
 
   }

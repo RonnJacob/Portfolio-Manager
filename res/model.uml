@@ -3,101 +3,59 @@
   <ID>JAVA</ID>
   <OriginalElement>howtoinvest.model</OriginalElement>
   <nodes>
-    <node x="356.0" y="145.0">howtoinvest.model.AlphaVantage</node>
-    <node x="1017.0" y="211.0">howtoinvest.model.IStock</node>
-    <node x="1075.0" y="858.0">howtoinvest.model.IPortfolioManager</node>
-    <node x="676.8333333333333" y="445.0">howtoinvest.model.Stock</node>
-    <node x="340.640873015873" y="11.0">howtoinvest.model.IStockDataRetrieval</node>
-    <node x="988.8333333333333" y="556.0">howtoinvest.model.IPortfolio</node>
-    <node x="791.5" y="0.0">howtoinvest.model.IShare</node>
-    <node x="788.0" y="211.0">howtoinvest.model.Share</node>
-    <node x="687.9999999999999" y="813.0">howtoinvest.model.StockPortfolio</node>
-    <node x="765.6666666666666" y="1049.0">howtoinvest.model.StockPortfolioManager</node>
-    <node x="0.0" y="189.0">howtoinvest.model.FileStockDataReader</node>
+    <node x="693.0" y="123.0">howtoinvest.model.AlphaVantage</node>
+    <node x="7.0" y="0.0">howtoinvest.model.IStock</node>
+    <node x="476.0" y="529.0">howtoinvest.model.IPortfolioManager</node>
+    <node x="0.0" y="167.0">howtoinvest.model.Stock</node>
+    <node x="0.0" y="529.0">howtoinvest.model.IPortfolio</node>
+    <node x="526.0" y="0.0">howtoinvest.model.IStockDataRetrieval</node>
+    <node x="809.5" y="529.0">howtoinvest.model.IShare</node>
+    <node x="806.0" y="674.0">howtoinvest.model.Share</node>
+    <node x="0.0" y="696.0">howtoinvest.model.StockPortfolio</node>
+    <node x="337.0" y="167.0">howtoinvest.model.FileStockDataReader</node>
+    <node x="427.0" y="675.0">howtoinvest.model.StockPortfolioManager</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="howtoinvest.model.FileStockDataReader" target="howtoinvest.model.IStockDataRetrieval">
-      <point x="0.0" y="-81.0" />
-      <point x="168.0" y="120.0" />
-      <point x="396.640873015873" y="120.0" />
-      <point x="-112.0" y="36.5" />
-    </edge>
     <edge source="howtoinvest.model.Share" target="howtoinvest.model.IShare">
       <point x="0.0" y="-59.0" />
       <point x="0.0" y="47.5" />
     </edge>
-    <edge source="howtoinvest.model.Stock" target="howtoinvest.model.AlphaVantage">
-      <point x="-83.42857142857144" y="-159.0" />
-      <point x="739.4047619047619" y="415.0" />
-      <point x="546.0" y="415.0" />
-      <point x="0.0" y="125.0" />
-    </edge>
-    <edge source="howtoinvest.model.Stock" target="howtoinvest.model.Share">
-      <point x="41.71428571428578" y="-159.0" />
-      <point x="864.547619047619" y="425.0" />
-      <point x="892.5" y="425.0" />
-      <point x="0.0" y="59.0" />
+    <edge source="howtoinvest.model.FileStockDataReader" target="howtoinvest.model.IStockDataRetrieval">
+      <point x="0.0" y="-81.0" />
+      <point x="505.0" y="98.0" />
+      <point x="610.0" y="98.0" />
+      <point x="-84.0" y="36.5" />
     </edge>
     <edge source="howtoinvest.model.StockPortfolio" target="howtoinvest.model.IPortfolio">
-      <point x="137.625" y="-93.0" />
-      <point x="1009.1249999999999" y="788.0" />
-      <point x="1172.3333333333333" y="788.0" />
-      <point x="0.0" y="48.0" />
+      <point x="0.0" y="-81.5" />
+      <point x="0.0" y="58.5" />
     </edge>
     <edge source="howtoinvest.model.AlphaVantage" target="howtoinvest.model.IStockDataRetrieval">
       <point x="0.0" y="-125.0" />
-      <point x="546.0" y="120.0" />
-      <point x="508.640873015873" y="120.0" />
-      <point x="0.0" y="36.5" />
-    </edge>
-    <edge source="howtoinvest.model.Stock" target="howtoinvest.model.IStockDataRetrieval">
-      <point x="-41.71428571428572" y="-159.0" />
-      <point x="781.1190476190476" y="425.0" />
-      <point x="746.5" y="425.0" />
-      <point x="746.5" y="120.0" />
-      <point x="620.640873015873" y="120.0" />
-      <point x="112.0" y="36.5" />
+      <point x="883.0" y="98.0" />
+      <point x="778.0" y="98.0" />
+      <point x="84.0" y="36.5" />
     </edge>
     <edge source="howtoinvest.model.StockPortfolioManager" target="howtoinvest.model.IPortfolioManager">
-      <point x="125.25" y="-71.0" />
-      <point x="1057.9166666666665" y="1024.0" />
-      <point x="1193.0" y="1024.0" />
+      <point x="0.0" y="-71.0" />
       <point x="0.0" y="48.0" />
     </edge>
     <edge source="howtoinvest.model.Stock" target="howtoinvest.model.IStock">
-      <point x="125.14285714285711" y="-159.0" />
-      <point x="947.9761904761904" y="425.0" />
-      <point x="1156.0" y="425.0" />
-      <point x="0.0" y="59.0" />
-    </edge>
-    <edge source="howtoinvest.model.StockPortfolio" target="howtoinvest.model.Stock">
-      <point x="-45.875" y="-93.0" />
-      <point x="825.6249999999999" y="788.0" />
-      <point x="822.8333333333333" y="788.0" />
-      <point x="0.0" y="159.0" />
-    </edge>
-    <edge source="howtoinvest.model.StockPortfolioManager" target="howtoinvest.model.StockPortfolio">
-      <point x="-125.25" y="-71.0" />
-      <point x="807.4166666666666" y="1024.0" />
-      <point x="749.1666666666666" y="1024.0" />
-      <point x="-122.33333333333331" y="93.0" />
-    </edge>
-    <edge source="howtoinvest.model.Stock" target="howtoinvest.model.FileStockDataReader">
-      <point x="-125.14285714285717" y="-159.0" />
-      <point x="697.6904761904761" y="425.0" />
-      <point x="168.0" y="425.0" />
-      <point x="0.0" y="81.0" />
+      <point x="0.0" y="-158.5" />
+      <point x="0.0" y="58.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="1259.0" y="279.1600895526961" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="1.0220582789202508" x="490.9170556367237" y="346.6431321755527" />
+  <SelectedNodes>
+    <node>howtoinvest.model.AlphaVantage</node>
+  </SelectedNodes>
   <Categories>
+    <Category>Fields</Category>
     <Category>Constructors</Category>
     <Category>Methods</Category>
-    <Category>Inner Classes</Category>
-    <Category>Fields</Category>
     <Category>Properties</Category>
+    <Category>Inner Classes</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

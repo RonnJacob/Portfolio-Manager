@@ -1,17 +1,10 @@
 package howtoinvest.controller;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
-
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IPortfolioManager;
-import howtoinvest.model.Stock;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.IHowToInvestView;
-
 
 /**
  * The following HowToInvestController class is an implementation of the IHowToInvestController
@@ -36,14 +29,15 @@ import howtoinvest.view.IHowToInvestView;
  * again.
  * <ul>
  * <li>
- * Inputs provided by the user would eventually with the user closing the application by entering
- * 'q' at either the the home screen or the portfolio screen.
+ * Inputs provided by the user would eventually end with the closing of the application by the user
+ * inputting 'q' at either the the home screen or the portfolio screen.
  * </li>
  * <li>
  * Any invalid data of sorts would require the user to re-enter the input again. Say, an invalid
  * date format was given for adding a share or retrieving the cost basis/value, the user would be
  * required to enter the option to do the above operations and re-enter the date in the correct
- * format. The same would apply to a an empty or invalid ticker symbol.
+ * format. The same would apply to a an empty or invalid ticker symbol. This input would be received
+ * by the view and handled by the controller implementation.
  * </li>
  * <li>
  * All date is strictly mandated to be in the yyyy-mm-dd format. Any other format would be deemed an
@@ -59,65 +53,57 @@ import howtoinvest.view.IHowToInvestView;
  * and the user would not be able to do so.
  * </li>
  * <li>
- * A readable and appendable object cannot be null.
+ * The controller would take a model & view as parameters and these parameters cannot be null.
+ * </li>
+ * <li>
+ * The view would be a class implementing IHowToInvestView which would handle inputs by the user
+ * and pass the input to this class. Necessary operations would be carried out by calling model
+ * functions.
+ * </li>
+ * <li>
+ * The model would be a class implementing the IPortfolioManager which would carry out necessary
+ * options as called by the controller depending on the input provided by the user.
  * </li>
  * </ul>
  */
 public class HowToInvestController<K> implements IHowToInvestController<K> {
 
   /**
-   * Variables initializing readable and appendable objects.
+   * Variables initializing model and view objects.
    */
-  private final Readable in;
-  private final Appendable out;
   private final IHowToInvestView view;
+  private final IPortfolioManager<StockPortfolio> model;
 
   /**
-   * Constructor that sets the readable and appendable objects.
-   *
-   * @param in  the readable object argument.
-   * @param out the appendable object argument.
+   * Constructor that takes a model & view and sets the instance variables.
+   * @param view the class implementing the view of the program.
+   * @param model the class implementing the model of the program.
    */
-  public HowToInvestController(Readable in, Appendable out, IHowToInvestView view) {
-    if (in == null || out == null) {
-      throw new IllegalArgumentException("Invalid Readable or Appendable object");
+  public HowToInvestController(IHowToInvestView view, IPortfolioManager<StockPortfolio> model) {
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Model or view cannot be a null.");
     }
-    this.in = in;
-    this.out = out;
+    this.model = model;
     this.view = view;
   }
 
   /**
    * The following method opens a portfolio manager which offers functionalities and performs
    * operations based on user input.
-   *
-   * @param portfolioManagerModel the portfolio manager object.
    */
   @Override
-  public void openPortfolioManager(IPortfolioManager<StockPortfolio> portfolioManagerModel) {
-    if (portfolioManagerModel == null) {
-      throw new IllegalArgumentException("Portfolio manager cannot be a null.");
-    }
-    /**
-     * The home screen is appended to the appendable object.
-     */
+  public void openPortfolioManager(){
+
     view.openHomeScreen();
-    Scanner scan = new Scanner(this.in);
+
     while (true) {
-      /**
-       * Quitting the manager if no more input is available.
-       */
-      if (!scan.hasNext()) {
-        view.quitManager();
-        return;
-      }
-      switch (scan.next()) {
+      switch (view.getInputString()) {
         /**
          * If a user inputs 1, then the first option which is creation of portfolios operation is
          * performed.
          */
         case "1":
-          addPortfoliosToManager(portfolioManagerModel, scan);
+          addPortfoliosToManager();
           view.openHomeScreen();
           break;
         /**
@@ -125,7 +111,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * the portfolio manager is performed.
          */
         case "2":
-          displayPortfolios(portfolioManagerModel, scan);
+          displayPortfolios();
           view.openHomeScreen();
           break;
         /**
@@ -133,28 +119,31 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * operation is performed.
          */
         case "3":
-          String returnCode = openPortfolio(portfolioManagerModel, scan);
+          String returnCode = openPortfolio();
           /**
            * If the returned code is q then quit from the application.
            */
           if (returnCode.equalsIgnoreCase("q")) {
             return;
           } else if (returnCode.equalsIgnoreCase("i")) {
-            addToAppendable("Invalid portfolio. Cannot retrieve portfolio.\n");
+            view.promptMessage("Invalid portfolio. Cannot retrieve portfolio.\n");
           }
           view.openHomeScreen();
           break;
         /**
-         * Quit from the application if the user inputs 'q'.
+         * Quit from the application if the user inputs 'q' or empty.
          */
         case "q":
+          view.quitManager();
+          return;
+        case "":
           view.quitManager();
           return;
         /**
          * Any other input is deemed invalid.
          */
         default:
-          addToAppendable("Invalid input. Please enter input again.");
+          view.promptMessage("Invalid input. Please enter input again.");
           break;
       }
     }
@@ -164,48 +153,42 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * The following method opens a portfolio and performs operations pertaining to a particular
    * portfolio depending on user input.
    *
-   * @param portfolioManagerModel the portfolio manager model object.
-   * @param scan                  the scanner object to read input.
    * @return a return code based on the operation and user input.
    */
-  private String openPortfolio(IPortfolioManager<StockPortfolio> portfolioManagerModel,
-                               Scanner scan) {
-    addToAppendable("\nEnter index of Portfolio to open.\n");
-    /**
-     * Quit if there is no more input available.
-     */
-    if (!scan.hasNext()) {
+  private String openPortfolio() {
+    displayPortfolios();
+    String pfolioName = view.openPortfolio();
+    if (pfolioName.equals("")) {
       return "q";
     }
-    String pfolioName = scan.next();
     IPortfolio selectedPFolio;
     try {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
        */
-      selectedPFolio = portfolioManagerModel.getPortfolio(Integer.parseInt(pfolioName));
+      selectedPFolio = model.getPortfolio(Integer.parseInt(pfolioName));
     } catch (IllegalArgumentException ex) {
       return "i";
     }
     view.openPortfolioMenu();
     try {
       while (true) {
-        if (!scan.hasNext()) {
+        String choice = view.getInputString();
+        if (choice.equals("")) {
           return "q";
         }
-        switch (scan.next().toLowerCase()) {
+        switch (choice.toLowerCase()) {
           /**
            * If the user input is 1 pertaining to operations for a portfolio, the the first option
            * for a portfolio which is retrieving the composition of a portfolio is performed.
            */
           case "1":
-            addToAppendable("Enter date in format yyyy-mm-dd: \n");
-            if(!scan.hasNext()){
+            String dateToExamine = view.promptDate();
+            if (dateToExamine.equals("")) {
               return "q";
             }
-            String dateToExamine = scan.next();
             HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
-            for (Map.Entry<String, Double> entry :  map.entrySet()) {
+            for (Map.Entry<String, Double> entry : map.entrySet()) {
               view.getPortfolioComposition(entry.getKey(), entry.getValue());
             }
             view.openPortfolioMenu();
@@ -215,7 +198,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * for a portfolio which is adding a stock/share for a particular date is performed.
            */
           case "2":
-            buyStockShares(selectedPFolio, scan);
+            buyStockShares(selectedPFolio);
             view.openPortfolioMenu();
             break;
           /**
@@ -224,14 +207,12 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * performed.
            */
           case "3":
-            addToAppendable("Enter date in format yyyy-mm-dd: \n");
-            String date = scan.next();
+            String date = view.promptDate();
             view.getCostBasisOfPortfolio(date, selectedPFolio.getStockCostBasis(date));
             view.openPortfolioMenu();
             break;
           case "4":
-            addToAppendable("Enter date in format yyyy-mm-dd: \n");
-            date = scan.next();
+            date = view.promptDate();
             view.getValueOfPortfolio(date, selectedPFolio.getStockValue(date));
             view.openPortfolioMenu();
             break;
@@ -247,13 +228,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             view.quitManager();
             return "q";
           default:
-            addToAppendable("Invalid input. Please enter input again.");
+            view.promptMessage("Invalid input. Please enter input again.");
             break;
         }
       }
 
     } catch (IllegalArgumentException ex) {
-      addToAppendable(ex.getMessage());
+      view.promptMessage(ex.getMessage());
     }
     return "r";
   }
@@ -264,57 +245,45 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * buy the shares, the date at which the user wants to add those shares for in the portfolio.
    *
    * @param selectedPFolio the portfolio manager object.
-   * @param scan           the scanner object to read user input.
    */
-  private void buyStockShares(IPortfolio<StockPortfolio> selectedPFolio,
-                              Scanner scan) {
+  private void buyStockShares(IPortfolio<StockPortfolio> selectedPFolio) {
     do {
-      addToAppendable("Enter stock symbol:\n");
-      if (!scan.hasNext()) {
-        return;
-      }
-      String stockSymbol = scan.next();
-      addToAppendable("Enter amount for which shares are to be bought:\n");
-      if (!scan.hasNext()) {
-        return;
-      }
-      double amount = Double.parseDouble(scan.next());
-      addToAppendable("Enter date in format yyyy-mm-dd: \n");
-      if (!scan.hasNext()) {
-        return;
-      }
-      String date = scan.next();
+      String[] buyDetails = view.buyStockShareDisplay();
+      /**
+       * Setting the stock name, the amount and the date for which a share of a stock has to be
+       * added to the portfolio.
+       */
+      String stockName = buyDetails[0];
+      Double amount = Double.parseDouble(buyDetails[1]);
+      String date = buyDetails[2];
+      Double commission = Double.parseDouble(buyDetails[3]);
 
       try {
-        view.addStockToPortfolio(stockSymbol,selectedPFolio.addStock(stockSymbol,amount,date,0)
-                , date);
+
+        /**
+         * Adds share and prompts a message specifying the number of shares bought for that amount.
+         */
+        view.addStockToPortfolio(stockName, selectedPFolio.addStock(stockName, amount, date
+                , commission), date);
       } catch (IllegalArgumentException ex) {
-        addToAppendable(ex.getMessage());
+        view.promptMessage(ex.getMessage());
       }
       /**
        * Add more shares to the portfolio manager object.
        */
-      addToAppendable("Buy more shares? (Y/N)");
-      if (!scan.hasNext()) {
-        return;
-      }
+      view.promptMessage("Buy more shares? (Y/N)");
     }
-    while (scan.next().equalsIgnoreCase("y"));
+    while (view.getInputString().equalsIgnoreCase("y"));
   }
 
 
   /**
    * The following method retrieves the list of portfolios present in the portfolio manager and
    * appends them to the appendable object.
-   *
-   * @param portfolioManagerModel the portfolio manager object.
-   * @param scan                  the scanner object for reading  input.
    */
-  private void displayPortfolios(IPortfolioManager<StockPortfolio> portfolioManagerModel,
-                                 Scanner scan) {
-    addToAppendable("\nList of Portfolios\n");
+  private void displayPortfolios() {
     int counter = 1;
-    for(String portfolioName: portfolioManagerModel.getPortfolios()){
+    for (String portfolioName : model.getPortfolios()) {
       view.getListOfPortfolios(counter, portfolioName);
       counter++;
     }
@@ -323,46 +292,22 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   /**
    * The following method adds a portfolio to a particular portfolio manager depending on the user
    * input which would be the portfolio name.
-   *
-   * @param pfolioManager th portfolio manager.
-   * @param in            the scanner object for reading input.
    */
-  private void addPortfoliosToManager(IPortfolioManager<StockPortfolio> pfolioManager, Scanner in) {
+  private void addPortfoliosToManager() {
     do {
-      addToAppendable("Enter the name of the portfolio to be created.");
-      if (!in.hasNext()) {
-        return;
-      }
-      String nameOfPortfolio = in.next();
       try {
-        pfolioManager.createPortfolio(nameOfPortfolio);
-
+        String nameOfPortfolio = view.addPortfoliosToManager();
+        model.createPortfolio(nameOfPortfolio);
         view.addPortfolio(nameOfPortfolio);
       } catch (IllegalArgumentException ex) {
-        addToAppendable("Portfolio with that name exists");
+        view.promptMessage("Portfolio with that name exists");
       }
       /**
        * Add more portfolios if need be.
        */
-      addToAppendable("Add more portfolios? (Y/N)");
-      if (!in.hasNext()) {
-        return;
-      }
+      view.promptMessage("Add more portfolios? (Y/N)");
     }
-    while (in.next().equalsIgnoreCase("y"));
-  }
-
-  /**
-   * Adds a message to the appendable object.
-   *
-   * @param message the message of String format that is to be added.
-   */
-  private void addToAppendable(String message) {
-    try {
-      this.out.append(String.format("%s\n", message));
-    } catch (IOException ex) {
-      throw new IllegalStateException("IO exception has been encountered.");
-    }
+    while (view.getInputString().equalsIgnoreCase("y"));
   }
 
 
