@@ -31,7 +31,7 @@ public interface IHowToInvestView {
    *
    * @param name the name of the portfolio that has been successfully been created.
    */
-  void addPortfolio(String name);
+  void addedPortfolio(String name);
 
   /**
    * Displays a message saying that x number of shares of stock with a particular ticker symbol y
@@ -40,47 +40,47 @@ public interface IHowToInvestView {
    * @param numberOfShares the number of shares that have been bought.
    * @param date the date on which the share is bought.
    */
-  void addStockToPortfolio(String name, double numberOfShares, String date);
+  void displayTransaction(String name, double numberOfShares, String date);
 
   /**
    * Displays the composition of the portfolio.
    * @param shareName the name of the share present in the portfolio.
    * @param numberOfShares the number of the shares of a stock present in a portfolio.
    */
-  void getPortfolioComposition(String shareName, Double numberOfShares);
+  void displayPortfolioComposition(String shareName, Double numberOfShares);
 
   /**
    * Displays the value of the selected portfolio.
    * @param date the date for which the portfolio value has to be shown.
    * @param stockValue the value of the portfolio as of the particular date.
    */
-  void getValueOfPortfolio(String date, double stockValue);
+  void displayPortfolioValue(String date, double stockValue);
 
   /**
    * Displays the cost basis of the selected portfolio.
    * @param date the date for which the portfolio cost basis has to be shown.
    * @param stockCostBasis the cost basis of the portfolio as of the particular date.
    */
-  void getCostBasisOfPortfolio(String date, double stockCostBasis);
+  void displayPortfolioCostBasis(String date, double stockCostBasis);
 
   /**
    * Displays the list of portfolios present in the portfolio manager.
    * @param counter the index of the portfolio.
    * @param portfolioName the name of the portfolio present in the portfolio manager.
    */
-  void getListOfPortfolios(int counter, String portfolioName);
+  void displayListOfPortfolios(int counter, String portfolioName);
 
   /**
    * Returns an input string which would be a choice input by the user.
    * @return the input choice by the user.
    */
-  String getInputString();
+  String getInputChoice();
 
   /**
    * Returns the name of the portfolio that is to be added to the portfolio manager.
    * @return the name of the portfolio that is to be added to the portfolio manager.
    */
-  String addPortfoliosToManager();
+  String getPortfolioName();
 
   /**
    * Displays a message relevant to the user.
@@ -92,7 +92,7 @@ public interface IHowToInvestView {
    * Returns the date from the user input in format yyyy-mm-dd.
    * @return the date input by the user in string format of pattern yyyy-mm-dd.
    */
-  String promptDate();
+  String getDate();
 
   /**
    * Returns the details of a share that the user wants to be in the form of a string array which
@@ -100,11 +100,11 @@ public interface IHowToInvestView {
    * the date for which the share is to be bought on and the commission for the transaction.
    * @return a string array containing necessary details for a particular purchase of a stock.
    */
-  String[] buyStockShareDisplay();
+  String[] getShareBuyDetails();
 
   /**
    * Returns the portfolio index of the portfolio for which operations are to be carried out on.
    * @return the portfolio index of the portfolio.
    */
-  String openPortfolio();
+  String enterPortfolio();
 }

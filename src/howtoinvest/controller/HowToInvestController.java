@@ -97,7 +97,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     view.openHomeScreen();
 
     while (true) {
-      switch (view.getInputString()) {
+      switch (view.getInputChoice()) {
         /**
          * If a user inputs 1, then the first option which is creation of portfolios operation is
          * performed.
@@ -157,7 +157,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private String openPortfolio() {
     displayPortfolios();
-    String pfolioName = view.openPortfolio();
+    String pfolioName = view.enterPortfolio();
     if (pfolioName.equals("")) {
       return "q";
     }
@@ -173,7 +173,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     view.openPortfolioMenu();
     try {
       while (true) {
-        String choice = view.getInputString();
+        String choice = view.getInputChoice();
         if (choice.equals("")) {
           return "q";
         }
@@ -183,13 +183,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * for a portfolio which is retrieving the composition of a portfolio is performed.
            */
           case "1":
-            String dateToExamine = view.promptDate();
+            String dateToExamine = view.getDate();
             if (dateToExamine.equals("")) {
               return "q";
             }
             HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
             for (Map.Entry<String, Double> entry : map.entrySet()) {
-              view.getPortfolioComposition(entry.getKey(), entry.getValue());
+              view.displayPortfolioComposition(entry.getKey(), entry.getValue());
             }
             view.openPortfolioMenu();
             break;
@@ -207,13 +207,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * performed.
            */
           case "3":
-            String date = view.promptDate();
-            view.getCostBasisOfPortfolio(date, selectedPFolio.getStockCostBasis(date));
+            String date = view.getDate();
+            view.displayPortfolioCostBasis(date, selectedPFolio.getStockCostBasis(date));
             view.openPortfolioMenu();
             break;
           case "4":
-            date = view.promptDate();
-            view.getValueOfPortfolio(date, selectedPFolio.getStockValue(date));
+            date = view.getDate();
+            view.displayPortfolioValue(date, selectedPFolio.getStockValue(date));
             view.openPortfolioMenu();
             break;
           /**
@@ -248,7 +248,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private void buyStockShares(IPortfolio<StockPortfolio> selectedPFolio) {
     do {
-      String[] buyDetails = view.buyStockShareDisplay();
+      String[] buyDetails = view.getShareBuyDetails();
       /**
        * Setting the stock name, the amount and the date for which a share of a stock has to be
        * added to the portfolio.
@@ -263,7 +263,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         /**
          * Adds share and prompts a message specifying the number of shares bought for that amount.
          */
-        view.addStockToPortfolio(stockName, selectedPFolio.addStock(stockName, amount, date
+        view.displayTransaction(stockName, selectedPFolio.addStock(stockName, amount, date
                 , commission), date);
       } catch (IllegalArgumentException ex) {
         view.promptMessage(ex.getMessage());
@@ -273,7 +273,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        */
       view.promptMessage("Buy more shares? (Y/N)");
     }
-    while (view.getInputString().equalsIgnoreCase("y"));
+    while (view.getInputChoice().equalsIgnoreCase("y"));
   }
 
 
@@ -284,7 +284,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void displayPortfolios() {
     int counter = 1;
     for (String portfolioName : model.getPortfolios()) {
-      view.getListOfPortfolios(counter, portfolioName);
+      view.displayListOfPortfolios(counter, portfolioName);
       counter++;
     }
   }
@@ -296,9 +296,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void addPortfoliosToManager() {
     do {
       try {
-        String nameOfPortfolio = view.addPortfoliosToManager();
+        String nameOfPortfolio = view.getPortfolioName();
         model.createPortfolio(nameOfPortfolio);
-        view.addPortfolio(nameOfPortfolio);
+        view.addedPortfolio(nameOfPortfolio);
       } catch (IllegalArgumentException ex) {
         view.promptMessage("Portfolio with that name exists");
       }
@@ -307,7 +307,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        */
       view.promptMessage("Add more portfolios? (Y/N)");
     }
-    while (view.getInputString().equalsIgnoreCase("y"));
+    while (view.getInputChoice().equalsIgnoreCase("y"));
   }
 
 

@@ -37,33 +37,33 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public void addPortfolio(String name) {
+  public void addedPortfolio(String name) {
     System.out.println("Portfolio " + name + " has been created.\n");
   }
 
   @Override
-  public void addStockToPortfolio(String name, double numberOfShares, String date) {
+  public void displayTransaction(String name, double numberOfShares, String date) {
     System.out.println(numberOfShares + " share(s) of "+name+" bought on "+date+"\n");
   }
 
   @Override
-  public void getPortfolioComposition(String key, Double value) {
+  public void displayPortfolioComposition(String key, Double value) {
     System.out.println(value + " share(s) of "+key+"\n");
   }
 
   @Override
-  public void getValueOfPortfolio(String date, double stockValue) {
+  public void displayPortfolioValue(String date, double stockValue) {
     System.out.println("The value of the portfolio as of "+ date + " is " + stockValue+"\n");
   }
 
   @Override
-  public void getCostBasisOfPortfolio(String date, double stockCostBasis) {
+  public void displayPortfolioCostBasis(String date, double stockCostBasis) {
     System.out.println("The cost basis of the portfolio as of "+ date + " is " + stockCostBasis
             +"\n");
   }
 
   @Override
-  public void getListOfPortfolios(int counter, String key) {
+  public void displayListOfPortfolios(int counter, String key) {
     if(counter==1){
       System.out.println("\nList of Portfolios\n");
     }
@@ -71,7 +71,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public String getInputString() {
+  public String getInputChoice() {
     if(scan.hasNext()){
       return scan.next();
     }
@@ -81,7 +81,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public String addPortfoliosToManager(){
+  public String getPortfolioName(){
     System.out.println("Enter the name of the portfolio to be created\n");
     return scan.next();
   }
@@ -93,13 +93,13 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public String promptDate() {
+  public String getDate() {
     System.out.println("Enter date in format yyyy-mm-dd: \n");
     return scan.next();
   }
 
   @Override
-  public String[] buyStockShareDisplay() {
+  public String[] getShareBuyDetails() {
     String[] buyDetails = new String[4];
     System.out.println("Enter stock symbol:\n");
     buyDetails[0] = scan.next();
@@ -113,7 +113,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public String openPortfolio() {
+  public String enterPortfolio() {
     System.out.println("Enter index of Portfolio to open.\n\n");
     if(scan.hasNext()){
       return scan.next();
