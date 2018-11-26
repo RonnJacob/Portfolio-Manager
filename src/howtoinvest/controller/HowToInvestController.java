@@ -97,7 +97,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     view.openHomeScreen();
 
     while (true) {
-      switch (view.getInputChoice()) {
+      switch (view.getInput("")) {
         /**
          * If a user inputs 1, then the first option which is creation of portfolios operation is
          * performed.
@@ -157,7 +157,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private String openPortfolio() {
     displayPortfolios();
-    String pfolioName = view.enterPortfolio();
+    String message = "Enter index of Portfolio to open.\n\n";
+    String pfolioName = view.getInput(message);
     if (pfolioName.equals("")) {
       return "q";
     }
@@ -173,7 +174,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     view.openPortfolioMenu();
     try {
       while (true) {
-        String choice = view.getInputChoice();
+        String choice = view.getInput("");
         if (choice.equals("")) {
           return "q";
         }
@@ -183,7 +184,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * for a portfolio which is retrieving the composition of a portfolio is performed.
            */
           case "1":
-            String dateToExamine = view.getDate();
+            message = "Enter date in format yyyy-mm-dd: ";
+            String dateToExamine = view.getInput(message);
             if (dateToExamine.equals("")) {
               return "q";
             }
@@ -207,12 +209,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * performed.
            */
           case "3":
-            String date = view.getDate();
+            message = "Enter date in format yyyy-mm-dd: \n";
+            String date = view.getInput(message);
             view.displayPortfolioCostBasis(date, selectedPFolio.getStockCostBasis(date));
             view.openPortfolioMenu();
             break;
           case "4":
-            date = view.getDate();
+            message = "Enter date in format yyyy-mm-dd: \n";
+            date = view.getInput(message);
             view.displayPortfolioValue(date, selectedPFolio.getStockValue(date));
             view.openPortfolioMenu();
             break;
@@ -263,8 +267,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         /**
          * Adds share and prompts a message specifying the number of shares bought for that amount.
          */
-        view.displayTransaction(stockName, selectedPFolio.addStock(stockName, amount, date
-                , commission), date);
+        view.promptMessage(selectedPFolio.addStock(stockName, amount, date
+                , commission) +" share(s) of "+stockName + " bought on "+date);
       } catch (IllegalArgumentException ex) {
         view.promptMessage(ex.getMessage());
       }
@@ -273,7 +277,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        */
       view.promptMessage("Buy more shares? (Y/N)");
     }
-    while (view.getInputChoice().equalsIgnoreCase("y"));
+    while (view.getInput("").equalsIgnoreCase("y"));
   }
 
 
@@ -296,9 +300,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void addPortfoliosToManager() {
     do {
       try {
-        String nameOfPortfolio = view.getPortfolioName();
+        String message = "Enter the name of the portfolio to be created\n";
+        String nameOfPortfolio = view.getInput(message);
         model.createPortfolio(nameOfPortfolio);
-        view.addedPortfolio(nameOfPortfolio);
+        view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.");
       } catch (IllegalArgumentException ex) {
         view.promptMessage("Portfolio with that name exists");
       }
@@ -307,7 +312,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        */
       view.promptMessage("Add more portfolios? (Y/N)");
     }
-    while (view.getInputChoice().equalsIgnoreCase("y"));
+    while (view.getInput("").equalsIgnoreCase("y"));
   }
 
 

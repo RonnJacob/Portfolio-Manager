@@ -27,22 +27,6 @@ public interface IHowToInvestView {
   void quitManager();
 
   /**
-   * Displays message specifying that a portfolio with a particular name has been created.
-   *
-   * @param name the name of the portfolio that has been successfully been created.
-   */
-  void addedPortfolio(String name);
-
-  /**
-   * Displays a message saying that x number of shares of stock with a particular ticker symbol y
-   * worth a particular amount has been bought on z date.
-   * @param name the ticker symbol of the stock of the company.
-   * @param numberOfShares the number of shares that have been bought.
-   * @param date the date on which the share is bought.
-   */
-  void displayTransaction(String name, double numberOfShares, String date);
-
-  /**
    * Displays the composition of the portfolio.
    * @param shareName the name of the share present in the portfolio.
    * @param numberOfShares the number of the shares of a stock present in a portfolio.
@@ -74,25 +58,13 @@ public interface IHowToInvestView {
    * Returns an input string which would be a choice input by the user.
    * @return the input choice by the user.
    */
-  String getInputChoice();
-
-  /**
-   * Returns the name of the portfolio that is to be added to the portfolio manager.
-   * @return the name of the portfolio that is to be added to the portfolio manager.
-   */
-  String getPortfolioName();
+  String getInput(String message);
 
   /**
    * Displays a message relevant to the user.
    * @param message the message that is to be displayed.
    */
   void promptMessage(String message);
-
-  /**
-   * Returns the date from the user input in format yyyy-mm-dd.
-   * @return the date input by the user in string format of pattern yyyy-mm-dd.
-   */
-  String getDate();
 
   /**
    * Returns the details of a share that the user wants to be in the form of a string array which
@@ -102,9 +74,4 @@ public interface IHowToInvestView {
    */
   String[] getShareBuyDetails();
 
-  /**
-   * Returns the portfolio index of the portfolio for which operations are to be carried out on.
-   * @return the portfolio index of the portfolio.
-   */
-  String enterPortfolio();
 }
