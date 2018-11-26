@@ -63,7 +63,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
    * @throws IllegalArgumentException if thr date or tickerName is invalid.
    */
   @Override
-  public double retrieveSharePrice(String date, String tickerName)
+  public double retrieveSharePrice(Date date, String tickerName)
           throws ParseException, IllegalArgumentException {
     /**
      * Initializing a scanner object for reading the .csv file.
@@ -92,7 +92,6 @@ public class FileStockDataReader implements IStockDataRetrieval {
       throw new IllegalArgumentException("No share prices provided.");
     }
 
-    Date dateToFind = simpleDateFormat.parse(date);
     Date currentDate;
     double closestShareValue = Double.parseDouble(dailySharePrices[0].split(",")[1]);
 
@@ -101,13 +100,13 @@ public class FileStockDataReader implements IStockDataRetrieval {
      * If the date to find is today, then return today or the latest share value as the
      * share value.
      */
-    if (dateToFind.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
+    if (date.equals(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       return closestShareValue;
     }
     /**
      * Cannot fetch share value for a future date that is input.
      */
-    else if (dateToFind.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
+    else if (date.after(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
       throw new IllegalArgumentException("Cannot fetch share value for a future date.");
     }
 
@@ -115,21 +114,21 @@ public class FileStockDataReader implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if (dateToFind.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1]
+    if (date.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1]
             .split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 
     for (int day = dailySharePrices.length - 1; day >= 0; day--) {
       currentDate = simpleDateFormat.parse(dailySharePrices[day].split(",")[0]);
-      if (dateToFind.equals(currentDate)) {
+      if (date.equals(currentDate)) {
         return Double.parseDouble(dailySharePrices[day].split(",")[1]);
       }
       /**
        * If the date to be found is after the current day's share value then we update
        * the closest share value.
        */
-      else if (dateToFind.after(currentDate)) {
+      else if (date.after(currentDate)) {
         closestShareValue = Double.parseDouble(dailySharePrices[day].split(",")[1]);
       }
     }

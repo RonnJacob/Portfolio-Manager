@@ -93,7 +93,8 @@ public class Stock implements IStock {
 
   @Override
   public double getStockValue(String date) throws IllegalArgumentException {
-    return this.getNumberOfShares(date) * getSharePrice(this.tickerSymbol, date);
+    Date stockValueDate = convertToDate(date);
+    return this.getNumberOfShares(stockValueDate) * getSharePrice(this.tickerSymbol, stockValueDate);
   }
 
   /**
@@ -103,16 +104,15 @@ public class Stock implements IStock {
    * @param date the date for which the number of shares are being queried for which is of the
    *             yyyy-mm-dd pattern in string format
    * @return the number of shares of a stock that were bought up until a particular input date which
-   *         is of the yyyy-mm-dd pattern in string format
+   * is of the yyyy-mm-dd pattern in string format
    */
-  private double getNumberOfShares(String date) {
+  private double getNumberOfShares(Date date) {
     double numberOfShare = 0;
-    Date sharesDate = convertToDate(date);
     for (Map.Entry<Date, Share> entry : shareList.entrySet()) {
       /**
        * Calculating cost basis up until a particular date.
        */
-      if (entry.getKey().after(sharesDate)) {
+      if (entry.getKey().after(date)) {
         break;
       } else {
         numberOfShare += entry.getValue().getNumberOfShares();
@@ -127,7 +127,7 @@ public class Stock implements IStock {
    *
    * @param date the date in string format of the pattern yyyy-mm-dd.
    * @return the corresponding date object which is the date that is in string format passed as as
-   *         argument.
+   * argument.
    * @throws IllegalArgumentException if the input date in string format is in an incorrect format.
    */
   private Date convertToDate(String date) throws IllegalArgumentException {
@@ -143,7 +143,7 @@ public class Stock implements IStock {
   }
 
   @Override
-  public double addShare(double amount, String date) throws IllegalArgumentException {
+  public double addShare(double amount, String date, double commission) throws IllegalArgumentException {
     /**
      * Amount for which shares are to be added cannot be negative or zero.
      */
@@ -157,7 +157,7 @@ public class Stock implements IStock {
      * Retrieve the share price for the stock using the stock retrieval object.
      */
     try {
-      sharePrice = stocksApi.retrieveSharePrice(date, this.tickerSymbol);
+      sharePrice = stocksApi.retrieveSharePrice(shareDate, this.tickerSymbol);
     } catch (Exception ex) {
       throw new IllegalArgumentException("Invalid date. Please enter date again."
               + ex.getMessage());
@@ -170,7 +170,7 @@ public class Stock implements IStock {
     for (Date key : shareList.keySet()) {
       if (shareDate.equals(key)) {
         Share oldShare = shareList.get(key);
-        Share shareBought = new Share((sharePrice * noOfSharesBought)
+        Share shareBought = new Share((sharePrice * noOfSharesBought) + commission
                 + oldShare.getShareCostBasis(), noOfSharesBought
                 + oldShare.getNumberOfShares());
         shareList.put(key, shareBought);
@@ -182,7 +182,7 @@ public class Stock implements IStock {
      * If a share hasn't been bought on the same day, add the share to the list of shares bought
      * for the stock.
      */
-    Share shareBought = new Share(sharePrice * noOfSharesBought, noOfSharesBought);
+    Share shareBought = new Share((sharePrice * noOfSharesBought) + commission, noOfSharesBought);
     shareList.put(shareDate, shareBought);
     return noOfSharesBought;
   }
@@ -225,7 +225,7 @@ public class Stock implements IStock {
    * @return the single share price for a stock.
    * @throws IllegalArgumentException if the price data cannot be fetched from its source.
    */
-  private double getSharePrice(String tickerSymbol, String date) throws IllegalArgumentException {
+  private double getSharePrice(String tickerSymbol, Date date) throws IllegalArgumentException {
     try {
       return stocksApi.retrieveSharePrice(date, tickerSymbol);
     } catch (ParseException ex) {

@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import howtoinvest.model.Share;
+import howtoinvest.model.StockPortfolio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -85,5 +86,11 @@ public class ShareTest {
     assertEquals(20.01, share.getNumberOfShares(), 0.01);
     assertEquals(3.5, share.getShareCostBasis(), 0.01);
     assertEquals("Number of shares: 20.01\nShare Cost Basis: 3.50\n", share.getShareData());
+  }
+
+  @Test
+  public  void test(){
+    StockPortfolio s = new StockPortfolio();
+    assertEquals(0, s.getCommission("M"), 0.01);
   }
 }

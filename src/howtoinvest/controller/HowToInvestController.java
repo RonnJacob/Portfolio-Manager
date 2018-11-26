@@ -286,7 +286,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       String date = scan.next();
 
       try {
-        view.addStockToPortfolio(stockSymbol,selectedPFolio.addStock(stockSymbol,amount,date)
+        view.addStockToPortfolio(stockSymbol,selectedPFolio.addStock(stockSymbol,amount,date,0)
                 , date);
       } catch (IllegalArgumentException ex) {
         addToAppendable(ex.getMessage());

@@ -1,6 +1,7 @@
 package howtoinvest.model;
 
 import java.text.ParseException;
+import java.util.Date;
 
 /**
  * The following interface represents operations related to handling stock data from a source. This
@@ -29,6 +30,6 @@ public interface IStockDataRetrieval {
    *                                  for that date.
    * @throws IllegalArgumentException if thr date or tickerName is invalid.
    */
-  double retrieveSharePrice(String date, String tickerName)
+  double retrieveSharePrice(Date date, String tickerName)
           throws ParseException, IllegalArgumentException;
 }

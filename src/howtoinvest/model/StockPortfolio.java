@@ -1,6 +1,9 @@
 package howtoinvest.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * <p>This class represents a portfolio made of collection of stocks. Each stock has an individual
@@ -113,18 +116,62 @@ public class StockPortfolio implements IPortfolio<Stock> {
    * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
   @Override
-  public double addStock(String stock, double amount, String date) throws IllegalArgumentException {
+  public double addStock(String stock, double amount, String date, double commission)
+          throws IllegalArgumentException {
     double sharesBought = 0;
     for (String key : this.portfolio.keySet()) {
       if (stock.equalsIgnoreCase(key)) {
-        sharesBought = this.portfolio.get(key).addShare(amount, date);
+        sharesBought = this.portfolio.get(key).addShare(amount, date, commission);
         return sharesBought;
       }
     }
     Stock newStock = new Stock(stock);
-    sharesBought = newStock.addShare(amount, date);
+    sharesBought = newStock.addShare(amount, date, commission);
     this.portfolio.put(stock, newStock);
-
     return sharesBought;
+  }
+
+  @Override
+  public double getCommission(String commission) throws IllegalArgumentException {
+    if (commission.equalsIgnoreCase("l") || commission.equalsIgnoreCase("m")
+            || commission.equalsIgnoreCase("h")) {
+      double[] commissionValues = getCommissionFromFile();
+      if (commission.equalsIgnoreCase("l")) {
+        return commissionValues[0];
+      } else if (commission.equalsIgnoreCase("m")) {
+        return commissionValues[1];
+      } else {
+        return commissionValues[2];
+      }
+    } else {
+      try {
+        return Double.parseDouble(commission.trim());
+      } catch (NumberFormatException ex) {
+        throw new IllegalArgumentException("Invalid commission");
+      }
+    }
+  }
+
+  private double[] getCommissionFromFile() {
+    /**
+     * Initializing a scanner object for reading the .csv file.
+     */
+    Scanner scanner;
+    try {
+      scanner = new Scanner(new File("commission.csv"));
+      double[] commissionValues = new double[3];
+      /**
+       * Storing the output of the csv file to an appendable object i.e StringBuilder in this case.
+       */
+      scanner.useDelimiter(",");
+      int i = 0;
+      while (scanner.hasNext() && i < 3) {
+        commissionValues[i] = Double.parseDouble(scanner.next());
+        i++;
+      }
+      return commissionValues;
+    } catch (IOException | NumberFormatException ex) {
+      throw new IllegalArgumentException("Cannot read from file.");
+    }
   }
 }

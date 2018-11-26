@@ -61,7 +61,7 @@ public interface IStock {
    * @throws IllegalArgumentException if shares cannot be bought successfully for a particular
    *                                  company.
    */
-  double addShare(double amount, String date) throws IllegalArgumentException;
+  double addShare(double amount, String date, double commission) throws IllegalArgumentException;
 
   /**
    * Returns the stock data in the form of a string which would be the total cost basis and the

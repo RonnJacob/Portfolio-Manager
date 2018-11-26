@@ -43,6 +43,8 @@ public interface IPortfolio<K> {
    *         a particular date.
    * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
    */
-  double addStock(String identifier, double amount, String date);
+  double addStock(String identifier, double amount, String date, double commission);
+
+  double getCommission(String commission);
 }
 
