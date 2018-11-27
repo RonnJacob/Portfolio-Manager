@@ -1,12 +1,18 @@
 package howtoinvest.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  * The following class implements IStockDataRetrieval interface and all the methods in the
@@ -43,9 +49,11 @@ public class AlphaVantage implements IStockDataRetrieval {
   //Setting update interval for share prices so that share prices by the minute are retrieved.
   private final String updateInterval = "1min";
   //Setting the format for the date.
+  private final String extension = "_AlphaVantage.csv";
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
   private URL url;
+  private StringBuilder output = new StringBuilder();
 
 
   /**
@@ -106,15 +114,30 @@ public class AlphaVantage implements IStockDataRetrieval {
   public double retrieveSharePrice(Date date, String tickerName)
           throws ParseException, IllegalArgumentException {
 
+    File stockDataFile = new File(tickerName+extension);
+    Scanner scanner;
     setURL(tickerName, false);
-
-    InputStream in = null;
-    StringBuilder output = new StringBuilder();
-    try {
-      addToOutput(in, output, url);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("No price data found for " + tickerName);
+    if(!stockDataFile.exists()){
+      writeStockDataToCSVFile(url, stockDataFile);
     }
+    else if(!checkIfLatestStockData(stockDataFile)){
+      writeStockDataToCSVFile(url, stockDataFile);
+    }
+
+    try {
+      scanner = new Scanner(new File(tickerName + extension));
+    } catch (IOException ex) {
+      throw new IllegalArgumentException("Cannot read from file.");
+    }
+
+    /**
+     * Storing the output of the csv file to an appendable object i.e StringBuilder in this case.
+     */
+    scanner.useDelimiter(",");
+    while (scanner.hasNext()) {
+      this.output.append(scanner.next() + ",");
+    }
+
 
 
     /**
@@ -122,11 +145,13 @@ public class AlphaVantage implements IStockDataRetrieval {
      */
     String[] dailySharePrices = output.toString().split("\n");
 
+
     if (dailySharePrices.length == 0 || dailySharePrices.length == 1) {
       throw new IllegalArgumentException("No share prices provided.");
     }
 
     Date currentDate;
+    Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
     double closestShareValue = Double.parseDouble(dailySharePrices[1].split(",")[1]);
 
     /**
@@ -147,13 +172,13 @@ public class AlphaVantage implements IStockDataRetrieval {
     /**
      * Cannot fetch further history.
      */
-    if (date.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 1]
+    if (date.before(simpleDateFormat.parse(dailySharePrices[dailySharePrices.length - 2]
             .split(",")[0]))) {
       throw new IllegalArgumentException("Share prices do not exist for given date.");
     }
 
 
-    for (int day = dailySharePrices.length - 1; day >= 1; day--) {
+    for (int day = dailySharePrices.length - 2; day >= 1; day--) {
       currentDate = simpleDateFormat.parse(dailySharePrices[day].split(",")[0]);
       if (date.equals(currentDate)) {
         return Double.parseDouble(dailySharePrices[day].split(",")[4]);
@@ -180,6 +205,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    */
   private void addToOutput(InputStream in, Appendable out, URL url)
           throws IllegalArgumentException {
+
     try {
       in = url.openStream();
       int b;
@@ -190,6 +216,40 @@ public class AlphaVantage implements IStockDataRetrieval {
       throw new IllegalArgumentException("No price data.");
     }
   }
+
+  /**
+   * Writes the stock data retrieved from the API to .
+   * @param url the URL object for retrieving the content by the set URL.
+   * @param of
+   * @throws IllegalArgumentException if the stock data cannot be retrived with the url.
+   */
+  private void writeStockDataToCSVFile(URL url, File of)
+          throws IllegalArgumentException {
+
+    FileWriter writer;
+    try{
+      of.createNewFile(); // if file already exists will do nothing
+    } catch(IOException ex){
+
+    }
+    try (Scanner scanner = new Scanner(url.openStream(),
+            StandardCharsets.UTF_8.toString()))
+    {
+      writer = new FileWriter(of, false);
+      String input = "";
+      scanner.useDelimiter("\\r\\n");
+      while(scanner.hasNext()){
+        input = scanner.hasNext() ? scanner.next() : "";
+        writer.append(input);
+        writer.append(System.lineSeparator());
+      }
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 
   /**
@@ -218,5 +278,36 @@ public class AlphaVantage implements IStockDataRetrieval {
       throw new RuntimeException("the alphavantage API has either changed or "
               + "no longer works");
     }
+  }
+
+  /**
+   * Checks whether the stock data file is up-to-date.
+   * @param stockDataFile the stock data file that is to be checked.
+   * @return true if the file is up-to-date anf false otherwise.
+   * @throws ParseException if the date for which the file has to be checked cannot be parsed.
+   */
+  private boolean checkIfLatestStockData(File stockDataFile) throws ParseException{
+    Scanner scanner;
+    try {
+      scanner = new Scanner(stockDataFile);
+    } catch (IOException ex) {
+      throw new IllegalArgumentException("Cannot read from file.");
+    }
+    StringBuilder output = new StringBuilder();
+    /**
+     * Storing the output of the csv file to an appendable object i.e StringBuilder in this case.
+     */
+    scanner.useDelimiter("\n");
+    int counter = 0;
+    while (scanner.hasNext() && counter <= 2) {
+      output.append(scanner.next() + "\n");
+      counter+=1;
+    }
+    String outputDates = output.toString().split("\n")[1].split(",")[0];
+    Date latestDate = simpleDateFormat.parse(outputDates);
+    if(latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(new Date())))){
+      return false;
+    }
+    return true;
   }
 }
