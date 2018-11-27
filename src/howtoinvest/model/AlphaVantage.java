@@ -53,7 +53,6 @@ public class AlphaVantage implements IStockDataRetrieval {
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
   private URL url;
-  private StringBuilder output = new StringBuilder();
 
 
   /**
@@ -114,6 +113,7 @@ public class AlphaVantage implements IStockDataRetrieval {
   public double retrieveSharePrice(Date date, String tickerName)
           throws ParseException, IllegalArgumentException {
 
+    StringBuilder output = new StringBuilder();
     File stockDataFile = new File(tickerName + extension);
     Scanner scanner;
     setURL(tickerName, false);
@@ -134,7 +134,7 @@ public class AlphaVantage implements IStockDataRetrieval {
      */
     scanner.useDelimiter(",");
     while (scanner.hasNext()) {
-      this.output.append(scanner.next() + ",");
+      output.append(scanner.next() + ",");
     }
 
 

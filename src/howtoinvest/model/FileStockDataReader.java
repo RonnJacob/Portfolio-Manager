@@ -37,7 +37,6 @@ public class FileStockDataReader implements IStockDataRetrieval {
   private final String extension = ".csv";
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
-  private StringBuilder output = new StringBuilder();
 
   /**
    * Checks whether a file for a particular ticker name representing a stock exists.
@@ -68,6 +67,8 @@ public class FileStockDataReader implements IStockDataRetrieval {
     /**
      * Initializing a scanner object for reading the .csv file.
      */
+
+    StringBuilder output = new StringBuilder();
     Scanner scanner;
     try {
       scanner = new Scanner(new File(tickerName + extension));
@@ -80,7 +81,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
      */
     scanner.useDelimiter(",");
     while (scanner.hasNext()) {
-      this.output.append(scanner.next() + ",");
+      output.append(scanner.next() + ",");
     }
 
     /**
