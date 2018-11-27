@@ -121,7 +121,6 @@ public class Stock implements IStock {
     return numberOfShare;
   }
 
-
   /**
    * Converts a date from string format of yyyy-mm-dd to a date object.
    *
@@ -228,8 +227,8 @@ public class Stock implements IStock {
   private double getSharePrice(String tickerSymbol, Date date) throws IllegalArgumentException {
     try {
       return stocksApi.retrieveSharePrice(date, tickerSymbol);
-    } catch (ParseException ex) {
-      throw new IllegalArgumentException("Cannot fetch current share price due to parse failure.");
+    } catch (ParseException | IllegalArgumentException ex) {
+      throw new IllegalArgumentException("Cannot fetch current share price:" + ex.getMessage());
     }
   }
 
