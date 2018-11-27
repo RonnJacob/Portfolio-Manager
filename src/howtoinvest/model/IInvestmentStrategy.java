@@ -3,7 +3,7 @@ package howtoinvest.model;
 import java.util.List;
 import java.util.TreeMap;
 
-public interface IInvestmentStrategy {
+public interface IInvestmentStrategy<K> {
 
   List<String> getStocks();
 
@@ -18,4 +18,6 @@ public interface IInvestmentStrategy {
   void setFrequency(int days);
 
   void setTimeRange(String begDate, String endDate);
+
+  K applyStrategy(K portfolio, double commission);
 }

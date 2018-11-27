@@ -2,12 +2,16 @@ package howtoinvest.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-public class DollarCostAveraging implements IInvestmentStrategy {
+public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> {
 
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
@@ -24,13 +28,13 @@ public class DollarCostAveraging implements IInvestmentStrategy {
     this.stockWeights.put("MSFT", 50.0);
     this.amount = 2000;
     this.frequency = 30;
-    this.startDate = parseDates("2015-01-01");
-    this.endDate = parseDates("2017-12-31");
+    this.startDate = parseDate("2015-01-01");
+    this.endDate = parseDate("2017-12-31");
 
   }
 
-  private Date parseDates(String date) throws IllegalArgumentException {
-    if(date == null){
+  private Date parseDate(String date) throws IllegalArgumentException {
+    if (date == null) {
       throw new IllegalArgumentException("Invalid date");
     }
     try {
@@ -121,23 +125,47 @@ public class DollarCostAveraging implements IInvestmentStrategy {
 
   @Override
   public void setTimeRange(String begDate, String endDate) {
-    Date tempStartDate = parseDates(begDate);
+    Date tempStartDate = parseDate(begDate);
     Date tempEndDate;
-    if(endDate == null){
+    if (endDate == null) {
       try {
         tempEndDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-      }
-      catch (ParseException ex) {
+      } catch (ParseException ex) {
         throw new IllegalArgumentException("Date Parse error");
       }
+    } else {
+      tempEndDate = parseDate(endDate);
     }
-    else {
-      tempEndDate = parseDates(endDate);
-    }
-    if(tempStartDate.after(tempEndDate)){
+    if (tempStartDate.after(tempEndDate)) {
       throw new IllegalArgumentException("Invalid dates: Start date after end date");
     }
     this.startDate = tempStartDate;
     this.endDate = tempEndDate;
+  }
+
+  @Override
+  public StockPortfolio applyStrategy(StockPortfolio portfolio, double commission) {
+    LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+    for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(frequency)) {
+      Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+      Date currentDate = parseDate(Date.from(instant).toString());
+      portfolio = addNewStocks(portfolio, currentDate);
+      portfolio.invest(amount, stockWeights, false, currentDate.toString(), commission);
+    }
+
+    return portfolio;
+  }
+
+  private StockPortfolio addNewStocks(StockPortfolio portfolio, Date date) {
+    HashMap<String, Double> portfolioData = portfolio.getPortfolioData(date.toString());
+    for (String key : this.stockWeights.keySet()) {
+      if (!portfolioData.containsKey(key)) {
+        //add the stock to the portfolio with 0 cost basis.
+        portfolio.addStock(key, 0, date.toString(), 0);
+      }
+    }
+    return portfolio;
   }
 }

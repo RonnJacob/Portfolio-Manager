@@ -180,6 +180,9 @@ public class StockPortfolio implements IPortfolio<Stock> {
   public HashMap<String, Double> invest
           (double amount, TreeMap<String, Double> weights,
            boolean equalWeights, String date, double commission) {
+    if(this.portfolio.size() == 0){
+      throw new IllegalStateException("Portfolio is empty");
+    }
     HashMap<String, Double> investments = new HashMap<>();
     if (equalWeights) {
       double equalAmount = amount / this.portfolio.size();
@@ -202,9 +205,6 @@ public class StockPortfolio implements IPortfolio<Stock> {
       throw new IllegalArgumentException("Invalid weights");
     }
     double total = 0;
-    if(weights.size() != this.portfolio.size()){
-      throw new IllegalArgumentException("Invalid weights");
-    }
     for(String key:weights.keySet()){
       if(!this.portfolio.containsKey(key)){
         throw new IllegalArgumentException("Invalid weights");
