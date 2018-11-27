@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  * <p>This class represents a portfolio made of collection of stocks. Each stock has an individual
@@ -172,6 +173,46 @@ public class StockPortfolio implements IPortfolio<Stock> {
       return commissionValues;
     } catch (IOException | NumberFormatException ex) {
       throw new IllegalArgumentException("Cannot read from file.");
+    }
+  }
+
+  @Override
+  public HashMap<String, Double> invest
+          (double amount, TreeMap<String, Double> weights,
+           boolean equalWeights, String date, double commission) {
+    HashMap<String, Double> investments = new HashMap<>();
+    if (equalWeights) {
+      double equalAmount = amount / this.portfolio.size();
+      for (String key : this.portfolio.keySet()) {
+        investments.put(key,this.addStock(key, equalAmount, date, commission));
+      }
+    }
+    else {
+      validWeights(weights);
+      for(String key: weights.keySet()){
+        double weightedAmount = amount * (weights.get(key)/100);
+        investments.put(key,this.addStock(key, weightedAmount, date, commission));
+      }
+    }
+    return investments;
+  }
+
+  private void validWeights(TreeMap<String, Double> weights)throws IllegalArgumentException{
+    if(weights == null){
+      throw new IllegalArgumentException("Invalid weights");
+    }
+    double total = 0;
+    if(weights.size() != this.portfolio.size()){
+      throw new IllegalArgumentException("Invalid weights");
+    }
+    for(String key:weights.keySet()){
+      if(!this.portfolio.containsKey(key)){
+        throw new IllegalArgumentException("Invalid weights");
+      }
+      total += weights.get(key);
+    }
+    if(total != 100){
+      throw new IllegalArgumentException("Invalid weights");
     }
   }
 }

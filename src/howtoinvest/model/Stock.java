@@ -147,7 +147,7 @@ public class Stock implements IStock {
     /**
      * Amount for which shares are to be added cannot be negative or zero.
      */
-    if (amount <= 0) {
+    if (amount < 0) {
       throw new IllegalArgumentException("Invalid amount");
     }
     double sharePrice;
