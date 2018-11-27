@@ -9,7 +9,7 @@
 //
 //import howtoinvest.controller.HowToInvestController;
 //import howtoinvest.controller.IHowToInvestController;
-//import howtoinvest.model.IPortfolioManager;
+//import howtoinvest.model.IManager;
 //import howtoinvest.model.StockPortfolioManager;
 //
 //import static org.junit.Assert.assertEquals;
@@ -649,7 +649,7 @@
 //            + "Enter date in format yyyy-mm-dd: \n\n";
 //    StringWriter out = new StringWriter();
 //    StringBuilder log = new StringBuilder();
-//    IPortfolioManager model = new StockPortfolioManager();
+//    IManager model = new StockPortfolioManager();
 //    IHowToInvestController controller = new HowToInvestController(stringReader, out);
 //    controller.openPortfolioManager(model);
 //    String expectedShareBought = "9.52 shares of FB bought on 2018-10-10 for $1000.00\nBuy more "

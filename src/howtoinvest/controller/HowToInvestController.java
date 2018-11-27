@@ -1,8 +1,9 @@
 package howtoinvest.controller;
 import java.util.HashMap;
 import java.util.Map;
+
+import howtoinvest.model.IManager;
 import howtoinvest.model.IPortfolio;
-import howtoinvest.model.IPortfolioManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.IHowToInvestView;
 
@@ -61,7 +62,7 @@ import howtoinvest.view.IHowToInvestView;
  * functions.
  * </li>
  * <li>
- * The model would be a class implementing the IPortfolioManager which would carry out necessary
+ * The model would be a class implementing the IManager which would carry out necessary
  * options as called by the controller depending on the input provided by the user.
  * </li>
  * </ul>
@@ -72,14 +73,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * Variables initializing model and view objects.
    */
   private final IHowToInvestView view;
-  private final IPortfolioManager<StockPortfolio> model;
+  private final IManager<StockPortfolio> model;
 
   /**
    * Constructor that takes a model & view and sets the instance variables.
    * @param view the class implementing the view of the program.
    * @param model the class implementing the model of the program.
    */
-  public HowToInvestController(IHowToInvestView view, IPortfolioManager<StockPortfolio> model) {
+  public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model) {
     if (model == null || view == null) {
       throw new IllegalArgumentException("Model or view cannot be a null.");
     }
@@ -167,7 +168,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
        */
-      selectedPFolio = model.getPortfolio(Integer.parseInt(pfolioName));
+      selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
     } catch (IllegalArgumentException ex) {
       return "i";
     }
@@ -287,7 +288,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private void displayPortfolios() {
     int counter = 1;
-    for (String portfolioName : model.getPortfolios()) {
+    for (String portfolioName : model.getAll()) {
       view.displayListOfPortfolios(counter, portfolioName);
       counter++;
     }
@@ -302,7 +303,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       try {
         String message = "Enter the name of the portfolio to be created\n";
         String nameOfPortfolio = view.getInput(message);
-        model.createPortfolio(nameOfPortfolio);
+        model.create(nameOfPortfolio);
         view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.");
       } catch (IllegalArgumentException ex) {
         view.promptMessage("Portfolio with that name exists");

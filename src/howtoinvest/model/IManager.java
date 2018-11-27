@@ -10,9 +10,9 @@ import java.util.List;
  *
  * @param <K> data type
  */
-public interface IPortfolioManager<K> {
+public interface IManager<K> {
 
-  List<String> getPortfolios();
+  List<String> getAll();
 
   /**
    * Creates a portfolio with given name.
@@ -21,7 +21,7 @@ public interface IPortfolioManager<K> {
    * @throws IllegalArgumentException if the name is null or empty or the portfolio for the given
    *                                  name already exists.
    */
-  void createPortfolio(String name) throws IllegalArgumentException;
+  void create(String name) throws IllegalArgumentException;
 
   /**
    * Returns the portfolio of type K corresponding to the given index.
@@ -30,5 +30,5 @@ public interface IPortfolioManager<K> {
    * @return the portfolio of type K
    * @throws IllegalArgumentException if the portfolio does not exist with the given index.
    */
-  K getPortfolio(int index) throws IllegalArgumentException;
+  K getByIndex(int index) throws IllegalArgumentException;
 }

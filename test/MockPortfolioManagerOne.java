@@ -1,11 +1,11 @@
-//import howtoinvest.model.IPortfolioManager;
+//import howtoinvest.model.IManager;
 //
 ///**
 // * This class is a mock class for testing the controller implementation and HowToInvestController
 // * tests. The mock model has a constructor which would take in a StringBuilder variable which would
 // * behave as a log. This log would contain the list of actions that were taken with the model with
 // * the provided input for the controller. The log would be used to test and verify the controller
-// * implementations. The following model implements the IPortfolioManager interface and implements
+// * implementations. The following model implements the IManager interface and implements
 // * all the methods in the interface. This model essentially returns a uniqueCode for each of the
 // * operations denoting that a particular operation has been called with the input provided for the
 // * controller. The log appends the input for methods which have inputs for the controller and this
@@ -25,7 +25,7 @@
 // * </li>
 // * </ul>
 // */
-//public class MockPortfolioManagerOne implements IPortfolioManager<MockStockPortfolioOne> {
+//public class MockPortfolioManagerOne implements IManager<MockStockPortfolioOne> {
 //  protected StringBuilder log;
 //  private int uniqueCode;
 //

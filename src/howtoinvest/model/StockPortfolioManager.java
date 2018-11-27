@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * portfolio by retrieving a portfolio of their choice from the StockPortfolioManager and performing
  * the above operations on it..
  */
-public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> {
+public class StockPortfolioManager implements IManager<StockPortfolio> {
 
   /**
    * tree map of key value pairs where the key is the name of the portfolio and values is the object
@@ -34,7 +34,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
    * lexicographically ordered based on the names of the stock portfolio.
    */
   @Override
-  public List<String> getPortfolios() {
+  public List<String> getAll() {
     List<String> portfolioNames = new LinkedList<>();
     portfolioNames.addAll(this.portfolios.keySet());
     return portfolioNames;
@@ -48,7 +48,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
    *                                  by another portfolio.
    */
   @Override
-  public void createPortfolio(String name) throws IllegalArgumentException {
+  public void create(String name) throws IllegalArgumentException {
     if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Invalid Name");
     }
@@ -69,7 +69,7 @@ public class StockPortfolioManager implements IPortfolioManager<StockPortfolio> 
    * @throws IllegalArgumentException if the portfolio does not exist with the given index.
    */
   @Override
-  public StockPortfolio getPortfolio(int index) {
+  public StockPortfolio getByIndex(int index) {
     int counter = 1;
     for (String key : this.portfolios.keySet()) {
       if (index == counter) {

@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class InvestmentStrategyManagerImpl
-        implements IInvestmentStrategyManager<DollarCostAveraging> {
+public class DollarCostAveragingStrategyManager
+        implements IManager<DollarCostAveraging> {
   /**
    * tree map of key value pairs where the key is the name of the portfolio and values is the object
    * of that stock portfolio.
@@ -15,7 +15,7 @@ public class InvestmentStrategyManagerImpl
   /**
    * Constructs a StockPortfolioManager object and adds a default stock portfolio.
    */
-  public InvestmentStrategyManagerImpl() {
+  public DollarCostAveragingStrategyManager() {
     this.strategies.put("Default DollarCostAveraging", new DollarCostAveraging());
   }
 
@@ -24,7 +24,7 @@ public class InvestmentStrategyManagerImpl
    * lexicographically ordered based on the names of the stock portfolio.
    */
   @Override
-  public List<String> getStrategies() {
+  public List<String> getAll() {
     List<String> strategyNames = new LinkedList<>();
     strategyNames.addAll(this.strategies.keySet());
     return strategyNames;
@@ -38,7 +38,7 @@ public class InvestmentStrategyManagerImpl
    *                                  by another portfolio.
    */
   @Override
-  public void createStrategy(String name) throws IllegalArgumentException {
+  public void create(String name) throws IllegalArgumentException {
     if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Invalid Name");
     }
@@ -59,7 +59,7 @@ public class InvestmentStrategyManagerImpl
    * @throws IllegalArgumentException if the portfolio does not exist with the given index.
    */
   @Override
-  public DollarCostAveraging getStrategy(int index) {
+  public DollarCostAveraging getByIndex(int index) {
     int counter = 1;
     for (String key : this.strategies.keySet()) {
       if (index == counter) {
