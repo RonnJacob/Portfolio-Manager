@@ -2,6 +2,7 @@ package howtoinvest.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -179,39 +180,52 @@ public class StockPortfolio implements IPortfolio<Stock> {
   @Override
   public HashMap<String, Double> invest
           (double amount, TreeMap<String, Double> weights,
-           boolean equalWeights, String date, double commission) {
-    if(this.portfolio.size() == 0){
+           boolean equalWeights, String date, double commission) throws IllegalStateException {
+    if (this.portfolio.size() == 0) {
       throw new IllegalStateException("Portfolio is empty");
     }
     HashMap<String, Double> investments = new HashMap<>();
     if (equalWeights) {
       double equalAmount = amount / this.portfolio.size();
       for (String key : this.portfolio.keySet()) {
-        investments.put(key,this.addStock(key, equalAmount, date, commission));
+        try {
+          investments.put(key, this.addStock(key, equalAmount, date, commission));
+        } catch (IllegalArgumentException ex) {
+          /**
+           * Continue adding stocks even if one of the addition fails.
+           */
+          investments.put(key, 0.0);
+        }
       }
-    }
-    else {
+    } else {
       validWeights(weights);
-      for(String key: weights.keySet()){
-        double weightedAmount = amount * (weights.get(key)/100);
-        investments.put(key,this.addStock(key, weightedAmount, date, commission));
+      for (String key : weights.keySet()) {
+        double weightedAmount = amount * (weights.get(key) / 100);
+        try {
+          investments.put(key, this.addStock(key, weightedAmount, date, commission));
+        } catch (IllegalArgumentException ex) {
+          /**
+           * Continue adding stocks even if one of the addition fails.
+           */
+          investments.put(key, 0.0);
+        }
       }
     }
     return investments;
   }
 
-  private void validWeights(TreeMap<String, Double> weights)throws IllegalArgumentException{
-    if(weights == null){
+  private void validWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
+    if (weights == null) {
       throw new IllegalArgumentException("Invalid weights");
     }
     double total = 0;
-    for(String key:weights.keySet()){
-      if(!this.portfolio.containsKey(key)){
+    for (String key : weights.keySet()) {
+      if (!this.portfolio.containsKey(key)) {
         throw new IllegalArgumentException("Invalid weights");
       }
       total += weights.get(key);
     }
-    if(total != 100){
+    if (total != 100) {
       throw new IllegalArgumentException("Invalid weights");
     }
   }

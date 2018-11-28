@@ -144,7 +144,8 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
   }
 
   @Override
-  public StockPortfolio applyStrategy(StockPortfolio portfolio, double commission) {
+  public void applyStrategy(StockPortfolio portfolio, double commission)
+          throws IllegalArgumentException {
     LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -154,11 +155,10 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
       portfolio = addNewStocks(portfolio, currentDate);
       portfolio.invest(amount, stockWeights, false, currentDate.toString(), commission);
     }
-
-    return portfolio;
   }
 
-  private StockPortfolio addNewStocks(StockPortfolio portfolio, Date date) {
+  private StockPortfolio addNewStocks(StockPortfolio portfolio, Date date)
+          throws IllegalArgumentException {
     HashMap<String, Double> portfolioData = portfolio.getPortfolioData(date.toString());
     for (String key : this.stockWeights.keySet()) {
       if (!portfolioData.containsKey(key)) {

@@ -19,5 +19,5 @@ public interface IInvestmentStrategy<K> {
 
   void setTimeRange(String begDate, String endDate);
 
-  K applyStrategy(K portfolio, double commission);
+  void applyStrategy(K portfolio, double commission);
 }

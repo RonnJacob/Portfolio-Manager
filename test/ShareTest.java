@@ -103,5 +103,11 @@ public class ShareTest {
     weights.put("msft", 75.00);
     weights.put("fb", 25.00);
     System.out.println(s.invest(2000, weights, false, "2018-11-12", 1));
+
+    StockPortfolio copy = s;
+    copy.addStock("googl", 1000, "2018-11-11", 1);
+    System.out.println(s);
+    System.out.println(copy);
+
   }
 }
