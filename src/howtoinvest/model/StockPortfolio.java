@@ -192,7 +192,6 @@ public class StockPortfolio implements IPortfolio<Stock> {
           /**
            * Continue adding stocks even if one of the addition fails.
            */
-          investments.put(key, 0.0);
         }
       }
     }
@@ -205,9 +204,6 @@ public class StockPortfolio implements IPortfolio<Stock> {
     }
     double total = 0;
     for (String key : weights.keySet()) {
-      if (!this.portfolio.containsKey(key)) {
-        throw new IllegalArgumentException("Invalid weights");
-      }
       total += weights.get(key);
     }
     if (total != 100) {

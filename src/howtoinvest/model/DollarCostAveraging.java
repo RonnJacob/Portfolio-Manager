@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> {
+public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
 
   private final String datePattern = "yyyy-MM-dd";
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
@@ -143,7 +143,7 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
   }
 
   @Override
-  public void applyStrategy(StockPortfolio portfolio, double commission)
+  public void applyStrategy(IPortfolio portfolio, double commission)
           throws IllegalArgumentException {
     LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -151,20 +151,7 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(frequency)) {
       Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
       Date currentDate = parseDate(Date.from(instant).toString());
-      portfolio = addNewStocks(portfolio, currentDate);
       portfolio.invest(amount, stockWeights, false, currentDate.toString(), commission);
     }
-  }
-
-  private StockPortfolio addNewStocks(StockPortfolio portfolio, Date date)
-          throws IllegalArgumentException {
-    HashMap<String, Double> portfolioData = portfolio.getPortfolioData(date.toString());
-    for (String key : this.stockWeights.keySet()) {
-      if (!portfolioData.containsKey(key)) {
-        //add the stock to the portfolio with 0 cost basis.
-        portfolio.addStock(key, 0, date.toString(), 0);
-      }
-    }
-    return portfolio;
   }
 }
