@@ -16,14 +16,14 @@ public class HowToInvestViewTest {
   private StringBuffer out;
 
   @Before
-  public void setUp(){
+  public void setUp() {
 
     out = new StringBuffer();
     view = new HowToInvestViewImpl(new InputStreamReader(System.in), out);
   }
 
   @Test
-  public void testOpenHomeScreen(){
+  public void testOpenHomeScreen() {
     expected += "\nWelcome to Portfolio Manager.\n";
     expected += "1. Create new portfolio.\n";
     expected += "2. Get existing portfolios.\n";
@@ -34,7 +34,7 @@ public class HowToInvestViewTest {
   }
 
   @Test
-  public void testOpenPortfolioMenu(){
+  public void testOpenPortfolioMenu() {
     expected += "\n1. Examine composition of portfolio\n";
     expected += "2. Buy shares of a stock with portfolio.\n";
     expected += "3. Get Cost Basis of portfolio\n";
@@ -48,8 +48,8 @@ public class HowToInvestViewTest {
   }
 
   @Test
-  public void testOpenInvestmentMenu(){
-    expected +="\nInvestment Strategies \n";
+  public void testOpenInvestmentMenu() {
+    expected += "\nInvestment Strategies \n";
     expected += "1. Invest on stocks in portfolio with equal weights.\n";
     expected += "2. Invest on stocks in portfolio with custom weights.\n";
     expected += "Enter the number for performing operation or r to return to the main "
@@ -59,7 +59,7 @@ public class HowToInvestViewTest {
   }
 
   @Test
-  public void testOpenStrategyMenu(){
+  public void testOpenStrategyMenu() {
     expected += "\nStrategy Menu\n";
     expected += "1. Apply Strategy\n";
     expected += "2. Modify strategy\n";
@@ -70,234 +70,233 @@ public class HowToInvestViewTest {
   }
 
   @Test
-  public void testQuitManager(){
+  public void testQuitManager() {
     expected += "Quitting manager\n";
     view.quitManager();
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testDisplayPortfolioComposition(){
+  public void testDisplayPortfolioComposition() {
     Double numberOfShares = 2.3;
     String stockName = "FB";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = 4000.2;
     stockName = "MSFT";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = 0.00000;
     stockName = "AB";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = -11.2;
     stockName = "FB";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = 1.2;
     stockName = "AB";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = -1.2;
     stockName = "AB";
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
     numberOfShares = -1.2;
     stockName = null;
-    expected += numberOfShares+" share(s) of "+stockName+"\n";
-    view.displayPortfolioComposition(stockName,numberOfShares);
+    expected += numberOfShares + " share(s) of " + stockName + "\n";
+    view.displayPortfolioComposition(stockName, numberOfShares);
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testDisplayPortfolioValue(){
+  public void testDisplayPortfolioValue() {
     Double value = 2200.2;
     String date = "2018-11-10";
-    expected += "The value of the portfolio as of "+ date + " is $" + value+"\n";
-    view.displayPortfolioValue(date,value);
+    expected += "The value of the portfolio as of " + date + " is $" + value + "\n";
+    view.displayPortfolioValue(date, value);
     assertEquals(expected, out.toString());
     value = -2200.2;
     date = "2018-11-10";
-    expected += "The value of the portfolio as of "+ date + " is $" + value+"\n";
-    view.displayPortfolioValue(date,value);
+    expected += "The value of the portfolio as of " + date + " is $" + value + "\n";
+    view.displayPortfolioValue(date, value);
     assertEquals(expected, out.toString());
     value = 2200.2;
     date = "201811-10";
-    expected += "The value of the portfolio as of "+ date + " is $" + value+"\n";
-    view.displayPortfolioValue(date,value);
+    expected += "The value of the portfolio as of " + date + " is $" + value + "\n";
+    view.displayPortfolioValue(date, value);
     assertEquals(expected, out.toString());
     value = -200.2;
     date = "---2018-11-10";
-    expected += "The value of the portfolio as of "+ date + " is $" + value+"\n";
-    view.displayPortfolioValue(date,value);
+    expected += "The value of the portfolio as of " + date + " is $" + value + "\n";
+    view.displayPortfolioValue(date, value);
     assertEquals(expected, out.toString());
     value = -200.2;
     date = null;
-    expected += "The value of the portfolio as of "+ date + " is $" + value+"\n";
-    view.displayPortfolioValue(date,value);
+    expected += "The value of the portfolio as of " + date + " is $" + value + "\n";
+    view.displayPortfolioValue(date, value);
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testDisplayPortfolioCostBasis(){
+  public void testDisplayPortfolioCostBasis() {
     Double stockCostBasis = 2200.2;
     String date = "2018-11-10";
-    expected += "The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis+"\n";
-    view.displayPortfolioCostBasis(date,stockCostBasis);
+    expected += "The cost basis of the portfolio as of " + date + " is $" + stockCostBasis + "\n";
+    view.displayPortfolioCostBasis(date, stockCostBasis);
     assertEquals(expected, out.toString());
     stockCostBasis = -2200.2;
     date = "2018-11-10";
-    expected += "The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis+"\n";
-    view.displayPortfolioCostBasis(date,stockCostBasis);
+    expected += "The cost basis of the portfolio as of " + date + " is $" + stockCostBasis + "\n";
+    view.displayPortfolioCostBasis(date, stockCostBasis);
     assertEquals(expected, out.toString());
     stockCostBasis = 2200.2;
     date = "201811-10";
-    expected += "The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis+"\n";
-    view.displayPortfolioCostBasis(date,stockCostBasis);
+    expected += "The cost basis of the portfolio as of " + date + " is $" + stockCostBasis + "\n";
+    view.displayPortfolioCostBasis(date, stockCostBasis);
     assertEquals(expected, out.toString());
     stockCostBasis = -200.2;
     date = "---2018-11-10";
-    expected += "The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis+"\n";
-    view.displayPortfolioCostBasis(date,stockCostBasis);
+    expected += "The cost basis of the portfolio as of " + date + " is $" + stockCostBasis + "\n";
+    view.displayPortfolioCostBasis(date, stockCostBasis);
     assertEquals(expected, out.toString());
     stockCostBasis = -200.2;
     date = null;
-    expected += "The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis+"\n";
-    view.displayPortfolioCostBasis(date,stockCostBasis);
+    expected += "The cost basis of the portfolio as of " + date + " is $" + stockCostBasis + "\n";
+    view.displayPortfolioCostBasis(date, stockCostBasis);
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testDisplayList(){
+  public void testDisplayList() {
     int counter = 1;
     String listItem = "Ronn";
     String listName = "Name";
-    expected += "\nList of "+listName+"\n";
-    expected += counter+ ": " + listItem+"\n";
-    view.displayList(counter,listItem,listName);
+    expected += "\nList of " + listName + "\n";
+    expected += counter + ": " + listItem + "\n";
+    view.displayList(counter, listItem, listName);
     assertEquals(expected, out.toString());
     counter = 2;
     listItem = "Reno";
     listName = "Name";
-    expected += counter+ ": " + listItem+"\n";
-    view.displayList(counter,listItem,listName);
+    expected += counter + ": " + listItem + "\n";
+    view.displayList(counter, listItem, listName);
     assertEquals(expected, out.toString());
     counter = 1;
     listItem = "Reno";
     listName = "1";
-    expected += "\nList of "+listName+"\n";
-    expected += counter+ ": " + listItem+"\n";
-    view.displayList(counter,listItem,listName);
+    expected += "\nList of " + listName + "\n";
+    expected += counter + ": " + listItem + "\n";
+    view.displayList(counter, listItem, listName);
     assertEquals(expected, out.toString());
     counter = 5;
     listItem = "0";
     listName = "0";
-    expected += counter+ ": " + listItem+"\n";
-    view.displayList(counter,listItem,listName);
+    expected += counter + ": " + listItem + "\n";
+    view.displayList(counter, listItem, listName);
     assertEquals(expected, out.toString());
     counter = 5;
     listItem = null;
     listName = null;
-    expected += counter+ ": " + listItem+"\n";
-    view.displayList(counter,listItem,listName);
+    expected += counter + ": " + listItem + "\n";
+    view.displayList(counter, listItem, listName);
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testPromptMessage(){
+  public void testPromptMessage() {
     String message = "Ronn";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = "1";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
-    message = "Ronn George"+"\n";
-    expected += message+"\n";
+    message = "Ronn George" + "\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = null;
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = "-1";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = "1.22";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = "";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
     message = "  ";
-    expected += message+"\n";
+    expected += message + "\n";
     view.promptMessage(message);
     assertEquals(expected, out.toString());
   }
 
   @Test
-  public void testGetInput(){
+  public void testGetInput() {
     StringBuffer out = new StringBuffer();
     Reader in = new StringReader("Ronn");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("Ronn",view.getInput(""));
+    assertEquals("Ronn", view.getInput(""));
     in = new StringReader("1");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("1",view.getInput(""));
+    assertEquals("1", view.getInput(""));
     in = new StringReader("Ronn");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("Ronn",view.getInput("Message"));
+    assertEquals("Ronn", view.getInput("Message"));
     in = new StringReader("2.3");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("2.3",view.getInput("Message"));
+    assertEquals("2.3", view.getInput("Message"));
     in = new StringReader("   ");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("",view.getInput("Message"));
+    assertEquals("", view.getInput("Message"));
     in = new StringReader("");
     view = new HowToInvestViewImpl(in, out);
-    assertEquals("",view.getInput("Message"));
+    assertEquals("", view.getInput("Message"));
   }
 
   @Test
-  public void testGetBuyDetail(){
+  public void testGetBuyDetail() {
     StringBuffer out = new StringBuffer();
-    String[] buyDetails = new String[]{"FB","2000","2018-10-10","l"};
+    String[] buyDetails = new String[]{"FB", "2000", "2018-10-10", "l"};
     String stockName = buyDetails[0];
     String amount = buyDetails[1];
     String date = buyDetails[2];
     String commision = buyDetails[3];
-    Reader in = new StringReader(stockName+" "+amount+" "+date+" "+commision);
+    Reader in = new StringReader(stockName + " " + amount + " " + date + " " + commision);
     view = new HowToInvestViewImpl(in, out);
     String[] inputs = view.getShareBuyDetails();
-    for(int i=0; i<inputs.length; i++){
+    for (int i = 0; i < inputs.length; i++) {
       assertEquals(buyDetails[0], inputs[0]);
     }
   }
 
   @Test
-  public void testGetBuyDetailIllegalValues(){
+  public void testGetBuyDetailIllegalValues() {
     StringBuffer out = new StringBuffer();
-    String[] buyDetails = new String[]{"a","b","c","d"};
+    String[] buyDetails = new String[]{"a", "b", "c", "d"};
     String stockName = buyDetails[0];
     String amount = buyDetails[1];
     String date = buyDetails[2];
     String commision = buyDetails[3];
-    Reader in = new StringReader(stockName+" "+amount+" "+date+" "+commision);
+    Reader in = new StringReader(stockName + " " + amount + " " + date + " " + commision);
     view = new HowToInvestViewImpl(in, out);
     String[] inputs = view.getShareBuyDetails();
-    for(int i=0; i<inputs.length; i++){
+    for (int i = 0; i < inputs.length; i++) {
       assertEquals(buyDetails[0], inputs[0]);
     }
   }
-
-  }
+}

@@ -18,12 +18,12 @@
 //  public void TestPortfolioManagerCreationAndGetPortfolio() {
 //    portfolioManager = new StockPortfolioManager();
 //
-//    assertEquals("1. Default StockPortfolio", portfolioManager.getPortfolios());
+//    assertEquals("1. Default StockPortfolio", portfolioManager.getAll());
 //
 //    /**
 //     * Check the portfolio retrieved performs some basic operations.
 //     */
-//    portfolio = portfolioManager.getPortfolio(1);
+//    portfolio = portfolioManager.getByIndex(1);
 //
 //    assertEquals("", portfolio.getPortfolioData());
 //
@@ -47,9 +47,9 @@
 //  public void TestPortfolioManagerCreatePortfolio() {
 //    portfolioManager = new StockPortfolioManager();
 //
-//    assertEquals("1. Default StockPortfolio", portfolioManager.getPortfolios());
+//    assertEquals("1. Default StockPortfolio", portfolioManager.getAll());
 //
-//    portfolio = portfolioManager.getPortfolio(1);
+//    portfolio = portfolioManager.getByIndex(1);
 //
 //    assertEquals("", portfolio.getPortfolioData());
 //
@@ -68,12 +68,12 @@
 //    assertEquals("9.14 shares of MSFT for a total investment of $1000.00",
 //            portfolio.getPortfolioData());
 //
-//    portfolioManager.createPortfolio("New Portfolio");
+//    portfolioManager.create("New Portfolio");
 //
 //    assertEquals("1. Default StockPortfolio\n2. New Portfolio",
-//            portfolioManager.getPortfolios());
+//            portfolioManager.getAll());
 //
-//    portfolio = portfolioManager.getPortfolio(2);
+//    portfolio = portfolioManager.getByIndex(2);
 //
 //    assertEquals("", portfolio.getPortfolioData());
 //
@@ -92,7 +92,7 @@
 //    assertEquals("9.14 shares of MSFT for a total investment of $1000.00",
 //            portfolio.getPortfolioData());
 //
-//    portfolio = portfolioManager.getPortfolio(1);
+//    portfolio = portfolioManager.getByIndex(1);
 //
 //    assertEquals("9.14 shares of MSFT for a total investment of $1000.00",
 //            portfolio.getPortfolioData());
@@ -101,7 +101,7 @@
 //                    + "Total portfolio value = 1000.00",
 //            portfolio.getStockCostBasisAndStockValue("2018-11-11"));
 //
-//    portfolio = portfolioManager.getPortfolio(2);
+//    portfolio = portfolioManager.getByIndex(2);
 //
 //    assertEquals("Total portfolio cost basis = 1000.00\n"
 //                    + "Total portfolio value = 1000.00",
@@ -116,22 +116,22 @@
 //  public void testCreatePortfolioInvalidName() {
 //    portfolioManager = new StockPortfolioManager();
 //    try {
-//      portfolioManager.createPortfolio(null);
+//      portfolioManager.create(null);
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid Name", ex.getMessage());
 //    }
-//    assertEquals("1. Default StockPortfolio", portfolioManager.getPortfolios());
+//    assertEquals("1. Default StockPortfolio", portfolioManager.getAll());
 //
 //    try {
-//      portfolioManager.createPortfolio("");
+//      portfolioManager.create("");
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid Name", ex.getMessage());
 //    }
 //
 //    try {
-//      portfolioManager.createPortfolio("   ");
+//      portfolioManager.create("   ");
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid Name", ex.getMessage());
@@ -141,15 +141,15 @@
 //  @Test
 //  public void testCreatePortfolioInvalidNameAlreadyExists() {
 //    portfolioManager = new StockPortfolioManager();
-//    assertEquals("1. Default StockPortfolio", portfolioManager.getPortfolios());
+//    assertEquals("1. Default StockPortfolio", portfolioManager.getAll());
 //
 //    try {
-//      portfolioManager.createPortfolio("Default StockPortfolio");
+//      portfolioManager.create("Default StockPortfolio");
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("StockPortfolio already exists", ex.getMessage());
 //    }
-//    assertEquals("1. Default StockPortfolio", portfolioManager.getPortfolios());
+//    assertEquals("1. Default StockPortfolio", portfolioManager.getAll());
 //  }
 //
 //  @Test
@@ -157,33 +157,33 @@
 //    portfolioManager = new StockPortfolioManager();
 //
 //    try {
-//      portfolioManager.getPortfolio(-1);
+//      portfolioManager.getByIndex(-1);
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid index for the Stock Portfolio", ex.getMessage());
 //    }
 //
 //    try {
-//      portfolioManager.getPortfolio(2);
+//      portfolioManager.getByIndex(2);
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid index for the Stock Portfolio", ex.getMessage());
 //    }
 //
-//    portfolioManager.createPortfolio("Portfolio 1");
+//    portfolioManager.create("Portfolio 1");
 //
-//    portfolioManager.getPortfolio(1);
-//    portfolioManager.getPortfolio(2);
+//    portfolioManager.getByIndex(1);
+//    portfolioManager.getByIndex(2);
 //
 //    try {
-//      portfolioManager.getPortfolio(3);
+//      portfolioManager.getByIndex(3);
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid index for the Stock Portfolio", ex.getMessage());
 //    }
 //
 //    try {
-//      portfolioManager.getPortfolio(-1);
+//      portfolioManager.getByIndex(-1);
 //      fail();
 //    } catch (IllegalArgumentException ex) {
 //      assertEquals("Invalid index for the Stock Portfolio", ex.getMessage());

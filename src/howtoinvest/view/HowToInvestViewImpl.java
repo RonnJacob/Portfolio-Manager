@@ -1,12 +1,13 @@
 package howtoinvest.view;
+
 import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * The following class is an implementation of the IHowToInvestView interface which implements
- * all the necessary operations specified in the interface. This class would represent a console
- * based view implementation of the interview whereby the program and the necessary outputs/inputs
- * and messages would be displayed on a terminal/console.
+ * The following class is an implementation of the IHowToInvestView interface which implements all
+ * the necessary operations specified in the interface. This class would represent a console based
+ * view implementation of the interview whereby the program and the necessary outputs/inputs and
+ * messages would be displayed on a terminal/console.
  */
 public class HowToInvestViewImpl implements IHowToInvestView {
 
@@ -18,6 +19,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     this.in = in;
     this.out = out;
   }
+
   @Override
   public void openHomeScreen() {
     String homeScreen = "\nWelcome to Portfolio Manager.\n";
@@ -44,7 +46,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void openInvestmentMenu() {
-    String investmentScreen ="\nInvestment Strategies \n";
+    String investmentScreen = "\nInvestment Strategies \n";
     investmentScreen += "1. Invest on stocks in portfolio with equal weights.\n";
     investmentScreen += "2. Invest on stocks in portfolio with custom weights.\n";
     investmentScreen += "Enter the number for performing operation or r to return to the main "
@@ -76,54 +78,53 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   }
 
   @Override
-  public void quitManager(){
+  public void quitManager() {
     promptMessage("Quitting manager");
   }
 
   @Override
   public void displayPortfolioComposition(String key, Double value) {
-    promptMessage(value + " share(s) of "+key);
+    promptMessage(value + " share(s) of " + key);
   }
 
   @Override
   public void displayPortfolioValue(String date, double stockValue) {
-    promptMessage("The value of the portfolio as of "+ date + " is $" + stockValue);
+    promptMessage("The value of the portfolio as of " + date + " is $" + stockValue);
   }
 
   @Override
   public void displayPortfolioCostBasis(String date, double stockCostBasis) {
-    promptMessage("The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis);
+    promptMessage("The cost basis of the portfolio as of " + date + " is $" + stockCostBasis);
 
   }
 
   @Override
   public void displayList(int counter, String listItem, String listName) {
-    if(counter==1){
-      promptMessage("\nList of "+listName);
+    if (counter == 1) {
+      promptMessage("\nList of " + listName);
     }
-    promptMessage(counter + ": "+listItem);
+    promptMessage(counter + ": " + listItem);
   }
 
   @Override
   public String getInput(String message) {
     Scanner scan = new Scanner(this.in);
-    if(!message.equals("")){
+    if (!message.equals("")) {
       promptMessage(message);
     }
-    if(scan.hasNext()){
+    if (scan.hasNext()) {
       String input = scan.next();
-      if(input == null){
+      if (input == null) {
         return "";
       }
       return input;
-    }
-    else{
+    } else {
       return "";
     }
   }
 
   @Override
-  public void promptMessage(String message){
+  public void promptMessage(String message) {
     try {
       this.out.append(String.format("%s\n", message));
     } catch (IOException ex) {
@@ -145,7 +146,5 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     buyDetails[3] = scan.next();
     return buyDetails;
   }
-
-
 
 }

@@ -140,6 +140,9 @@ public class StockPortfolio implements IPortfolio<Stock> {
    */
   @Override
   public double getCommission(String commission) throws IllegalArgumentException {
+    if(commission == null){
+      throw new IllegalArgumentException("Invalid commission");
+    }
     if (commission.equalsIgnoreCase("l") || commission.equalsIgnoreCase("m")
             || commission.equalsIgnoreCase("h")) {
       double[] commissionValues = getCommissionFromFile();
