@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import howtoinvest.model.StockPortfolio;
 
@@ -13,7 +14,8 @@ import static org.junit.Assert.fail;
  */
 public class StockPortfolioTest {
 
-  StockPortfolio portfolio;
+  private StockPortfolio portfolio;
+  private TreeMap<String, Double> weights;
 
   @Test
   public void TestValidPortfolioCreation() {
@@ -810,6 +812,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission("");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -817,13 +820,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission(null);
-    }
-    catch (IllegalArgumentException ex){
-      assertEquals("Invalid commission", ex.getMessage());
-    }
-
-    try{
-      portfolio.getCommission("1f");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -831,6 +828,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission("a");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -838,6 +836,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission("g");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -845,6 +844,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission("z");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -852,6 +852,7 @@ public class StockPortfolioTest {
 
     try{
       portfolio.getCommission("*");
+      fail();
     }
     catch (IllegalArgumentException ex){
       assertEquals("Invalid commission", ex.getMessage());
@@ -862,6 +863,9 @@ public class StockPortfolioTest {
 
     output = portfolio.getCommission(" 0.0001 ");
     assertEquals(0.0001, output, 0.01);
+
+    output = portfolio.getCommission("1f");
+    assertEquals(1, output, 0.01);
 
     output = portfolio.getCommission("1d");
     assertEquals(1, output, 0.01);
@@ -877,5 +881,162 @@ public class StockPortfolioTest {
 
     output = portfolio.getCommission("h");
     assertEquals(2.05, output, 0.01);
+  }
+
+  @Test
+  public void TestInvestInvalid(){
+    portfolio = new StockPortfolio();
+    weights = new TreeMap<>();
+
+    weights.put("FB", 25.0);
+    weights.put("MSFT", 75.0);
+
+    HashMap<String, Double> output =
+            portfolio.invest(-1, weights, false, "2018-11-11", 0);
+    assertTrue(output.isEmpty());
+
+    output =
+            portfolio.invest(100, weights, false, null , 0);
+    assertTrue(output.isEmpty());
+
+    output =
+            portfolio.invest(1, weights, false, "2018-11-jadnlk", 0);
+    assertTrue(output.isEmpty());
+
+    output =
+            portfolio.invest(1, weights, false, " ", 0);
+    assertTrue(output.isEmpty());
+
+    output =
+            portfolio.invest(1, weights, false, "2018-11-11", -0.01);
+    assertTrue(output.isEmpty());
+
+    try {
+      portfolio.invest(-1, null, false, "2018-11-11", 0);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid weights", ex.getMessage());
+    }
+
+    weights.put("GOOGL", -150d);
+
+    try {
+      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid weights", ex.getMessage());
+    }
+
+    weights.put("GOOGL", -50d);
+
+    try {
+      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid weights", ex.getMessage());
+    }
+
+    weights.put("GOOGL", 0.01d);
+
+    try {
+      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid weights", ex.getMessage());
+    }
+
+    HashMap<String, Double> portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(0, portfolioData.size());
+
+    assertEquals(0.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(0.00, portfolio.getStockValue("2018-11-11"), 0.01);
+
+
+    weights.put("GOOGL", 0.0);
+    output = portfolio.invest(1000, weights, false, "2018-11-11", 0);
+    assertEquals(3, output.size());
+    assertEquals(0.00, output.get("GOOGL"), 0.01);
+    assertEquals(6.85, output.get("MSFT"), 0.01);
+    assertEquals(2.28, output.get("FB"), 0.01);
+
+    portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(3, portfolioData.size());
+    assertEquals(0.00, portfolioData.get("GOOGL"), 0.01);
+    assertEquals(6.85, portfolioData.get("MSFT"), 0.01);
+    assertEquals(2.28, portfolioData.get("FB"), 0.01);
+
+    assertEquals(1000.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(1000.00, portfolio.getStockValue("2018-11-11"), 0.01);
+
+    weights.put("GOOGL", 25.0);
+    weights.put("MSFT", 50.0);
+    output = portfolio.invest(1000, weights, false, "2018-11-11", 0);
+    assertEquals(3, output.size());
+    assertEquals(23.99, output.get("GOOGL"), 0.01);
+    assertEquals(4.56, output.get("MSFT"), 0.01);
+    assertEquals(2.28, output.get("FB"), 0.01);
+
+    portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(3, portfolioData.size());
+    assertEquals(23.99, portfolioData.get("GOOGL"), 0.01);
+    assertEquals(11.42, portfolioData.get("MSFT"), 0.01);
+    assertEquals(4.56, portfolioData.get("FB"), 0.01);
+
+    assertEquals(2000.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(2000.00, portfolio.getStockValue("2018-11-11"), 0.01);
+
+    /**
+     * Investing when MSFT will throw an invalid date.
+     */
+    output = portfolio.invest(1000, weights, false, "2016-10-10", 0);
+    assertEquals(2, output.size());
+    assertEquals(62.5, output.get("GOOGL"), 0.01);
+    assertEquals(2.5, output.get("FB"), 0.01);
+
+    portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(3, portfolioData.size());
+    assertEquals(86.49, portfolioData.get("GOOGL"), 0.01);
+    assertEquals(11.42, portfolioData.get("MSFT"), 0.01);
+    assertEquals(7.06, portfolioData.get("FB"), 0.01);
+
+    assertEquals(2500.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(2924.8, portfolio.getStockValue("2018-11-11"), 0.01);
+
+    /**
+     * investing with equal weights
+     */
+    output = portfolio.invest(1000, weights, true, "2018-10-10", 0);
+    assertEquals(3, output.size());
+    assertEquals(33.33, output.get("GOOGL"), 0.01);
+    assertEquals(11.42, portfolioData.get("MSFT"), 0.01);
+    assertEquals(3.17, output.get("FB"), 0.01);
+
+    portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(3, portfolioData.size());
+    assertEquals(119.82, portfolioData.get("GOOGL"), 0.01);
+    assertEquals(14.75, portfolioData.get("MSFT"), 0.01);
+    assertEquals(10.24, portfolioData.get("FB"), 0.01);
+
+    assertEquals(3500.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(3984.23, portfolio.getStockValue("2018-11-11"), 0.01);
+
+    output = portfolio.invest(1000, weights, true, "2016-10-10", 0);
+    assertEquals(2, output.size());
+    assertEquals(83.33, output.get("GOOGL"), 0.01);
+    assertEquals(3.33, output.get("FB"), 0.01);
+
+    portfolioData = portfolio.getPortfolioData("2018-11-11");
+    assertEquals(3, portfolioData.size());
+    assertEquals(203.15, portfolioData.get("GOOGL"), 0.01);
+    assertEquals(14.75, portfolioData.get("MSFT"), 0.01);
+    assertEquals(13.57, portfolioData.get("FB"), 0.01);
+
+    assertEquals(4166.66, portfolio.getStockCostBasis("2018-11-11"), 0.01);
+    assertEquals(5217.29, portfolio.getStockValue("2018-11-11"), 0.01);
+
   }
 }
