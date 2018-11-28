@@ -38,7 +38,7 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
       throw new IllegalArgumentException("Invalid date");
     }
     try {
-      return simpleDateFormat.parse(date);
+      return simpleDateFormat.parse(simpleDateFormat.format(new Date()));
     } catch (ParseException ex) {
       throw new IllegalArgumentException("Date Parse error");
     }

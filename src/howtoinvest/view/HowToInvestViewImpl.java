@@ -13,7 +13,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void openHomeScreen() {
-    String homeScreen = "Welcome to Portfolio Manager.\n";
+    String homeScreen = "\nWelcome to Portfolio Manager.\n";
     homeScreen += "1. Create new portfolio.\n";
     homeScreen += "2. Get existing portfolios.\n";
     homeScreen += "3. Enter portfolio.\n";
@@ -23,13 +23,15 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void openPortfolioMenu() {
-    String portfolioScreen = "1. Examine composition of portfolio\n";
+    String portfolioScreen = "\n1. Examine composition of portfolio\n";
     portfolioScreen += "2. Buy shares of a stock with portfolio.\n";
     portfolioScreen += "3. Get Cost Basis of portfolio\n";
     portfolioScreen += "4. Get Value of portfolio\n";
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
-    portfolioScreen += "Enter R to return to the main menu or q to quit the application.\n";
-    System.out.println(portfolioScreen);
+    portfolioScreen += "6. Apply investment strategy. \n";
+    portfolioScreen += "Enter the number for performing operation, R to return to the main "
+            + "menu or q to quit the application.\n";
+    System.out.print(portfolioScreen);
   }
 
 
@@ -38,8 +40,32 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     String investmentScreen ="\nInvestment Strategies \n";
     investmentScreen += "1. Invest on stocks in portfolio with equal weights.\n";
     investmentScreen += "2. Invest on stocks in portfolio with custom weights.\n";
-    investmentScreen += "Enter R to return to the portfolio menu.\n";
-    System.out.println(investmentScreen);
+    investmentScreen += "Enter the number for performing operation or r to return to the main "
+            + "menu.\n";
+    System.out.print(investmentScreen);
+  }
+
+  @Override
+  public void openStrategyMenu() {
+    String strategyMenu = "\nStrategy Menu\n";
+    strategyMenu += "1. Apply Strategy\n";
+    strategyMenu += "2. Modify strategy\n";
+    strategyMenu += "Enter the number for performing operation or  r to return to the main "
+            + "menu.\n";
+    System.out.print(strategyMenu);
+  }
+
+  @Override
+  public void strategyModificationMenu() {
+    String strategyModMenu = "\nStrategy Preferences\n";
+    strategyModMenu += "1. Add a Stock to strategy. \n";
+    strategyModMenu += "2. Modify weights of stocks for strategy.\n";
+    strategyModMenu += "3. Modify amount of investment for strategy.\n";
+    strategyModMenu += "4. Change frequency of investment for strategy.\n";
+    strategyModMenu += "5. Modify start and end date for investment.\n";
+    strategyModMenu += "Enter the number for performing operation or R to return to the main "
+            + "menu.\n";
+    System.out.println(strategyModMenu);
   }
 
   @Override
@@ -49,32 +75,31 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void displayPortfolioComposition(String key, Double value) {
-    System.out.println(value + " share(s) of "+key+"\n");
+    System.out.println(value + " share(s) of "+key);
   }
 
   @Override
   public void displayPortfolioValue(String date, double stockValue) {
-    System.out.println("The value of the portfolio as of "+ date + " is " + stockValue+"\n");
+    System.out.println("The value of the portfolio as of "+ date + " is $" + stockValue);
   }
 
   @Override
   public void displayPortfolioCostBasis(String date, double stockCostBasis) {
-    System.out.println("The cost basis of the portfolio as of "+ date + " is " + stockCostBasis
-            +"\n");
+    System.out.println("The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis);
   }
 
   @Override
-  public void displayListOfPortfolios(int counter, String key) {
+  public void displayList(int counter, String listItem, String listName) {
     if(counter==1){
-      System.out.println("\nList of Portfolios\n");
+      System.out.println("\nList of "+listName);
     }
-    System.out.println(counter + ": "+key+"\n");
+    System.out.println(counter + ": "+listItem);
   }
 
   @Override
   public String getInput(String message) {
     if(!message.equals("")){
-      System.out.println(message);
+      System.out.print(message);
     }
     if(scan.hasNext()){
       return scan.next();
@@ -86,7 +111,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void promptMessage(String message){
-    System.out.println(message);
+    System.out.print(message);
   }
 
   @Override

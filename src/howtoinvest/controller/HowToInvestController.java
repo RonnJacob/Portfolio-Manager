@@ -1,9 +1,14 @@
 package howtoinvest.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
@@ -76,18 +81,22 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private final IHowToInvestView view;
   private final IManager<StockPortfolio> model;
+  private final IManager<DollarCostAveraging> strategyModel;
+  private String message;
 
   /**
    * Constructor that takes a model & view and sets the instance variables.
    * @param view the class implementing the view of the program.
    * @param model the class implementing the model of the program.
    */
-  public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model) {
+  public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model
+          , IManager<DollarCostAveraging> strategyModel) {
     if (model == null || view == null) {
       throw new IllegalArgumentException("Model or view cannot be a null.");
     }
     this.model = model;
     this.view = view;
+    this.strategyModel = strategyModel;
   }
 
   /**
@@ -146,7 +155,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * Any other input is deemed invalid.
          */
         default:
-          view.promptMessage("Invalid input. Please enter input again.");
+          view.promptMessage("Invalid input. Please enter input again.\n");
           break;
       }
     }
@@ -160,8 +169,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private String openPortfolio() {
     displayPortfolios();
-    String message = "Enter index of Portfolio to open.\n\n";
-    String pfolioName = view.getInput(message);
+    String pfolioName = view.getInput("\nEnter index of Portfolio to open.\n");
     if (pfolioName.equals("")) {
       return "q";
     }
@@ -183,33 +191,22 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         }
         switch (choice.toLowerCase()) {
           /**
-           * If the user input is 1 pertaining to operations for a portfolio, the the first option
-           * for a portfolio which is retrieving the composition of a portfolio is performed.
+           * Option 1 corresponds to retrieving the composition.
            */
           case "1":
-            message = "Enter date in format yyyy-mm-dd: ";
-            String dateToExamine = view.getInput(message);
-            if (dateToExamine.equals("")) {
-              return "q";
-            }
-            HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
-            for (Map.Entry<String, Double> entry : map.entrySet()) {
-              view.displayPortfolioComposition(entry.getKey(), entry.getValue());
-            }
+            message = "Enter date in format yyyy-mm-dd: \n";
+            retrieveComposition(selectedPFolio);
             view.openPortfolioMenu();
             break;
           /**
-           * If the user input is 2 pertaining to operations for a portfolio, the the second option
-           * for a portfolio which is adding a stock/share for a particular date is performed.
+           * Option 2 corresponds to buying a stock/share and adding to the portfolio.
            */
           case "2":
             buyStockShares(selectedPFolio);
             view.openPortfolioMenu();
             break;
           /**
-           * If the user input is 3 pertaining to operations for a portfolio, the the third option
-           * for a portfolio which is retrieving a cost basis/value for a particular date is
-           * performed.
+           * Option 3 corresponds to getting the cost basis for a particular date.
            */
           case "3":
             message = "Enter date in format yyyy-mm-dd: \n";
@@ -217,6 +214,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             view.displayPortfolioCostBasis(date, selectedPFolio.getStockCostBasis(date));
             view.openPortfolioMenu();
             break;
+          /**
+           * Option 4 corresponds to getting the value for a particular date.
+           */
           case "4":
             message = "Enter date in format yyyy-mm-dd: \n";
             date = view.getInput(message);
@@ -225,7 +225,11 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             break;
           case "5":
             message = "\nInvestment Strategies. \n";
-            applyInvestmentStrategy(selectedPFolio);
+            applyInvestment(selectedPFolio);
+            view.openPortfolioMenu();
+            break;
+          case "6":
+            message = applyStrategy(selectedPFolio);
             view.openPortfolioMenu();
             break;
           /**
@@ -233,14 +237,11 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "r":
             return "r";
-          /**
-           * If the user inputs 'q', the user quits from the portfolio manager program.
-           */
           case "q":
             view.quitManager();
             return "q";
           default:
-            view.promptMessage("Invalid input. Please enter input again.");
+            view.promptMessage("Invalid input. Please enter input again.\n");
             break;
         }
       }
@@ -251,7 +252,156 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     return "r";
   }
 
-  private void applyInvestmentStrategy(IPortfolio selectedPFolio) {
+  private String applyStrategy(IPortfolio portfolio) {
+    int counter = 1;
+    for (String portfolioName : strategyModel.getAll()) {
+      view.displayList(counter, portfolioName, "Strategies");
+      counter++;
+    }
+    String strategyChoice = view.getInput("\nEnter index of strategy to apply.\n");
+    if (strategyChoice.equals("")) {
+      return "q";
+    }
+    DollarCostAveraging dcaStrategy;
+    try {
+      /**
+       * Returns 'i' if the portfolio to be opened does not exist.
+       */
+      dcaStrategy = strategyModel.getByIndex(Integer.parseInt(strategyChoice));
+    } catch (IllegalArgumentException ex) {
+      return "i";
+    }
+    view.openStrategyMenu();
+    try {
+      while (true) {
+        String choice = view.getInput("");
+        if (choice.equals("")) {
+          return "q";
+        }
+        switch (choice.toLowerCase()) {
+          case "1":
+            String commisionString = view.getInput("Enter the commission option for the "
+                    + "transaction [l, m, h] \n");
+            try{
+              dcaStrategy.applyStrategy(portfolio,portfolio.getCommission(commisionString));
+            }catch(IllegalArgumentException ex){
+              view.promptMessage(ex.getMessage()+"\n");
+            }
+            view.openStrategyMenu();
+            break;
+          case "2":
+            modificationMenu(portfolio, dcaStrategy);
+            view.openStrategyMenu();
+            break;
+          case "r":
+            return "r";
+          case "q":
+            view.quitManager();
+            return "q";
+          default:
+            view.promptMessage("Invalid input. Please enter input again.\n");
+            break;
+        }
+      }
+
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage(ex.getMessage());
+    }
+    return "r";
+  }
+
+  private String modificationMenu(IPortfolio portfolio, DollarCostAveraging strategyModel) {
+    view.strategyModificationMenu();
+    try {
+      while (true) {
+        String choice = view.getInput("");
+        if (choice.equals("")) {
+          return "q";
+        }
+        switch (choice) {
+          case "1":
+            addStocksToStrategy(portfolio, strategyModel);
+            view.strategyModificationMenu();
+            break;
+          case "2":
+            modifyWeights(strategyModel);
+            view.strategyModificationMenu();
+            break;
+          case "3":
+            Double amount = Double.parseDouble(view.getInput("Enter new amount for investing of "
+                    + "strategy.\n"));
+            strategyModel.setAmount(amount);
+            view.strategyModificationMenu();
+            break;
+          case "4":
+            int days = Integer.parseInt(view.getInput("Enter frequency \n"));
+            strategyModel.setFrequency(days);
+            view.strategyModificationMenu();
+            break;
+          case "5":
+            String startDate = view.getInput("Enter start date for investing of strategy.\n");
+            String endDate = view.getInput("Enter end date for investing of strategy.\n");
+            strategyModel.setTimeRange(startDate, endDate);
+            view.strategyModificationMenu();
+            break;
+          case "r":
+            return "r";
+          case "q":
+            view.quitManager();
+            return "q";
+          default:
+            view.promptMessage("Invalid input. Please enter input again.\n");
+            break;
+        }
+      }
+
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage(ex.getMessage());
+    }
+    return "r";
+  }
+
+  private void addStocksToStrategy(IPortfolio portfolio, DollarCostAveraging strategyModel) {
+    List<String> stocks = new LinkedList<>();
+    do {
+      try {
+
+        String tickerSymbol = view.getInput("Enter a stock name (ticker symbol) to add to "
+                + "the strategy: \n");
+        stocks.add(tickerSymbol);
+      } catch (IllegalArgumentException ex) {
+        view.promptMessage(ex.getMessage());
+      }
+      view.promptMessage("Add more stocks? (Y/N)\n");
+    }
+    while (view.getInput("").equalsIgnoreCase("y"));
+    if(stocks.size()==1){
+      strategyModel.addStockToStrategy(stocks.get(0));
+    }else{
+      strategyModel.addMultipleStocksToStrategy(stocks);
+    }
+  }
+
+  private void modifyWeights(DollarCostAveraging strategyModel) {
+    List<String> stocks = strategyModel.getStocks();
+    TreeMap<String, Double> weights = new TreeMap<>();
+    for (String stock : stocks) {
+      Double weight = Double.parseDouble(view.getInput("Enter weight for "+ stock
+              +" : \n"));
+      weights.put(stock, weight);
+    }
+  }
+
+
+  private void retrieveComposition(IPortfolio selectedPFolio) {
+    String dateToExamine = view.getInput(message);
+    HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
+    for (Map.Entry<String, Double> entry : map.entrySet()) {
+      view.displayPortfolioComposition(entry.getKey(), entry.getValue());
+    }
+  }
+
+  private void applyInvestment(IPortfolio selectedPFolio) {
     view.openInvestmentMenu();
     while(true){
       switch (view.getInput("").toLowerCase()) {
@@ -263,20 +413,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                   + "[l, m, h]:\n");
           selectedPFolio.invest(amount, new TreeMap<>(),true, date
                   , selectedPFolio.getCommission(commision));
-          view.openPortfolioMenu();
+          view.openInvestmentMenu();
           break;
         case "2":
           investWithCustomWeights(selectedPFolio);
-          view.openPortfolioMenu();
+          view.openInvestmentMenu();
           break;
         case "r":
           return;
         default:
-          view.promptMessage("Invalid input. Please enter input again.");
+          view.promptMessage("Invalid input. Please enter input again.\n");
           break;
       }
     }
-
   }
 
   private void investWithCustomWeights(IPortfolio selectedPFolio) {
@@ -325,14 +474,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * Adds share and prompts a message specifying the number of shares bought for that amount.
          */
         view.promptMessage(selectedPFolio.addStock(stockName, amount, date
-                , commission) +" share(s) of "+stockName + " bought on "+date);
+                , commission) +" share(s) of "+stockName + " bought on "+date+"\n");
       } catch (IllegalArgumentException ex) {
         view.promptMessage(ex.getMessage());
       }
       /**
        * Add more shares to the portfolio manager object.
        */
-      view.promptMessage("Buy more shares? (Y/N)");
+      view.promptMessage("Buy more shares? (Y/N)\n");
     }
     while (view.getInput("").equalsIgnoreCase("y"));
   }
@@ -345,7 +494,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void displayPortfolios() {
     int counter = 1;
     for (String portfolioName : model.getAll()) {
-      view.displayListOfPortfolios(counter, portfolioName);
+      view.displayList(counter, portfolioName, "Portfolios");
       counter++;
     }
   }
@@ -357,17 +506,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void addPortfoliosToManager() {
     do {
       try {
-        String message = "Enter the name of the portfolio to be created\n";
-        String nameOfPortfolio = view.getInput(message);
+        String nameOfPortfolio = view.getInput("Enter the name of the portfolio to be created\n");
         model.create(nameOfPortfolio);
-        view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.");
+        view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.\n");
       } catch (IllegalArgumentException ex) {
-        view.promptMessage("Portfolio with that name exists");
+        view.promptMessage("Portfolio with that name exists\n");
       }
       /**
        * Add more portfolios if need be.
        */
-      view.promptMessage("Add more portfolios? (Y/N)");
+      view.promptMessage("Add more portfolios? (Y/N)\n");
     }
     while (view.getInput("").equalsIgnoreCase("y"));
   }

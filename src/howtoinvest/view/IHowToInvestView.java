@@ -21,6 +21,8 @@ public interface IHowToInvestView {
    */
   void openPortfolioMenu();
 
+  void strategyModificationMenu();
+
   /**
    * Displays an appropriate message for quitting the application/program.
    */
@@ -52,7 +54,7 @@ public interface IHowToInvestView {
    * @param counter the index of the portfolio.
    * @param portfolioName the name of the portfolio present in the portfolio manager.
    */
-  void displayListOfPortfolios(int counter, String portfolioName);
+  void displayList(int counter, String portfolioName, String listName);
 
   /**
    * Returns an input string which would be a choice input by the user.
@@ -75,4 +77,6 @@ public interface IHowToInvestView {
   String[] getShareBuyDetails();
 
   void openInvestmentMenu();
+
+  void openStrategyMenu();
 }

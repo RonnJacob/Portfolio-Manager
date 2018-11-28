@@ -1,6 +1,8 @@
 package howtoinvest;
 
 import howtoinvest.controller.HowToInvestController;
+import howtoinvest.model.DollarCostAveraging;
+import howtoinvest.model.DollarCostAveragingStrategyManager;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.model.StockPortfolioManager;
@@ -26,6 +28,8 @@ public class Main {
      */
     IManager<StockPortfolio> portfolioManager = new StockPortfolioManager();
 
+    IManager<DollarCostAveraging> strategyManager = new DollarCostAveragingStrategyManager();
+
     /**
      * Creation of IHowToInvestView object which would be the view of the program.
      */
@@ -35,7 +39,8 @@ public class Main {
     /**
      * Controller is given the control with the above model as the argument.
      */
-    new HowToInvestController<>(howToInvestView, portfolioManager).openPortfolioManager();
+    new HowToInvestController<>(howToInvestView, portfolioManager, strategyManager)
+            .openPortfolioManager();
 
 
   }
