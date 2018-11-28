@@ -1,14 +1,21 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 
+import howtoinvest.controller.HowToInvestController;
+import howtoinvest.controller.IHowToInvestController;
 import howtoinvest.view.HowToInvestViewImpl;
 import howtoinvest.view.IHowToInvestView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class HowToInvestViewTest {
   private String expected = "";
@@ -299,4 +306,67 @@ public class HowToInvestViewTest {
       assertEquals(buyDetails[0], inputs[0]);
     }
   }
-}
+
+  @Test
+  public void checkViewWithInvalidReadableAppendable() {
+    /**
+     * Null Readable.
+     */
+    Reader stringReader;
+    String expected = "Invalid Readable or Appendable object";
+    StringWriter out = new StringWriter();
+    stringReader = null;
+    try {
+      view = new HowToInvestViewImpl(stringReader, out);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals(expected, ex.getMessage());
+    }
+
+    /**
+     * Null Appendable.
+     */
+    stringReader = new StringReader("");
+    out = null;
+    try {
+      view = new HowToInvestViewImpl(stringReader, out);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      expected = "Invalid Readable or Appendable object";
+      assertEquals(expected, ex.getMessage());
+    }
+
+    /**
+     * Null Appendable and Readable.
+     */
+    stringReader = null;
+    out = null;
+    try {
+      view = new HowToInvestViewImpl(stringReader, out);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      expected = "Invalid Readable or Appendable object";
+      assertEquals(expected, ex.getMessage());
+    }
+  }
+
+    @Test
+  public void checkViewAppendableException() throws IOException {
+    String s = "";
+    s += "3 1 2 AAPL 100 2018-10-10 y GOOG 20 2018-10-10 n q";
+    Reader stringReader = new StringReader(s);
+    File file = new File("Hello1.txt");
+    FileWriter out = new FileWriter(file);
+    StringBuilder log = new StringBuilder();
+    MockPortfolioManagerOne model = new MockPortfolioManagerOne(log);
+    IHowToInvestView view = new HowToInvestViewImpl(stringReader, out);
+    out.close();
+    try {
+      view.getInput("Hello");
+      fail();
+    } catch (IllegalStateException ex) {
+      assertEquals("IO exception has been encountered.", ex.getMessage());
+    }
+  }
+
+  }

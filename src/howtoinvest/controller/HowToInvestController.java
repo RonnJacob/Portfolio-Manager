@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import howtoinvest.model.DollarCostAveraging;
+import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
@@ -91,7 +92,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model
           , IManager<DollarCostAveraging> strategyModel) {
-    if (model == null || view == null) {
+    if (model == null || view == null|| strategyModel==null) {
       throw new IllegalArgumentException("Model or view cannot be a null.");
     }
     this.model = model;
@@ -169,7 +170,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private String openPortfolio() {
     displayPortfolios();
-    String pfolioName = view.getInput("\nEnter index of Portfolio to open.\n");
+    String pfolioName = view.getInput("\nEnter index of Portfolio to open.");
     if (pfolioName.equals("")) {
       return "q";
     }
@@ -262,7 +263,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     if (strategyChoice.equals("")) {
       return "q";
     }
-    DollarCostAveraging dcaStrategy;
+//    DollarCostAveraging dcaStrategy;
+    IInvestmentStrategy<IPortfolio> dcaStrategy;
     try {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
@@ -320,7 +322,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       view.promptMessage("No stocks in portfolio to apply strategy.\n");
     }
     for (Map.Entry<Date,  HashMap<String, Double>> entry : strategyApplied.entrySet()) {
-      view.promptMessage("\n"+simpleDateFormat.format(entry.getKey())+"\n");
+      if(entry.getValue().entrySet().size()!=0){
+        view.promptMessage("\n"+simpleDateFormat.format(entry.getKey())+"\n");
+      }
       for(HashMap.Entry<String, Double> stock: entry.getValue().entrySet()){
         String message = String.format("%.2f shares of %s bought.\n", stock.getValue()
                 , stock.getKey());
@@ -329,7 +333,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
-  private String modificationMenu(IPortfolio portfolio, DollarCostAveraging strategyModel) {
+  private String modificationMenu(IPortfolio portfolio, IInvestmentStrategy<IPortfolio>  strategyModel) {
     view.strategyModificationMenu();
     try {
       while (true) {
@@ -380,7 +384,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     return "r";
   }
 
-  private void addStocksToStrategy(IPortfolio portfolio, DollarCostAveraging strategyModel) {
+  private void addStocksToStrategy(IPortfolio portfolio, IInvestmentStrategy<IPortfolio>  strategyModel) {
     List<String> stocks = new LinkedList<>();
     do {
       try {
@@ -401,7 +405,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
-  private void modifyWeights(DollarCostAveraging strategyModel) {
+  private void modifyWeights(IInvestmentStrategy<IPortfolio>  strategyModel) {
     List<String> stocks = strategyModel.getStocks();
     TreeMap<String, Double> weights = new TreeMap<>();
     for (String stock : stocks) {
@@ -409,6 +413,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
               +" : \n"));
       weights.put(stock, weight);
     }
+    strategyModel.setWeights(weights);
   }
 
 
@@ -432,6 +437,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                   + "[l, m, h]:\n");
           selectedPFolio.invest(amount, new TreeMap<>(),true, date
                   , selectedPFolio.getCommission(commision));
+
           view.openInvestmentMenu();
           break;
         case "2":
@@ -453,17 +459,26 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     String commision = view.getInput("Enter the commission option for the transaction "
             + "[l, m, h]:\n");
     HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
-    TreeMap<String, Double> weights = new TreeMap<>();
-    for (Map.Entry<String, Double> entry : map.entrySet()) {
-      Double weight = Double.parseDouble(view.getInput("Enter weight for "+ entry.getKey()
-              +" : \n"));
-      weights.put(entry.getKey(), weight);
+    if(map.size()!=0){
+      TreeMap<String, Double> weights = new TreeMap<>();
+      for (Map.Entry<String, Double> entry : map.entrySet()) {
+        Double weight = Double.parseDouble(view.getInput("Enter weight for "+ entry.getKey()
+                +" : \n"));
+        weights.put(entry.getKey(), weight);
+      }
+      try{
+        HashMap<String, Double> investments = selectedPFolio.invest(amount, weights,
+                false, date, selectedPFolio.getCommission(commision));
+        for(Map.Entry<String, Double> investment: investments.entrySet()){
+          view.promptMessage(investment.getValue() + " share(s) of "+investment.getKey() +" on "
+                  + date);
+        }
+      } catch(IllegalStateException ex){
+        view.promptMessage(ex.getMessage());
+      }
     }
-    try{
-      selectedPFolio.invest(amount, weights, false, date
-              , selectedPFolio.getCommission(commision));
-    } catch(IllegalStateException ex){
-      view.promptMessage(ex.getMessage());
+    else{
+      view.promptMessage("No stocks present in the portfolio.\n");
     }
   }
 
@@ -526,6 +541,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     do {
       try {
         String nameOfPortfolio = view.getInput("Enter the name of the portfolio to be created\n");
+        if(nameOfPortfolio.equals("")){
+          return;
+        }
         model.create(nameOfPortfolio);
         view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.\n");
       } catch (IllegalArgumentException ex) {
