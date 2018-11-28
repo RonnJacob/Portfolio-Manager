@@ -34,7 +34,7 @@ public interface IStock {
    * @param date the date for which we want to retrieve stock cost basis which is of yyyy-mm-dd
    *             pattern in string format.
    * @return the total cost basis of the stock of a company at a particular input date of format
-   *         yyyy-mm-dd.
+   * yyyy-mm-dd.
    * @throws IllegalArgumentException if the cost basis cannot be fetched for the given date.
    */
   double getStockCostBasis(String date);
@@ -52,11 +52,12 @@ public interface IStock {
   /**
    * Adding shares to a particular stock of a company worth an input amount. for a particular date
    * of format yyyy-mm-dd and returns a string mentioning the number of shares bought for the amount
-   * for that particular date.
+   * for that particular date with a commission fee.
    *
-   * @param amount the amount for which shares of a company are to be bought.
-   * @param date   the date for which we want to add the share that was bought which is of
-   *               yyyy-mm-dd pattern in string format.
+   * @param amount     the amount for which shares of a company are to be bought.
+   * @param date       the date for which we want to add the share that was bought which is of
+   *                   yyyy-mm-dd pattern in string format.
+   * @param commission the commission amount.
    * @return a string that mentions the number of shares bought for the input amount.
    * @throws IllegalArgumentException if shares cannot be bought successfully for a particular
    *                                  company.
@@ -68,7 +69,7 @@ public interface IStock {
    * total value of the stock up until the current time.
    *
    * @return the stock data in the form of a string which would be the total cost basis and the
-   *         total value of the stock up until the current time.
+   * total value of the stock up until the current time.
    */
   double getShares(String date);
 }
