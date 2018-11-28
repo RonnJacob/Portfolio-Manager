@@ -27,8 +27,19 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "2. Buy shares of a stock with portfolio.\n";
     portfolioScreen += "3. Get Cost Basis of portfolio\n";
     portfolioScreen += "4. Get Value of portfolio\n";
+    portfolioScreen += "5. Invest on stocks in portfolio. \n";
     portfolioScreen += "Enter R to return to the main menu or q to quit the application.\n";
     System.out.println(portfolioScreen);
+  }
+
+
+  @Override
+  public void openInvestmentMenu() {
+    String investmentScreen ="\nInvestment Strategies \n";
+    investmentScreen += "1. Invest on stocks in portfolio with equal weights.\n";
+    investmentScreen += "2. Invest on stocks in portfolio with custom weights.\n";
+    investmentScreen += "Enter R to return to the portfolio menu.\n";
+    System.out.println(investmentScreen);
   }
 
   @Override
@@ -87,10 +98,11 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     buyDetails[1] = scan.next();
     System.out.println("Enter date in format yyyy-mm-dd: \n");
     buyDetails[2] = scan.next();
-    System.out.println("Enter the commission for the transaction: \n");
+    System.out.println("Enter the commission option for the transaction [l, m, h] \n");
     buyDetails[3] = scan.next();
     return buyDetails;
   }
+
 
 
 }

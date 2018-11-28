@@ -74,4 +74,5 @@ public interface IHowToInvestView {
    */
   String[] getShareBuyDetails();
 
+  void openInvestmentMenu();
 }
