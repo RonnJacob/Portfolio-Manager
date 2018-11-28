@@ -15,7 +15,6 @@ import static org.junit.Assert.fail;
 public class StockPortfolioTest {
 
   private StockPortfolio portfolio;
-  private TreeMap<String, Double> weights;
 
   @Test
   public void TestValidPortfolioCreation() {
@@ -880,7 +879,8 @@ public class StockPortfolioTest {
   @Test
   public void TestInvestInvalid() {
     portfolio = new StockPortfolio();
-    weights = new TreeMap<>();
+
+    TreeMap<String, Double> weights = new TreeMap<>();
 
     weights.put("FB", 25.0);
     weights.put("MSFT", 75.0);
@@ -1027,6 +1027,5 @@ public class StockPortfolioTest {
 
     assertEquals(4166.66, portfolio.getStockCostBasis("2018-11-11"), 0.01);
     assertEquals(5217.29, portfolio.getStockValue("2018-11-11"), 0.01);
-
   }
 }
