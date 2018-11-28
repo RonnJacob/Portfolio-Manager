@@ -31,6 +31,17 @@ import java.util.TreeMap;
  * stock (money spent buying it) is called the cost basis of the purchase. The value of the stock on
  * a particular day is the money the investor would receive if he/she sold the stock on that day.
  * </li>
+ * <li>
+ * Gets commission fees based on a string input. The commission fees can be set in commission.csv by
+ * specifying low,medium,high values. If the string input is l,m or h(case insensitive) it picks its
+ * corresponding commission from the file or custom commission values can be given by a non negative
+ * number in the input string.
+ * </li>
+ * <li>
+ * Invest a fixed amount into an existing portfolio containing multiple stocks, using a specified
+ * weight for each stock in the portfolio. We can specify different weights or equal weights. A
+ * hashmap of stocks with their corresponding weights can be given for the portfolio to invest in.
+ * </li>
  * </ul>
  */
 public class StockPortfolio implements IPortfolio<Stock> {
@@ -99,8 +110,8 @@ public class StockPortfolio implements IPortfolio<Stock> {
    *
    * @param stock  the stock that is to be added to the portfolio
    * @param amount the amount for which the stock has to be added to the portfolio.
-   * @throws IllegalArgumentException if the stock ticker symbol, amount or date or
-   *                                  commission is invalid.
+   * @throws IllegalArgumentException if the stock ticker symbol, amount or date or commission is
+   *                                  invalid.
    */
   @Override
   public double addStock(String stock, double amount, String date, double commission)
@@ -118,6 +129,15 @@ public class StockPortfolio implements IPortfolio<Stock> {
     return sharesBought;
   }
 
+  /**
+   * Retrieves the commission value based on the string input.If the string input is l,m or h(case
+   * insensitive) it picks its corresponding commission from commission.csv or custom commission
+   * values if the input string is a non negative number.
+   *
+   * @param commission input commission string.
+   * @return commission value.
+   * @throws IllegalArgumentException invalid inputs.
+   */
   @Override
   public double getCommission(String commission) throws IllegalArgumentException {
     if (commission.equalsIgnoreCase("l") || commission.equalsIgnoreCase("m")
@@ -139,7 +159,13 @@ public class StockPortfolio implements IPortfolio<Stock> {
     }
   }
 
-  private double[] getCommissionFromFile() {
+  /**
+   * Returns the commission values in commission.csv in an array.
+   *
+   * @return array of commission values.
+   * @throws IllegalArgumentException if commission values cannot be fetched from the file.
+   */
+  private double[] getCommissionFromFile() throws IllegalArgumentException {
     /**
      * Initializing a scanner object for reading the .csv file.
      */
@@ -162,10 +188,24 @@ public class StockPortfolio implements IPortfolio<Stock> {
     }
   }
 
+  /**
+   * Invest a fixed amount into an existing portfolio containing multiple stocks, using a specified
+   * weight for each stock in the given hashmap of stocks and their weights. Buys shares for all
+   * valid transactions. Returns a hashmap with the all the stocks and the number of shares bought
+   * for each of them.
+   *
+   * @param amount       amount to be invested.
+   * @param weights      stocks with their corresponding weights.
+   * @param equalWeights flag to determine if the weights should be equal.
+   * @param date         date to invest.
+   * @param commission   commission fees.
+   * @return a hashmap with the all the stocks and the number of shares bought for each of them.
+   * @throws IllegalArgumentException if the weights are invalid.
+   */
   @Override
-  public HashMap<String, Double> invest
-          (double amount, TreeMap<String, Double> weights,
-           boolean equalWeights, String date, double commission) throws IllegalStateException {
+  public HashMap<String, Double> invest(double amount, TreeMap<String, Double> weights,
+                                        boolean equalWeights, String date, double commission)
+          throws IllegalArgumentException {
     HashMap<String, Double> investments = new HashMap<>();
     if (equalWeights) {
       double equalAmount = amount / this.portfolio.size();
@@ -176,6 +216,7 @@ public class StockPortfolio implements IPortfolio<Stock> {
           /**
            * Continue adding stocks even if one of the addition fails.
            */
+          investments.put(key, 0.0);
         }
       }
     } else {
@@ -194,6 +235,12 @@ public class StockPortfolio implements IPortfolio<Stock> {
     return investments;
   }
 
+  /**
+   * Throws an exception if the sum off all the weights do not amount to 100.
+   *
+   * @param weights hashmap of stocks and their corresponding weights.
+   * @throws IllegalArgumentException if the input weights is null
+   */
   private void validWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
     if (weights == null) {
       throw new IllegalArgumentException("Invalid weights");
