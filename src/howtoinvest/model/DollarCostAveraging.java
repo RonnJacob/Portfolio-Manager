@@ -143,15 +143,20 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
   }
 
   @Override
-  public void applyStrategy(IPortfolio portfolio, double commission)
+  public TreeMap<Date, HashMap<String, Double>> applyStrategy(IPortfolio portfolio,
+                                                              double commission)
           throws IllegalArgumentException {
+    TreeMap<Date, HashMap<String, Double>> investmentsByDate = new TreeMap<>();
     LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(frequency)) {
       Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
       Date currentDate = parseDate(Date.from(instant).toString());
-      portfolio.invest(amount, stockWeights, false, currentDate.toString(), commission);
+      investmentsByDate.put(currentDate,
+              portfolio.invest(amount, stockWeights, false, currentDate.toString(),
+                      commission));
     }
+    return investmentsByDate;
   }
 }

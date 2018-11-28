@@ -176,7 +176,6 @@ public class StockPortfolio implements IPortfolio<Stock> {
           /**
            * Continue adding stocks even if one of the addition fails.
            */
-          investments.put(key, 0.0);
         }
       }
     } else {

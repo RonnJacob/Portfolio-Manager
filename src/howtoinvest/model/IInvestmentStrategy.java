@@ -1,5 +1,7 @@
 package howtoinvest.model;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -19,5 +21,5 @@ public interface IInvestmentStrategy<K> {
 
   void setTimeRange(String begDate, String endDate);
 
-  void applyStrategy(K portfolio, double commission);
+  TreeMap<Date, HashMap<String, Double>> applyStrategy(K portfolio, double commission);
 }
