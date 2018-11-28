@@ -1,4 +1,5 @@
 package howtoinvest.view;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -9,16 +10,22 @@ import java.util.Scanner;
  */
 public class HowToInvestViewImpl implements IHowToInvestView {
 
-  private final Scanner scan= new Scanner(System.in);
 
+  private final Readable in;
+  private final Appendable out;
+
+  public HowToInvestViewImpl(Readable in, Appendable out) {
+    this.in = in;
+    this.out = out;
+  }
   @Override
   public void openHomeScreen() {
     String homeScreen = "\nWelcome to Portfolio Manager.\n";
     homeScreen += "1. Create new portfolio.\n";
     homeScreen += "2. Get existing portfolios.\n";
     homeScreen += "3. Enter portfolio.\n";
-    homeScreen += "Enter the number for performing operation or q to quit application.\n";
-    System.out.print(homeScreen);
+    homeScreen += "Enter the number for performing operation or q to quit application.";
+    promptMessage(homeScreen);
   }
 
   @Override
@@ -30,8 +37,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
     portfolioScreen += "6. Apply investment strategy. \n";
     portfolioScreen += "Enter the number for performing operation, r to return to the main "
-            + "menu or q to quit the application.\n";
-    System.out.print(portfolioScreen);
+            + "menu or q to quit the application.";
+    promptMessage(portfolioScreen);
   }
 
 
@@ -41,8 +48,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     investmentScreen += "1. Invest on stocks in portfolio with equal weights.\n";
     investmentScreen += "2. Invest on stocks in portfolio with custom weights.\n";
     investmentScreen += "Enter the number for performing operation or r to return to the main "
-            + "menu.\n";
-    System.out.print(investmentScreen);
+            + "menu.";
+    promptMessage(investmentScreen);
   }
 
   @Override
@@ -51,8 +58,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyMenu += "1. Apply Strategy\n";
     strategyMenu += "2. Modify strategy\n";
     strategyMenu += "Enter the number for performing operation or r to return to the main "
-            + "menu.\n";
-    System.out.print(strategyMenu);
+            + "menu.";
+    promptMessage(strategyMenu);
   }
 
   @Override
@@ -64,45 +71,51 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyModMenu += "4. Change frequency of investment for strategy.\n";
     strategyModMenu += "5. Modify start and end date for investment.\n";
     strategyModMenu += "Enter the number for performing operation or r to return to the main "
-            + "menu.\n";
-    System.out.println(strategyModMenu);
+            + "menu.";
+    promptMessage(strategyModMenu);
   }
 
   @Override
   public void quitManager(){
-    System.out.print("Quitting manager\n");
+    promptMessage("Quitting manager");
   }
 
   @Override
   public void displayPortfolioComposition(String key, Double value) {
-    System.out.println(value + " share(s) of "+key);
+    promptMessage(value + " share(s) of "+key);
   }
 
   @Override
   public void displayPortfolioValue(String date, double stockValue) {
-    System.out.println("The value of the portfolio as of "+ date + " is $" + stockValue);
+    promptMessage("The value of the portfolio as of "+ date + " is $" + stockValue);
   }
 
   @Override
   public void displayPortfolioCostBasis(String date, double stockCostBasis) {
-    System.out.println("The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis);
+    promptMessage("The cost basis of the portfolio as of "+ date + " is $" + stockCostBasis);
+
   }
 
   @Override
   public void displayList(int counter, String listItem, String listName) {
     if(counter==1){
-      System.out.println("\nList of "+listName);
+      promptMessage("\nList of "+listName);
     }
-    System.out.println(counter + ": "+listItem);
+    promptMessage(counter + ": "+listItem);
   }
 
   @Override
   public String getInput(String message) {
+    Scanner scan = new Scanner(this.in);
     if(!message.equals("")){
-      System.out.print(message);
+      promptMessage(message);
     }
     if(scan.hasNext()){
-      return scan.next();
+      String input = scan.next();
+      if(input == null){
+        return "";
+      }
+      return input;
     }
     else{
       return "";
@@ -111,19 +124,24 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public void promptMessage(String message){
-    System.out.print(message);
+    try {
+      this.out.append(String.format("%s\n", message));
+    } catch (IOException ex) {
+      throw new IllegalStateException("IO exception has been encountered.");
+    }
   }
 
   @Override
   public String[] getShareBuyDetails() {
+    Scanner scan = new Scanner(this.in);
     String[] buyDetails = new String[4];
-    System.out.println("Enter stock symbol:\n");
+    promptMessage("Enter stock symbol:\n");
     buyDetails[0] = scan.next();
-    System.out.println("Enter amount for which shares are to be bought:\n");
+    promptMessage("Enter amount for which shares are to be bought:\n");
     buyDetails[1] = scan.next();
-    System.out.println("Enter date in format yyyy-mm-dd: \n");
+    promptMessage("Enter date in format yyyy-mm-dd: \n");
     buyDetails[2] = scan.next();
-    System.out.println("Enter the commission option for the transaction [l, m, h] \n");
+    promptMessage("Enter the commission option for the transaction [l, m, h] \n");
     buyDetails[3] = scan.next();
     return buyDetails;
   }

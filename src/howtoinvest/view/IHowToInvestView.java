@@ -16,11 +16,19 @@ public interface IHowToInvestView {
 
   /**
    * Displays the menu and options for a portfolio. The options for a portfolio would include buying
-   * a share/stock, getting the cost basis/value of the portfolio as of a particular date and
-   * getting the composition of the portfolio,
+   * a share/stock, getting the cost basis/value of the portfolio as of a particular date, getting
+   * the composition of the portfolio, investing on stocks in portfolio and applying investment
+   * strategies to the portfolio.
    */
   void openPortfolioMenu();
 
+
+  /**
+   * Displays the menu and operations for the chosen strategy which would allow the user to add a
+   * stock to the strategy, modifying the weights of stock for the selected strategy, modifying the
+   * weights of stocks for the strategy, changing the frequency of investment of the strategy and
+   * modifying the start and end date for investment.
+   */
   void strategyModificationMenu();
 
   /**
@@ -50,7 +58,7 @@ public interface IHowToInvestView {
   void displayPortfolioCostBasis(String date, double stockCostBasis);
 
   /**
-   * Displays the list of portfolios present in the portfolio manager.
+   * Displays the list with .
    * @param counter the index of the portfolio.
    * @param portfolioName the name of the portfolio present in the portfolio manager.
    */
@@ -76,7 +84,16 @@ public interface IHowToInvestView {
    */
   String[] getShareBuyDetails();
 
+  /**
+   * Displays the menu and options for investing on a particular strategy. The options would include
+   * investing on stocks in a portfolio with either each stock having equal weights or letting the
+   * user select custom weights for the stocks in the portfolio.
+   */
   void openInvestmentMenu();
 
+  /**
+   * Displays the menu and operations for the chosen strategy which would be either applying the
+   * strategy for the portfolio or modifying the strategy.
+   */
   void openStrategyMenu();
 }

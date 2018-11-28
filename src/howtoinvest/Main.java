@@ -1,5 +1,7 @@
 package howtoinvest;
 
+import java.io.InputStreamReader;
+
 import howtoinvest.controller.HowToInvestController;
 import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.DollarCostAveragingStrategyManager;
@@ -24,16 +26,22 @@ public class Main {
   public static void main(String[] args) {
 
     /**
-     * Creation of PortfolioManager object which would be the model of the program.
+     * Creation of PortfolioManager object which would behave as model of the program that would
+     * manage portfolios and portfolio related operations.
      */
     IManager<StockPortfolio> portfolioManager = new StockPortfolioManager();
 
+    /**
+     * Creation of the strategy manager object which would behave as a model which would
+     * independently deal with strategy related operations for portfolios.
+     */
     IManager<DollarCostAveraging> strategyManager = new DollarCostAveragingStrategyManager();
 
     /**
      * Creation of IHowToInvestView object which would be the view of the program.
      */
-    IHowToInvestView howToInvestView = new HowToInvestViewImpl();
+    IHowToInvestView howToInvestView =
+            new HowToInvestViewImpl(new InputStreamReader(System.in), System.out);
 
 
     /**
