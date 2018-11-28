@@ -15,9 +15,15 @@ public class HowToInvestViewImpl implements IHowToInvestView {
   private final Readable in;
   private final Appendable out;
 
+  private Scanner scan;
+
   public HowToInvestViewImpl(Readable in, Appendable out) {
+    if(in == null || out == null){
+      throw new IllegalArgumentException("Invalid Readable or Appendable object");
+    }
     this.in = in;
     this.out = out;
+    scan = new Scanner(this.in);
   }
 
   @Override
@@ -108,8 +114,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public String getInput(String message) {
-    Scanner scan = new Scanner(this.in);
-    if (!message.equals("")) {
+    if(!message.equals("")){
       promptMessage(message);
     }
     if (scan.hasNext()) {
@@ -134,7 +139,6 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public String[] getShareBuyDetails() {
-    Scanner scan = new Scanner(this.in);
     String[] buyDetails = new String[4];
     promptMessage("Enter stock symbol:\n");
     buyDetails[0] = scan.next();
