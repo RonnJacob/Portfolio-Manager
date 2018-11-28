@@ -108,6 +108,5 @@ public class ShareTest {
     copy.addStock("googl", 1000, "2018-11-11", 1);
     System.out.println(s);
     System.out.println(copy);
-
   }
 }

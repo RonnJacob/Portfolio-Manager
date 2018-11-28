@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -144,10 +143,13 @@ public class Stock implements IStock {
   @Override
   public double addShare(double amount, String date, double commission) throws IllegalArgumentException {
     /**
-     * Amount for which shares are to be added cannot be negative or zero.
+     * Amount for which shares are to be added cannot be negative.
      */
     if (amount < 0) {
       throw new IllegalArgumentException("Invalid amount");
+    }
+    if (commission < 0) {
+      throw new IllegalArgumentException("Invalid commission");
     }
     double sharePrice;
     Date shareDate = convertToDate(date);

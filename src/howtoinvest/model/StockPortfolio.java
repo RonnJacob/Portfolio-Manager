@@ -2,7 +2,6 @@ package howtoinvest.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -96,26 +95,12 @@ public class StockPortfolio implements IPortfolio<Stock> {
   }
 
   /**
-   * Returns the cost basis and the value of the portfolio for a given date as string in a specific
-   * format: Total portfolio cost basis = x \n Total portfolio value = y where x and y are the
-   * portfolios cost basis and the value.
-   *
-   * @param date date for which the cost basis and the value have to be calculated.
-   * @return the cost basis and the value of the portfolio for a given date.
-   */
-//  @Override
-//  public String getStockCostBasisAndStockValue(String date) {
-//    String s = String.format("Total portfolio cost basis = %.2f\n", getStockCostBasis(date));
-//    s += String.format("Total portfolio value = %.2f", getStockValue(date));
-//    return s;
-//  }
-
-  /**
    * Adds a stock to the portfolio.
    *
    * @param stock  the stock that is to be added to the portfolio
    * @param amount the amount for which the stock has to be added to the portfolio.
-   * @throws IllegalArgumentException if the stock ticker symbol, amount or date is invalid.
+   * @throws IllegalArgumentException if the stock ticker symbol, amount or date or
+   *                                  commission is invalid.
    */
   @Override
   public double addStock(String stock, double amount, String date, double commission)

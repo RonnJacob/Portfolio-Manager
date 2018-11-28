@@ -66,15 +66,14 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
   }
 
   @Override
-  public void addStockToStrategy(String tickerSymbol) throws IllegalArgumentException {
+  public void addStockToStrategy(String tickerSymbol) {
     if (!isStockInStrategy(tickerSymbol)) {
       this.stockWeights.put(tickerSymbol, 0.0);
     }
   }
 
   @Override
-  public void addMultipleStocksToStrategy(List<String> tickerSymbolList)
-          throws IllegalArgumentException {
+  public void addMultipleStocksToStrategy(List<String> tickerSymbolList) {
     for (String tickerSymbol : tickerSymbolList) {
       if (!isStockInStrategy(tickerSymbol)) {
         this.stockWeights.put(tickerSymbol, 0.0);
@@ -109,7 +108,7 @@ public class DollarCostAveraging implements IInvestmentStrategy<StockPortfolio> 
 
   @Override
   public void setAmount(double amount) {
-    if (amount < 0) {
+    if (amount <= 0) {
       throw new IllegalArgumentException("Invalid amount");
     }
     this.amount = amount;
