@@ -11,8 +11,8 @@ import java.util.TreeMap;
  * your investment at a given date in Dollars. Also gives you the functionality to add an investment
  * by buying stocks with commission.Commission fees are charged by the brokerage service that an
  * investor typically use to buy and sell stocks. These fees are usually charged per
- * transaction.Also gives the functionality to Invest a fixed amount into an existing portfolio containing multiple stocks, using a
- * specified weight for each stock in the portfolio.
+ * transaction.Also gives the functionality to Invest a fixed amount into an existing portfolio
+ * containing multiple stocks, using a specified weight for each stock in the portfolio.
  *
  * @param <K> the type of the data of the portfolio.
  */
