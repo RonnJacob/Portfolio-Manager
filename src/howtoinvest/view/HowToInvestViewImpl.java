@@ -29,7 +29,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "4. Get Value of portfolio\n";
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
     portfolioScreen += "6. Apply investment strategy. \n";
-    portfolioScreen += "Enter the number for performing operation, R to return to the main "
+    portfolioScreen += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.\n";
     System.out.print(portfolioScreen);
   }
@@ -50,7 +50,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     String strategyMenu = "\nStrategy Menu\n";
     strategyMenu += "1. Apply Strategy\n";
     strategyMenu += "2. Modify strategy\n";
-    strategyMenu += "Enter the number for performing operation or  r to return to the main "
+    strategyMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.\n";
     System.out.print(strategyMenu);
   }
@@ -63,7 +63,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyModMenu += "3. Modify amount of investment for strategy.\n";
     strategyModMenu += "4. Change frequency of investment for strategy.\n";
     strategyModMenu += "5. Modify start and end date for investment.\n";
-    strategyModMenu += "Enter the number for performing operation or R to return to the main "
+    strategyModMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.\n";
     System.out.println(strategyModMenu);
   }

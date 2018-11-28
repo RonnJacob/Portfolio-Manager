@@ -283,7 +283,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             String commisionString = view.getInput("Enter the commission option for the "
                     + "transaction [l, m, h] \n");
             try{
-              dcaStrategy.applyStrategy(portfolio,portfolio.getCommission(commisionString));
+              TreeMap<Date, HashMap<String, Double>> strategyApplied =
+                      dcaStrategy.applyStrategy(portfolio,portfolio.getCommission(commisionString));
+              displayStrategy(strategyApplied);
             }catch(IllegalArgumentException ex){
               view.promptMessage(ex.getMessage()+"\n");
             }
@@ -308,6 +310,23 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       view.promptMessage(ex.getMessage());
     }
     return "r";
+  }
+
+  private void displayStrategy(TreeMap<Date, HashMap<String, Double>> strategyApplied) {
+
+    String datePattern = "yyyy-MM-dd";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+    if(strategyApplied.size()==0){
+      view.promptMessage("No stocks in portfolio to apply strategy.\n");
+    }
+    for (Map.Entry<Date,  HashMap<String, Double>> entry : strategyApplied.entrySet()) {
+      view.promptMessage("\n"+simpleDateFormat.format(entry.getKey())+"\n");
+      for(HashMap.Entry<String, Double> stock: entry.getValue().entrySet()){
+        String message = String.format("%.2f shares of %s bought.\n", stock.getValue()
+                , stock.getKey());
+        view.promptMessage(message);
+      }
+    }
   }
 
   private String modificationMenu(IPortfolio portfolio, DollarCostAveraging strategyModel) {

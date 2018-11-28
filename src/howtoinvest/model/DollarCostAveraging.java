@@ -38,7 +38,7 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
       throw new IllegalArgumentException("Invalid date");
     }
     try {
-      return simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+      return simpleDateFormat.parse(date);
     } catch (ParseException ex) {
       throw new IllegalArgumentException("Date Parse error");
     }
@@ -152,9 +152,10 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
 
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(frequency)) {
       Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-      Date currentDate = parseDate(Date.from(instant).toString());
+      Date currentDate = parseDate(simpleDateFormat.format(Date.from(instant)));
       investmentsByDate.put(currentDate,
-              portfolio.invest(amount, stockWeights, false, currentDate.toString(),
+              portfolio.invest(amount, stockWeights, false,
+                      simpleDateFormat.format(Date.from(instant)),
                       commission));
     }
     return investmentsByDate;
