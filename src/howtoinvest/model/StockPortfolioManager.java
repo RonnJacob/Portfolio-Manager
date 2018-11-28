@@ -30,8 +30,8 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
   }
 
   /**
-   * Return the indices and the names of all portfolios. Index starts from 1 and the portfolios are
-   * lexicographically ordered based on the names of the stock portfolio.
+   * Return a list of all the portfolio names in the portfolio.
+   * @return list of portfolio names.
    */
   @Override
   public List<String> getAll() {

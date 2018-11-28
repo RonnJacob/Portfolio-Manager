@@ -807,54 +807,48 @@ public class StockPortfolioTest {
   }
 
   @Test
-  public void TestGetCommission(){
+  public void TestGetCommission() {
     portfolio = new StockPortfolio();
 
-    try{
+    try {
       portfolio.getCommission("");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
-    try{
+    try {
       portfolio.getCommission(null);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
-    try{
+    try {
       portfolio.getCommission("a");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
-    try{
+    try {
       portfolio.getCommission("g");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
-    try{
+    try {
       portfolio.getCommission("z");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
-    try{
+    try {
       portfolio.getCommission("*");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid commission", ex.getMessage());
     }
 
@@ -884,7 +878,7 @@ public class StockPortfolioTest {
   }
 
   @Test
-  public void TestInvestInvalid(){
+  public void TestInvestInvalid() {
     portfolio = new StockPortfolio();
     weights = new TreeMap<>();
 
@@ -896,7 +890,7 @@ public class StockPortfolioTest {
     assertTrue(output.isEmpty());
 
     output =
-            portfolio.invest(100, weights, false, null , 0);
+            portfolio.invest(100, weights, false, null, 0);
     assertTrue(output.isEmpty());
 
     output =
@@ -914,8 +908,7 @@ public class StockPortfolioTest {
     try {
       portfolio.invest(-1, null, false, "2018-11-11", 0);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
     }
 
@@ -924,8 +917,7 @@ public class StockPortfolioTest {
     try {
       output = portfolio.invest(100, weights, false, "2018-11-11", 0);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
     }
 
@@ -934,8 +926,7 @@ public class StockPortfolioTest {
     try {
       output = portfolio.invest(100, weights, false, "2018-11-11", 0);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
     }
 
@@ -944,8 +935,7 @@ public class StockPortfolioTest {
     try {
       output = portfolio.invest(100, weights, false, "2018-11-11", 0);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
     }
 

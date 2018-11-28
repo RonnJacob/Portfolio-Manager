@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface IManager<K> {
 
+  /**
+   * Returns a list of identifiers of all the objects in the manager.
+   */
   List<String> getAll();
 
   /**
