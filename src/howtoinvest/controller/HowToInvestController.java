@@ -356,7 +356,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
               view.displayList(counter,stock,"Stocks");
               counter += 1;
             }
-            view.strategyModificationMenu();
+            view.openStrategyMenu();
             break;
           case "r":
             return "r";
