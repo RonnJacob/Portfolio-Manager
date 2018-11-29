@@ -72,10 +72,17 @@ values into account. StockPortfolio is a class implementing this interface and p
 operations. This class contains a HashMap where the key is the identifier for the Stock and value would
 be the Stock object. This class would be used by StockPortfolioManager class.
 
-- IPortfolioManager<K> interface is parametrized over the type of portfolios it manages which is 
-created to manage portfolios and provides operations for listing all the portfolios, creation of 
-portfolios and retrieving a portfolio. The StockPortfolioManager is a class implementing this interface 
-and parametrized over StockPortfolio.
+- IInvestmentStrategy is an interface that represents a strategy in the real world.
+The interface provides operations like adding stocks to the portfolio, setting weights for the stocks,
+setting the amount to be invested, setting the time range and frequency for the investments,
+applying the strategy on a portfolio taking into account the commission fees.
+DollarCostAveraging is a class implementing this interface and provides all the above
+operations. This class would be used by DollarCostAveragingStrategyManager class.
+
+- IManager<K> interface is parametrized over the type of items it manages which is
+created to manage items and provides operations for listing all the items, creation of
+items and retrieving an item. The StockPortfolioManager and DollarCostAveragingStrategyManager are classes
+that implementing this interface and parametrized over StockPortfolio and DollarCostAveraging respectively.
 
 - Additionally, an interface IStockDataRetrieval was created to allow flexibility in retrieving stock data 
 and provides operations to check the validity of the ticker name and retrieve the share price for the ticker
@@ -83,4 +90,5 @@ symbol at a specified date. The two classes that implement this interface are Al
 AlphaVantage would check the validity of strings and retrieves stock data from a URL query. FileStockDataReader
 would do the same from a .csv file where the name of the .csv file is the ticker symbol. The property READ_FROM_API
 in app.config governs which source Stock class would use to retrieve source data.
-Note: AlphaVantage is not fully incorporated yet.
+Alphavantage will automatically generate csv files for the stock data if the csv file does not exist or if
+they are not upto date. These csv files are used by the API to query multiple times.
