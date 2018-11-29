@@ -71,7 +71,7 @@ import howtoinvest.view.IHowToInvestView;
  * and the user would not be able to do so.
  * </li>
  * <li>
- * The controller would take a portfolio manager model, strategy model & view as parameters and
+ * The controller would take a portfolio manager model, strategy model and view as parameters and
  * these parameters cannot be null.
  * </li>
  * <li>
@@ -103,14 +103,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private String message;
 
   /**
-   * Constructor that takes a portfolio manager model, strategy manager model & view and sets the
+   * Constructor that takes a portfolio manager model, strategy manager model and view and sets the
    * instance variables.
    *
    * @param view  the class implementing the view of the program.
    * @param model the class implementing the model of the program.
    */
-  public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model
-          , IManager<DollarCostAveraging> strategyModel) {
+  public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model,
+                               IManager<DollarCostAveraging> strategyModel) {
     if (model == null || view == null || strategyModel == null) {
       throw new IllegalArgumentException("Model or view cannot be a null.");
     }
@@ -324,8 +324,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                     + "transaction [l, m, h] \n");
             try {
               TreeMap<Date, HashMap<String, Double>> strategyApplied =
-                      dcaStrategy.applyStrategy(portfolio, portfolio.
-                              getCommission(commisionString));
+                      dcaStrategy.applyStrategy(portfolio,
+                              portfolio.getCommission(commisionString));
               apply(strategyApplied);
             } catch (IllegalArgumentException ex) {
               view.promptMessage(ex.getMessage() + "\n");
@@ -385,8 +385,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         view.promptMessage("\n" + simpleDateFormat.format(entry.getKey()) + "\n");
       }
       for (HashMap.Entry<String, Double> stock : entry.getValue().entrySet()) {
-        String message = String.format("%.2f shares of %s bought.\n", stock.getValue()
-                , stock.getKey());
+        String message = String.format("%.2f shares of %s bought.\n", stock.getValue(),
+                stock.getKey());
         view.promptMessage(message);
       }
     }
@@ -551,8 +551,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
           String commision = view.getInput("Enter the commission option for the transaction "
                   + "[l, m, h]:\n");
-          selectedPFolio.invest(amount, new TreeMap<>(), true, date
-                  , selectedPFolio.getCommission(commision));
+          selectedPFolio.invest(amount, new TreeMap<>(), true, date,
+                  selectedPFolio.getCommission(commision));
 
           view.openInvestmentMenu();
           break;
@@ -640,8 +640,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         /**
          * Adds share and prompts a message specifying the number of shares bought for that amount.
          */
-        view.promptMessage(selectedPFolio.addStock(stockName, amount, date
-                , commission) + " share(s) of " + stockName + " bought on " + date + "\n");
+        view.promptMessage(selectedPFolio.addStock(stockName, amount, date, commission)
+                + " share(s) of " + stockName + " bought on " + date + "\n");
       } catch (IllegalArgumentException ex) {
         view.promptMessage(ex.getMessage());
       }

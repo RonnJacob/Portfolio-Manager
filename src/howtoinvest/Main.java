@@ -13,7 +13,7 @@ import howtoinvest.view.HowToInvestViewImpl;
 
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
- * would accept a IManager based model and open the Portfolio manager for a user to perform
+ * would accept IManager based models and open the Portfolio manager for a user to perform
  * operations related to investing in stocks of an organization and maintenance of various
  * portfolios.
  */

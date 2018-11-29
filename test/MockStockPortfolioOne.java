@@ -62,8 +62,9 @@ public class MockStockPortfolioOne implements IPortfolio {
   }
 
   @Override
-  public HashMap<String, Double> invest(double amount, TreeMap weights, boolean equalWeights
-          , String date, double commission) throws IllegalArgumentException {
+  public HashMap<String, Double> invest(double amount, TreeMap weights, boolean equalWeights,
+                                        String date, double commission)
+          throws IllegalArgumentException {
     this.log.append("Invest " + amount + " " + equalWeights + " " + date + " " + commission);
     for (Object weight : weights.values()) {
       this.log.append(" " + weight.toString() + " ");

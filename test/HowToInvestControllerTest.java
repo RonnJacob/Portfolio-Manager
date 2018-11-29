@@ -231,8 +231,8 @@ public class HowToInvestControllerTest {
     IHowToInvestController controller = new HowToInvestController(view, model, strategyModel);
     controller.openPortfolioManager();
 
-    expected = "Home Screen Opened.\nInput received : 2\nHome Screen Opened.\n" +
-            "Input received : q\n\nQuitting Manager.\n";
+    expected = "Home Screen Opened.\nInput received : 2\nHome Screen Opened.\n"
+            + "Input received : q\n\nQuitting Manager.\n";
 
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\n", logPortfolioModel.toString());
@@ -564,9 +564,9 @@ public class HowToInvestControllerTest {
     IHowToInvestView view = new MockViewOne(logView, in, out);
     IHowToInvestController controller = new HowToInvestController(view, model, strategyModel);
     controller.openPortfolioManager();
-    expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n" +
-            "Enter index of Portfolio to open.\nInput received : 8\n" +
-            "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
+    expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
+            + "Enter index of Portfolio to open.\nInput received : 8\n"
+            + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 8\n", logPortfolioModel.toString());
   }
