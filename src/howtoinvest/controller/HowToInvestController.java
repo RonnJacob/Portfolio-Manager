@@ -488,7 +488,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       }
 
     } catch (IllegalArgumentException ex) {
-      view.promptMessage("Invalid input:" + ex.getMessage());
+      view.promptMessage("Invalid Input.\n");
     }
     return "r";
   }
@@ -585,7 +585,12 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
                     + "transaction [l, m, h] or enter custom commission value \n");
             selectedPFolio.invest(amount, new TreeMap<>(), true, date,
                     selectedPFolio.getCommission(commision));
-          } catch (NumberFormatException ex) {
+            HashMap<String, Double> investments = selectedPFolio.invest(amount, new TreeMap<>(),
+                    true, date, selectedPFolio.getCommission(commision));
+            for (Map.Entry<String, Double> inv : investments.entrySet()) {
+              view.promptMessage(inv.getValue()+" shares of "+ inv.getKey()+" bought.");
+            }
+          }catch(NumberFormatException ex){
             view.promptMessage("Invalid input for applying investment.\n");
           }
 

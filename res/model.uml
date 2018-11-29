@@ -5,15 +5,15 @@
   <nodes>
     <node x="585.0" y="0.0">howtoinvest.model.IStock</node>
     <node x="949.0" y="0.0">howtoinvest.model.IPortfolio</node>
-    <node x="211.0" y="751.0">howtoinvest.model.IStockDataRetrieval</node>
+    <node x="189.0" y="751.0">howtoinvest.model.IStockDataRetrieval</node>
     <node x="0.0" y="1380.0">howtoinvest.model.Share</node>
     <node x="949.0" y="211.0">howtoinvest.model.StockPortfolio</node>
-    <node x="1135.0" y="897.0">howtoinvest.model.DollarCostAveragingStrategyManager</node>
-    <node x="400.0" y="962.0">howtoinvest.model.FileStockDataReader</node>
-    <node x="781.0" y="897.0">howtoinvest.model.StockPortfolioManager</node>
-    <node x="1043.25" y="751.0">howtoinvest.model.IManager</node>
+    <node x="781.0" y="897.0">howtoinvest.model.DollarCostAveragingStrategyManager</node>
+    <node x="0.0" y="962.0">howtoinvest.model.FileStockDataReader</node>
+    <node x="1174.0" y="897.0">howtoinvest.model.StockPortfolioManager</node>
+    <node x="1062.75" y="751.0">howtoinvest.model.IManager</node>
     <node x="23.5" y="0.0">howtoinvest.model.IInvestmentStrategy</node>
-    <node x="0.0" y="874.0">howtoinvest.model.AlphaVantage</node>
+    <node x="356.0" y="874.0">howtoinvest.model.AlphaVantage</node>
     <node x="585.0" y="167.0">howtoinvest.model.Stock</node>
     <node x="3.5" y="1235.0">howtoinvest.model.IShare</node>
     <node x="0.0" y="256.0">howtoinvest.model.DollarCostAveraging</node>
@@ -30,9 +30,9 @@
     </edge>
     <edge source="howtoinvest.model.FileStockDataReader" target="howtoinvest.model.IStockDataRetrieval">
       <point x="0.0" y="-70.0" />
-      <point x="568.0" y="849.0" />
-      <point x="463.0" y="849.0" />
-      <point x="84.0" y="36.5" />
+      <point x="168.0" y="849.0" />
+      <point x="273.0" y="849.0" />
+      <point x="-84.0" y="36.5" />
     </edge>
     <edge source="howtoinvest.model.StockPortfolio" target="howtoinvest.model.IPortfolio">
       <point x="0.0" y="-125.5" />
@@ -40,28 +40,28 @@
     </edge>
     <edge source="howtoinvest.model.StockPortfolioManager" target="howtoinvest.model.IManager">
       <point x="0.0" y="-71.0" />
-      <point x="948.0" y="872.0" />
-      <point x="1089.0" y="872.0" />
-      <point x="-45.75" y="48.0" />
+      <point x="1341.0" y="872.0" />
+      <point x="1200.0" y="872.0" />
+      <point x="45.75" y="48.0" />
     </edge>
     <edge source="howtoinvest.model.AlphaVantage" target="howtoinvest.model.IStockDataRetrieval">
       <point x="0.0" y="-158.0" />
-      <point x="190.0" y="849.0" />
-      <point x="295.0" y="849.0" />
-      <point x="-84.0" y="36.5" />
+      <point x="546.0" y="849.0" />
+      <point x="441.0" y="849.0" />
+      <point x="84.0" y="36.5" />
     </edge>
     <edge source="howtoinvest.model.DollarCostAveragingStrategyManager" target="howtoinvest.model.IManager">
       <point x="0.0" y="-71.0" />
-      <point x="1321.5" y="872.0" />
-      <point x="1180.5" y="872.0" />
-      <point x="45.75" y="48.0" />
+      <point x="967.5" y="872.0" />
+      <point x="1108.5" y="872.0" />
+      <point x="-45.75" y="48.0" />
     </edge>
     <edge source="howtoinvest.model.Stock" target="howtoinvest.model.IStock">
       <point x="0.0" y="-158.5" />
       <point x="0.0" y="58.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.5969336910612887" x="838.4607037492636" y="386.50128420044075" />
+  <settings layout="Hierarchic Group" zoom="0.8785316218604037" x="838.0" y="865.5012842004408" />
   <SelectedNodes>
     <node>howtoinvest.model.Stock</node>
   </SelectedNodes>

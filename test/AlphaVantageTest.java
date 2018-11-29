@@ -88,9 +88,9 @@ public class AlphaVantageTest {
     String validTickerName = "FB";
     String message = "Share prices do not exist for given date.";
     try {
-      Date date = new GregorianCalendar(2017, Calendar.DECEMBER, 25).getTime();
+      Date date = new GregorianCalendar(2012, Calendar.DECEMBER, 25).getTime();
       Double price = alphavantageApi.retrieveSharePrice(date, validTickerName);
-      assertEquals(price, 177.20, 0.01);
+      assertEquals(price, 26.93, 0.01);
     } catch (ParseException | IllegalArgumentException ex) {
       assertEquals(message, ex.getMessage());
     }
