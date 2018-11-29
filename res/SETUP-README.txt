@@ -31,3 +31,10 @@ in the format - date,share price.
 eg: 2018-11-11,150
 - Ensure that the date is in the format yyyy-mm-dd. Example files are given
 in the res folder for reference.
+
+Alpha Vantage API
+--------------------
+- The alpha vantage API would generate a .csv file with the ticker symbol appended
+by '_AlphaVantage' and would contain open, low, high, close prices and volume of shares for
+a particular date in CSV format.
+- The .csv file would be populated by the API.
