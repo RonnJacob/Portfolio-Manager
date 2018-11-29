@@ -200,9 +200,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
        */
-      try{
+      try {
         selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
-      }catch(NumberFormatException ex){
+      } catch (NumberFormatException ex) {
         view.promptMessage("Cannot fetch portfolio.\n");
       }
     } catch (IllegalArgumentException ex) {
@@ -351,9 +351,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * Option 3 corresponds to displaying the stocks in a strategy.
            */
           case "3":
-            counter =1;
-            for(String stock: dcaStrategy.getStocks()){
-              view.displayList(counter,stock,"Stocks");
+            counter = 1;
+            for (String stock : dcaStrategy.getStocks()) {
+              view.displayList(counter, stock, "Stocks");
               counter += 1;
             }
             view.openStrategyMenu();
@@ -459,10 +459,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "4":
             int days;
-            try{
+            try {
               days = Integer.parseInt(view.getInput("Enter frequency in number of days.\n"));
               strategyModel.setFrequency(days);
-            } catch(NumberFormatException ex){
+            } catch (NumberFormatException ex) {
               view.promptMessage("Invalid input frequency.\n");
             }
             view.strategyModificationMenu();
@@ -530,7 +530,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * @param strategyModel the model for the strategy from which modifications can be made.
    */
   private void modifyWeights(IInvestmentStrategy<IPortfolio> strategyModel) {
-    try{
+    try {
 
       List<String> stocks = strategyModel.getStocks();
       TreeMap<String, Double> weights = new TreeMap<>();
@@ -543,8 +543,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
         weights.put(stock, weight);
       }
       strategyModel.setWeights(weights);
-    } catch(NumberFormatException ex){
-      view.promptMessage("Invalid input for modifying weights "+ex+"\n");
+    } catch (NumberFormatException ex) {
+      view.promptMessage("Invalid input for modifying weights " + ex + "\n");
     }
   }
 
@@ -578,14 +578,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         case "1":
 
-          try{
+          try {
             Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
             String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
             String commision = view.getInput("Enter the commission option for the "
                     + "transaction [l, m, h] or enter custom commission value \n");
             selectedPFolio.invest(amount, new TreeMap<>(), true, date,
                     selectedPFolio.getCommission(commision));
-          }catch(NumberFormatException ex){
+          } catch (NumberFormatException ex) {
             view.promptMessage("Invalid input for applying investment.\n");
           }
 
@@ -640,8 +640,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           HashMap<String, Double> investments = selectedPFolio.invest(amount, weights,
                   false, date, selectedPFolio.getCommission(commision));
           for (Map.Entry<String, Double> investment : investments.entrySet()) {
-            view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey() + " on "
-                    + date);
+            view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey()
+                    + " on " + date);
           }
         } catch (IllegalStateException ex) {
           view.promptMessage(ex.getMessage());
@@ -649,7 +649,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       } else {
         view.promptMessage("No stocks present in the portfolio.\n");
       }
-    } catch (NumberFormatException ex){
+    } catch (NumberFormatException ex) {
       view.promptMessage("Invalid input for investing with custom weights\n");
     }
   }
@@ -670,10 +670,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        */
 
       try {
-      String stockName = buyDetails[0];
-      Double amount = Double.parseDouble(buyDetails[1]);
-      String date = buyDetails[2];
-      String commissionOption = buyDetails[3];
+        String stockName = buyDetails[0];
+        Double amount = Double.parseDouble(buyDetails[1]);
+        String date = buyDetails[2];
+        String commissionOption = buyDetails[3];
 
 
         Double commission = selectedPFolio.getCommission(commissionOption);
@@ -682,8 +682,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         view.promptMessage(selectedPFolio.addStock(stockName, amount, date, commission)
                 + " share(s) of " + stockName + " bought on " + date + "\n");
-      } catch (IllegalArgumentException  ex) {
-        view.promptMessage("Invalid input for buying shares " + ex.getMessage()+"\n");
+      } catch (IllegalArgumentException ex) {
+        view.promptMessage("Invalid input for buying shares " + ex.getMessage() + "\n");
       }
       /**
        * Add more shares to the portfolio manager object.

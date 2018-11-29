@@ -870,10 +870,10 @@ public class StockPortfolioTest {
     assertEquals(1, output, 0.01);
 
     output = portfolio.getCommission("m");
-    assertEquals(0.0, output, 0.01);
+    assertEquals(5.0, output, 0.01);
 
     output = portfolio.getCommission("h");
-    assertEquals(2.05, output, 0.01);
+    assertEquals(10.0, output, 0.01);
   }
 
   @Test

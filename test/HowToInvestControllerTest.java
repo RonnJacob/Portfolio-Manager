@@ -822,8 +822,8 @@ public class HowToInvestControllerTest {
             + "Strategy Menu Screen opened. \nInput received : r\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n" +
-            "Get Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\n" + "Get Portfolio 1\n",
+            logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nApply strategy with commision 100.0",
             logStrategyModel.toString());
   }
@@ -997,7 +997,7 @@ public class HowToInvestControllerTest {
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\n"
-                    + "Add stock to strategy.\n", logStrategyModel.toString());
+            + "Add stock to strategy.\n", logStrategyModel.toString());
   }
 
   @Test
@@ -1029,7 +1029,7 @@ public class HowToInvestControllerTest {
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\n"
-                    + "Add stocks to strategy.\n", logStrategyModel.toString());
+            + "Add stocks to strategy.\n", logStrategyModel.toString());
   }
 
   @Test
@@ -1075,8 +1075,8 @@ public class HowToInvestControllerTest {
             + "of FB\n";
     String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
             + "Enter index of strategy to apply.\n\n\n"
-            + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n" +
-            "3. Display Stocks\n"
+            + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n"
+            + "3. Display Stocks\n"
             + "Enter the number for performing operation or r to return to the main menu.\n"
             + "Enter the commission option for the transaction [l, m, h] or enter "
             + "custom commission value \n";
