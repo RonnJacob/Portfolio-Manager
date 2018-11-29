@@ -106,8 +106,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * Constructor that takes a portfolio manager model, strategy manager model and view and sets the
    * instance variables.
    *
-   * @param view  the class implementing the view of the program.
-   * @param model the class implementing the model of the program.
+   * @param view          the class implementing the view of the program.
+   * @param model         the class implementing the model of the program.
    * @param strategyModel the class implementing the strategy model of the program.
    */
   public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model,
@@ -322,7 +322,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "1":
             String commisionString = view.getInput("Enter the commission option for the "
-                    + "transaction [l, m, h] \n");
+                    + "transaction [l, m, h] or enter custom commission value \n");
             try {
               TreeMap<Date, HashMap<String, Double>> strategyApplied =
                       dcaStrategy.applyStrategy(portfolio,
@@ -550,8 +550,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
 
           Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
           String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
-          String commision = view.getInput("Enter the commission option for the transaction "
-                  + "[l, m, h]:\n");
+          String commision = view.getInput("Enter the commission option for the "
+                  + "transaction [l, m, h] or enter custom commission value \n");
           selectedPFolio.invest(amount, new TreeMap<>(), true, date,
                   selectedPFolio.getCommission(commision));
 
@@ -583,8 +583,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private void investWithCustomWeights(IPortfolio selectedPFolio) {
     Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
     String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
-    String commision = view.getInput("Enter the commission option for the transaction "
-            + "[l, m, h]:\n");
+    String commision = view.getInput("Enter the commission option for the "
+            + "transaction [l, m, h] or enter custom commission value \n");
     HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
     if (map.size() != 0) {
       TreeMap<String, Double> weights = new TreeMap<>();

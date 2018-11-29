@@ -21,6 +21,7 @@ How To Use
 from 1-3 and an option to quit the program by inputting 'q'.
 - The inputs required by the user are prompted by the application and the format
 is specified as well.
+- There is a default strategy with MSFT stock which can be used.
 
 Stock Data File Instructions
 -----------------------------

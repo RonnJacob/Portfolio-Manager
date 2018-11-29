@@ -148,7 +148,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     buyDetails[1] = scan.next();
     promptMessage("Enter date in format yyyy-mm-dd: \n");
     buyDetails[2] = scan.next();
-    promptMessage("Enter the commission option for the transaction [l, m, h] \n");
+    promptMessage("Enter the commission option for the transaction [l, m, h] or " +
+            "enter a custom commission value \n");
     buyDetails[3] = scan.next();
     return buyDetails;
   }
