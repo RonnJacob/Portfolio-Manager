@@ -583,14 +583,12 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
             String commision = view.getInput("Enter the commission option for the "
                     + "transaction [l, m, h] or enter custom commission value \n");
-            selectedPFolio.invest(amount, new TreeMap<>(), true, date,
-                    selectedPFolio.getCommission(commision));
             HashMap<String, Double> investments = selectedPFolio.invest(amount, new TreeMap<>(),
                     true, date, selectedPFolio.getCommission(commision));
             for (Map.Entry<String, Double> inv : investments.entrySet()) {
-              view.promptMessage(inv.getValue()+" shares of "+ inv.getKey()+" bought.");
+              view.promptMessage(inv.getValue() + " shares of " + inv.getKey() + " bought.");
             }
-          }catch(NumberFormatException ex){
+          } catch (NumberFormatException ex) {
             view.promptMessage("Invalid input for applying investment.\n");
           }
 

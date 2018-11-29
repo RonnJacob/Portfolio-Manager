@@ -457,7 +457,7 @@ public class HowToInvestControllerTest {
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
-            + "Invest 2000.0 true 2018-10-13 100.0\nInvest 2000.0 true 2018-10-13 100.0\n",
+                    + "Invest 2000.0 true 2018-10-13 100.0\n",
             logPortfolioModel.toString());
   }
 
