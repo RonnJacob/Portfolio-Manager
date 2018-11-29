@@ -457,7 +457,8 @@ public class HowToInvestControllerTest {
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
-            + "Invest 2000.0 true 2018-10-13 100.0\n", logPortfolioModel.toString());
+            + "Invest 2000.0 true 2018-10-13 100.0\nInvest 2000.0 true 2018-10-13 100.0\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -488,7 +489,8 @@ public class HowToInvestControllerTest {
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nAdd stock FB "
-                    + "for 200.0 on 2018-10-13 with 100.0\nGet composition for 2018-11-13\n",
+                    + "for 200.0 on 2018-10-13 with 100.0\n"
+                    + "Get composition for 2018-11-13\n",
             logPortfolioModel.toString());
   }
 
