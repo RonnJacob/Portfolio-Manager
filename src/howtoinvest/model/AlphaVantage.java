@@ -1,8 +1,6 @@
 package howtoinvest.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -299,6 +297,9 @@ public class AlphaVantage implements IStockDataRetrieval {
     while (scanner.hasNext() && counter <= 2) {
       output.append(scanner.next() + "\n");
       counter += 1;
+    }
+    if(output.toString().length()==0){
+      return false;
     }
     String outputDates = output.toString().split("\n")[1].split(",")[0];
     Date latestDate = simpleDateFormat.parse(outputDates);
