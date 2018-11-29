@@ -152,3 +152,7 @@ For this very reason, the changes were made to return 'double' for cost basis an
 of formatted strings.
 For eg: getStockCostBasis, getStockValue used to return strings and now we return the data without
 formatting as this would be handled by the view.
+- Now the design has a separate view which would handle everything as mentioned above. Previously the
+controller would do operations which were meant for the view such as formatting. The reason for this
+is so that we can have multiple variations of the view which would handle operations such as formatting
+and retrieving output that is to be passed onto to the controller as mentioned above.
