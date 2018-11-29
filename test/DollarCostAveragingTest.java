@@ -12,7 +12,8 @@ import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.StockPortfolio;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * This class contains all the tests for the DollarCostAveraging class.

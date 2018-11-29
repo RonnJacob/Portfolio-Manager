@@ -16,15 +16,18 @@ import howtoinvest.view.IHowToInvestView;
 public class MockViewOne implements IHowToInvestView {
 
   private StringBuilder log;
-  private final Readable in;
-  private final Appendable out;
   private Scanner scan;
 
+  /**
+   * Constructor that takes in a log, readable object and appendable object.
+
+   * @param log the log string.
+   * @param in the readable object
+   * @param out the appendable object
+   */
   public MockViewOne(StringBuilder log, Readable in, Appendable out) {
     this.log = log;
-    this.in = in;
-    scan = new Scanner(this.in);
-    this.out = out;
+    scan = new Scanner(in);
   }
 
 
@@ -66,16 +69,14 @@ public class MockViewOne implements IHowToInvestView {
 
   @Override
   public void displayList(int counter, String portfolioName, String listName) {
-    this.log.append("List of  " + listName + " with item #" + counter + " " + portfolioName + " \n");
+    this.log.append("List of  " + listName + " with item #" + counter + " " + portfolioName
+            + " \n");
   }
 
   @Override
   public String getInput(String message) {
     if (!message.equals("")) {
       this.log.append("Input received for: " + message + "\n");
-    }
-    if (!message.equals("")) {
-//      promptMessage(message);
     }
     if (scan.hasNext()) {
       String input = scan.next();

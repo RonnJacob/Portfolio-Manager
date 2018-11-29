@@ -11,8 +11,6 @@ import java.util.Scanner;
  */
 public class HowToInvestViewImpl implements IHowToInvestView {
 
-
-  private final Readable in;
   private final Appendable out;
   private Scanner scan;
 
@@ -26,9 +24,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Invalid Readable or Appendable object");
     }
-    this.in = in;
     this.out = out;
-    scan = new Scanner(this.in);
+    scan = new Scanner(in);
   }
 
   @Override

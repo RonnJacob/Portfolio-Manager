@@ -22,9 +22,6 @@ import howtoinvest.model.IInvestmentStrategy;
 public class MockDollarCostAveragingOne implements IInvestmentStrategy {
 
   private StringBuilder log;
-  private TreeMap<String, Double> stockWeights;
-  private double amount;
-  private int frequency;
 
   /**
    * Constructor that takes in a log that is to be used for logging operations.
@@ -32,12 +29,11 @@ public class MockDollarCostAveragingOne implements IInvestmentStrategy {
    * @param log the log string.
    */
   public MockDollarCostAveragingOne(StringBuilder log) {
-    this.stockWeights = new TreeMap<>();
-    this.stockWeights.put("FB", 50.0);
-    this.stockWeights.put("MSFT", 50.0);
+    TreeMap<String, Double> stockWeights;
+    stockWeights = new TreeMap<>();
+    stockWeights.put("FB", 50.0);
+    stockWeights.put("MSFT", 50.0);
     this.log = log;
-    this.amount = 2000;
-    this.frequency = 30;
   }
 
   @Override

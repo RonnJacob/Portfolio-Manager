@@ -61,7 +61,7 @@ public interface IPortfolio<K> {
    * @param date       when the stock has to be added.
    * @param commission the commission amount.
    * @return Returns a string that contains the number of shares of a stock bought for an amount at
-   * a particular date.
+   *         a particular date.
    * @throws IllegalArgumentException if the stock ticker symbol, amount, commission or date is
    *                                  invalid.
    */

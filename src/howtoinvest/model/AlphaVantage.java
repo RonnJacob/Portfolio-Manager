@@ -58,7 +58,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   * minute.
+   *         minute.
    */
   private String getCurrentSharePrice(String tickerName) throws IllegalArgumentException {
     setURL(tickerName, true);
@@ -226,7 +226,7 @@ public class AlphaVantage implements IStockDataRetrieval {
     try {
       of.createNewFile(); // if file already exists will do nothing
     } catch (IOException ex) {
-
+      throw new IllegalArgumentException("File cannot be created.");
     }
     try (Scanner scanner = new Scanner(url.openStream(),
             StandardCharsets.UTF_8.toString())) {
@@ -303,9 +303,6 @@ public class AlphaVantage implements IStockDataRetrieval {
     }
     String outputDates = output.toString().split("\n")[1].split(",")[0];
     Date latestDate = simpleDateFormat.parse(outputDates);
-    if (latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(new Date())))) {
-      return false;
-    }
-    return true;
+    return !latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(new Date())));
   }
 }

@@ -93,7 +93,8 @@ public class Stock implements IStock {
   @Override
   public double getStockValue(String date) throws IllegalArgumentException {
     Date stockValueDate = convertToDate(date);
-    return this.getNumberOfShares(stockValueDate) * getSharePrice(this.tickerSymbol, stockValueDate);
+    return this.getNumberOfShares(stockValueDate) * getSharePrice(this.tickerSymbol,
+            stockValueDate);
   }
 
   /**
@@ -103,7 +104,7 @@ public class Stock implements IStock {
    * @param date the date for which the number of shares are being queried for which is of the
    *             yyyy-mm-dd pattern in string format
    * @return the number of shares of a stock that were bought up until a particular input date which
-   * is of the yyyy-mm-dd pattern in string format
+   *         is of the yyyy-mm-dd pattern in string format
    */
   private double getNumberOfShares(Date date) {
     double numberOfShare = 0;
@@ -125,7 +126,7 @@ public class Stock implements IStock {
    *
    * @param date the date in string format of the pattern yyyy-mm-dd.
    * @return the corresponding date object which is the date that is in string format passed as as
-   * argument.
+   *         argument.
    * @throws IllegalArgumentException if the input date in string format is in an incorrect format.
    */
   private Date convertToDate(String date) throws IllegalArgumentException {
@@ -141,7 +142,8 @@ public class Stock implements IStock {
   }
 
   @Override
-  public double addShare(double amount, String date, double commission) throws IllegalArgumentException {
+  public double addShare(double amount, String date, double commission)
+          throws IllegalArgumentException {
     /**
      * Amount for which shares are to be added cannot be negative.
      */

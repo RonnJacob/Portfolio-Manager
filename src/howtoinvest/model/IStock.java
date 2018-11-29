@@ -1,7 +1,5 @@
 package howtoinvest.model;
 
-import java.util.HashMap;
-
 /**
  * The following interface represents a stock of a company and operations pertaining to the stock of
  * a company.In its simplest form, a stock of a company is simply a part of ownership in that
@@ -34,7 +32,7 @@ public interface IStock {
    * @param date the date for which we want to retrieve stock cost basis which is of yyyy-mm-dd
    *             pattern in string format.
    * @return the total cost basis of the stock of a company at a particular input date of format
-   * yyyy-mm-dd.
+   *         yyyy-mm-dd.
    * @throws IllegalArgumentException if the cost basis cannot be fetched for the given date.
    */
   double getStockCostBasis(String date);
@@ -69,7 +67,7 @@ public interface IStock {
    * total value of the stock up until the current time.
    *
    * @return the stock data in the form of a string which would be the total cost basis and the
-   * total value of the stock up until the current time.
+   *         total value of the stock up until the current time.
    */
   double getShares(String date);
 }

@@ -43,7 +43,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the share price of a company/organization based on the ticker symbol at that date or
-   * the date that is closest to that date.
+   *         the date that is closest to that date.
    */
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {

@@ -206,7 +206,8 @@ public class HowToInvestControllerTest {
     expected = "Home Screen Opened.\nInput received : 1\nInput received for: Enter the name of the "
             + "portfolio to be created\n\nInput received : P1\n"
             + "Prompt: Portfolio P1 has been created.\nPrompt: Add more portfolios? (Y/N)\n"
-            + "Input received : y\nInput received for: Enter the name of the portfolio to be created"
+            + "Input received : y\nInput received for: Enter the name of the portfolio to "
+            + "be created"
             + "\n\nInput received : P2\nPrompt: Portfolio P2 has been created.\nPrompt: Add more "
             + "portfolios? (Y/N)\nInput received : n\nHome Screen Opened.\nInput received : 2\n"
             + "Home Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
@@ -398,8 +399,8 @@ public class HowToInvestControllerTest {
             + "Input received : 2018-10-10\nValue displayed for 0.0 on 2018-10-10\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n" +
-                    "Get value for 2018-10-10\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\n"
+                    + "Get value for 2018-10-10\n",
             logPortfolioModel.toString());
   }
 
@@ -1029,8 +1030,8 @@ public class HowToInvestControllerTest {
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
     String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
-            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen + "\nQuitting "
-            + "manager\n";
+            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen
+            + "\nQuitting manager\n";
     assertEquals(expected, out.toString());
   }
 
@@ -1070,8 +1071,8 @@ public class HowToInvestControllerTest {
             + "1. Apply Strategy\n" + "2. Modify strategy\n"
             + "Enter the number for performing operation or r to return to the main menu.\n";
     String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
-            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen + strategyMenu
-            + text + portfolioScreen + "\nQuitting manager\n";
+            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen
+            + strategyMenu + text + portfolioScreen + "\nQuitting manager\n";
     assertEquals(expected, out.toString());
   }
 

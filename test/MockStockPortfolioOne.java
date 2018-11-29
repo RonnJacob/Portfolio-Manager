@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import howtoinvest.model.IPortfolio;
@@ -52,8 +51,8 @@ public class MockStockPortfolioOne implements IPortfolio {
   @Override
   public double addStock(String identifier, double amount, String date, double commission)
           throws IllegalArgumentException {
-    this.log.append("Add stock " + identifier + " for " + amount + " on " + date + " with " + commission
-            + "\n");
+    this.log.append("Add stock " + identifier + " for " + amount + " on " + date + " with "
+            + commission + "\n");
     return 100;
   }
 
@@ -63,8 +62,7 @@ public class MockStockPortfolioOne implements IPortfolio {
   }
 
   @Override
-  public HashMap<String, Double> invest(double amount, TreeMap weights
-          , boolean equalWeights
+  public HashMap<String, Double> invest(double amount, TreeMap weights, boolean equalWeights
           , String date, double commission) throws IllegalArgumentException {
     this.log.append("Invest " + amount + " " + equalWeights + " " + date + " " + commission);
     for (Object weight : weights.values()) {

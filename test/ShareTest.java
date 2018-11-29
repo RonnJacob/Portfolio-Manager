@@ -1,9 +1,5 @@
 import org.junit.Test;
-
-import java.util.TreeMap;
-
 import howtoinvest.model.Share;
-import howtoinvest.model.StockPortfolio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
