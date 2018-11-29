@@ -88,7 +88,8 @@ import howtoinvest.view.IHowToInvestView;
  * The strategy manager model would be a class implementing the IPortfolioManager which would carry
  * out necessary options relevant to strategies which would include application of a user-selected
  * strategy and modification of a strategy behavior as called by the controller depending on the
- * input provided by the user.
+ * input provided by the user. Additionally we would be allowed to query for stocks present in the
+ * strategy.
  * </li>
  * </ul>
  */
@@ -199,12 +200,17 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
        */
-      selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
+      try{
+        selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
+      }catch(NumberFormatException ex){
+        view.promptMessage("Cannot fetch portfolio.\n");
+      }
     } catch (IllegalArgumentException ex) {
       return "i";
     }
     view.openPortfolioMenu();
     try {
+      selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
       while (true) {
         String choice = view.getInput("");
         if (choice.equals("")) {
@@ -216,6 +222,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "1":
             message = "Enter date in format yyyy-mm-dd: \n";
+            selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
             retrieveComposition(selectedPFolio);
             view.openPortfolioMenu();
             break;
@@ -340,6 +347,17 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             modificationMenu(portfolio, dcaStrategy);
             view.openStrategyMenu();
             break;
+          /**
+           * Option 3 corresponds to displaying the stocks in a strategy.
+           */
+          case "3":
+            counter =1;
+            for(String stock: dcaStrategy.getStocks()){
+              view.displayList(counter,stock,"Stocks");
+              counter += 1;
+            }
+            view.strategyModificationMenu();
+            break;
           case "r":
             return "r";
           case "q":
@@ -404,6 +422,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private String modificationMenu(IPortfolio portfolio,
                                   IInvestmentStrategy<IPortfolio> strategyModel) {
     view.strategyModificationMenu();
+
+    strategyModel.getStocks();
     try {
       while (true) {
         String choice = view.getInput("");
@@ -438,8 +458,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * Option 4 corresponds to modifying the frequency of investment for stocks in a strategy.
            */
           case "4":
-            int days = Integer.parseInt(view.getInput("Enter frequency \n"));
-            strategyModel.setFrequency(days);
+            int days;
+            try{
+              days = Integer.parseInt(view.getInput("Enter frequency in number of days.\n"));
+              strategyModel.setFrequency(days);
+            } catch(NumberFormatException ex){
+              view.promptMessage("Invalid input frequency.\n");
+            }
             view.strategyModificationMenu();
             break;
           /**
@@ -505,17 +530,22 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * @param strategyModel the model for the strategy from which modifications can be made.
    */
   private void modifyWeights(IInvestmentStrategy<IPortfolio> strategyModel) {
-    List<String> stocks = strategyModel.getStocks();
-    TreeMap<String, Double> weights = new TreeMap<>();
-    /**
-     * Prompts user to enter the weight for each stock in the strategy.
-     */
-    for (String stock : stocks) {
-      Double weight = Double.parseDouble(view.getInput("Enter weight for " + stock
-              + " : \n"));
-      weights.put(stock, weight);
+    try{
+
+      List<String> stocks = strategyModel.getStocks();
+      TreeMap<String, Double> weights = new TreeMap<>();
+      /**
+       * Prompts user to enter the weight for each stock in the strategy.
+       */
+      for (String stock : stocks) {
+        Double weight = Double.parseDouble(view.getInput("Enter weight for " + stock
+                + " : \n"));
+        weights.put(stock, weight);
+      }
+      strategyModel.setWeights(weights);
+    } catch(NumberFormatException ex){
+      view.promptMessage("Invalid input for modifying weights "+ex+"\n");
     }
-    strategyModel.setWeights(weights);
   }
 
 
@@ -548,12 +578,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         case "1":
 
-          Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
-          String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
-          String commision = view.getInput("Enter the commission option for the "
-                  + "transaction [l, m, h] or enter custom commission value \n");
-          selectedPFolio.invest(amount, new TreeMap<>(), true, date,
-                  selectedPFolio.getCommission(commision));
+          try{
+            Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
+            String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
+            String commision = view.getInput("Enter the commission option for the "
+                    + "transaction [l, m, h] or enter custom commission value \n");
+            selectedPFolio.invest(amount, new TreeMap<>(), true, date,
+                    selectedPFolio.getCommission(commision));
+          }catch(NumberFormatException ex){
+            view.promptMessage("Invalid input for applying investment.\n");
+          }
 
           view.openInvestmentMenu();
           break;
@@ -581,38 +615,42 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    * @param selectedPFolio the portfolio for which we wish to invest the fixed amount.
    */
   private void investWithCustomWeights(IPortfolio selectedPFolio) {
-    Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
-    String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
-    String commision = view.getInput("Enter the commission option for the "
-            + "transaction [l, m, h] or enter custom commission value \n");
-    HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
-    if (map.size() != 0) {
-      TreeMap<String, Double> weights = new TreeMap<>();
-      /**
-       * The user is prompted to enter weights for each stock in the portfolio.
-       */
-      for (Map.Entry<String, Double> entry : map.entrySet()) {
-        Double weight = Double.parseDouble(view.getInput("Enter weight for " + entry.getKey()
-                + " : \n"));
-        weights.put(entry.getKey(), weight);
-      }
-
-      /**
-       * The invest method in the model is called using the weights which were input by the user
-       * along with the commission amount for the transactions.
-       */
-      try {
-        HashMap<String, Double> investments = selectedPFolio.invest(amount, weights,
-                false, date, selectedPFolio.getCommission(commision));
-        for (Map.Entry<String, Double> investment : investments.entrySet()) {
-          view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey() + " on "
-                  + date);
+    try {
+      Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
+      String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
+      String commision = view.getInput("Enter the commission option for the "
+              + "transaction [l, m, h] or enter custom commission value \n");
+      HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
+      if (map.size() != 0) {
+        TreeMap<String, Double> weights = new TreeMap<>();
+        /**
+         * The user is prompted to enter weights for each stock in the portfolio.
+         */
+        for (Map.Entry<String, Double> entry : map.entrySet()) {
+          Double weight = Double.parseDouble(view.getInput("Enter weight for " + entry.getKey()
+                  + " : \n"));
+          weights.put(entry.getKey(), weight);
         }
-      } catch (IllegalStateException ex) {
-        view.promptMessage(ex.getMessage());
+
+        /**
+         * The invest method in the model is called using the weights which were input by the user
+         * along with the commission amount for the transactions.
+         */
+        try {
+          HashMap<String, Double> investments = selectedPFolio.invest(amount, weights,
+                  false, date, selectedPFolio.getCommission(commision));
+          for (Map.Entry<String, Double> investment : investments.entrySet()) {
+            view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey() + " on "
+                    + date);
+          }
+        } catch (IllegalStateException ex) {
+          view.promptMessage(ex.getMessage());
+        }
+      } else {
+        view.promptMessage("No stocks present in the portfolio.\n");
       }
-    } else {
-      view.promptMessage("No stocks present in the portfolio.\n");
+    } catch (NumberFormatException ex){
+      view.promptMessage("Invalid input for investing with custom weights\n");
     }
   }
 
@@ -630,12 +668,13 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        * Setting the stock name, the amount and the date for which a share of a stock has to be
        * added to the portfolio.
        */
+
+      try {
       String stockName = buyDetails[0];
       Double amount = Double.parseDouble(buyDetails[1]);
       String date = buyDetails[2];
       String commissionOption = buyDetails[3];
 
-      try {
 
         Double commission = selectedPFolio.getCommission(commissionOption);
         /**
@@ -643,8 +682,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          */
         view.promptMessage(selectedPFolio.addStock(stockName, amount, date, commission)
                 + " share(s) of " + stockName + " bought on " + date + "\n");
-      } catch (IllegalArgumentException ex) {
-        view.promptMessage(ex.getMessage());
+      } catch (IllegalArgumentException  ex) {
+        view.promptMessage("Invalid input for buying shares " + ex.getMessage()+"\n");
       }
       /**
        * Add more shares to the portfolio manager object.

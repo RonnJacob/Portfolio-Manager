@@ -67,6 +67,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     String strategyMenu = "\nStrategy Menu\n";
     strategyMenu += "1. Apply Strategy\n";
     strategyMenu += "2. Modify strategy\n";
+    strategyMenu += "3. Display Stocks\n";
     strategyMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.";
     promptMessage(strategyMenu);

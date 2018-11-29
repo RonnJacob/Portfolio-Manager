@@ -71,6 +71,7 @@ public class HowToInvestViewTest {
     expected += "\nStrategy Menu\n";
     expected += "1. Apply Strategy\n";
     expected += "2. Modify strategy\n";
+    expected += "3. Display Stocks\n";
     expected += "Enter the number for performing operation or r to return to the main "
             + "menu.\n";
     view.openStrategyMenu();

@@ -256,7 +256,8 @@ public class HowToInvestControllerTest {
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
 
@@ -281,8 +282,9 @@ public class HowToInvestControllerTest {
             + "Enter index of Portfolio to open.\nInput received : 4\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet All Portfolios\n"
-                    + "Get Portfolio 2\nGet All Portfolios\nGet Portfolio 4\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nGet All "
+                    + "Portfolios\nGet Portfolio 2\nGet Portfolio 2\nGet All Portfolios\n"
+                    + "Get Portfolio 4\nGet Portfolio 4\n",
             logPortfolioModel.toString());
   }
 
@@ -304,7 +306,7 @@ public class HowToInvestControllerTest {
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
   }
 
@@ -327,7 +329,7 @@ public class HowToInvestControllerTest {
             + "Input received : 1\nInput received for: Enter date in format yyyy-mm-dd: \n"
             + "\nInput received : q\nPortfolio Screen Opened.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n"
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nGet Portfolio 1\n"
                     + "Get composition for q\n",
             logPortfolioModel.toString());
   }
@@ -352,7 +354,8 @@ public class HowToInvestControllerTest {
             + "\nInput received : n\nPortfolio Screen Opened.\nInput received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\nAdd stock AAPL for 1000.0 on "
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nAdd stock AAPL "
+            + "for 1000.0 on "
             + "2018-10-10 with 100.0\n", logPortfolioModel.toString());
   }
 
@@ -376,7 +379,8 @@ public class HowToInvestControllerTest {
             + "Input received : 2018-10-10\nCost Basis displayed for 0.0 on 2018-10-10\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet cost basis for 2018-10-10\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
+                    + "Get cost basis for 2018-10-10\n",
             logPortfolioModel.toString());
   }
 
@@ -399,7 +403,7 @@ public class HowToInvestControllerTest {
             + "Input received : 2018-10-10\nValue displayed for 0.0 on 2018-10-10\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n"
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
                     + "Get value for 2018-10-10\n",
             logPortfolioModel.toString());
   }
@@ -423,7 +427,7 @@ public class HowToInvestControllerTest {
             + "Input received : r\nPortfolio Screen Opened.\nInput received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
   }
 
@@ -446,12 +450,13 @@ public class HowToInvestControllerTest {
             + "Input received : 5\nInvestment Menu Screen Opened. \nInput received : 1\n"
             + "Input received for: Enter amount to invest: \n\nInput received : 2000\n"
             + "Input received for: Enter date in format yyyy-mm-dd: \n\nInput received : 2018-10-13"
-            + "\nInput received for: Enter the commission option for the transaction [l, m, h]:\n"
+            + "\nInput received for: Enter the commission option for the transaction [l, m, h] or"
+            + " enter custom commission value \n"
             + "\nInput received : l\nInvestment Menu "
             + "Screen Opened. \nInput received : r\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n"
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
             + "Invest 2000.0 true 2018-10-13 100.0\n", logPortfolioModel.toString());
   }
 
@@ -476,14 +481,14 @@ public class HowToInvestControllerTest {
             + "Investment Menu Screen Opened. \nInput received : 2\nInput received for: Enter "
             + "amount to invest: \n\nInput received : 2000\n"
             + "Input received for: Enter date in format yyyy-mm-dd: \n\n"
-            + "Input received : 2018-11-13\nInput received for: Enter the commission option for "
-            + "the transaction [l, m, h]:\n"
+            + "Input received : 2018-11-13\nInput received for: Enter the commission option for the"
+            + " transaction [l, m, h] or enter custom commission value \n"
             + "\nInput received : 100\nPrompt: No stocks present in the portfolio.\n"
             + "Investment Menu Screen Opened. \nInput received : r\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\nAdd stock FB for 200.0 on "
-                    + "2018-10-13 with 100.0\nGet composition for 2018-11-13\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nAdd stock FB "
+                    + "for 200.0 on 2018-10-13 with 100.0\nGet composition for 2018-11-13\n",
             logPortfolioModel.toString());
   }
 
@@ -507,7 +512,7 @@ public class HowToInvestControllerTest {
             + "Input received : r\nPortfolio Screen Opened.\nInput received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
   }
 
@@ -568,7 +573,8 @@ public class HowToInvestControllerTest {
             + "Enter index of Portfolio to open.\nInput received : 8\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 8\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 8\nGet Portfolio 8\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -589,7 +595,8 @@ public class HowToInvestControllerTest {
             + "Input received : 12\nPrompt: Invalid input. Please enter input again.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -610,7 +617,8 @@ public class HowToInvestControllerTest {
             + "Portfolio Screen Opened.\nInput received : -4\nPrompt: Invalid input. Please enter "
             + "input again.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -637,7 +645,8 @@ public class HowToInvestControllerTest {
             + "Input received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
 
@@ -674,8 +683,9 @@ public class HowToInvestControllerTest {
             + "Input received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\nAdd stock AAPL for 100.0 on "
-                    + "2018-10-10 with 100.0\nAdd stock GOOG for 20.0 on 2018-10-10 with 100.0\n",
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\nAdd stock AAPL for"
+                    + " 100.0 on 2018-10-10 with 100.0\nAdd stock GOOG for 20.0 on 2018-10-10 with"
+                    + " 100.0\n",
             logPortfolioModel.toString());
   }
 
@@ -758,7 +768,8 @@ public class HowToInvestControllerTest {
             + "Portfolio Screen Opened.\nInput received : r\nHome Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -784,7 +795,8 @@ public class HowToInvestControllerTest {
             + "Input received : r\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
   }
 
   @Test
@@ -805,12 +817,13 @@ public class HowToInvestControllerTest {
             + "Input received : 6\nInput received for: \nEnter index of strategy to apply.\n"
             + "\nInput received : 1\nStrategy Menu Screen opened. \n"
             + "Input received : 1\nInput received for: Enter the commission option for the "
-            + "transaction [l, m, h] \n"
+            + "transaction [l, m, h] or enter custom commission value \n"
             + "\nInput received : l\nPrompt: No stocks in portfolio to apply strategy.\n"
             + "Strategy Menu Screen opened. \nInput received : r\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\n" +
+            "Get Portfolio 1\n", logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nApply strategy with commision 100.0",
             logStrategyModel.toString());
   }
@@ -853,7 +866,8 @@ public class HowToInvestControllerTest {
             + "\n"
             + "Quitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nSetting weights\n\n",
             logStrategyModel.toString());
   }
@@ -888,7 +902,8 @@ public class HowToInvestControllerTest {
             + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\n"
             + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\n"
+            + "Get Portfolio 1\n", logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nChange amount to 2000.0\n",
             logStrategyModel.toString());
   }
@@ -913,13 +928,14 @@ public class HowToInvestControllerTest {
             + "Enter index of strategy to apply.\n\nInput received : 1\n"
             + "Strategy Menu Screen opened. \nInput received : 2\n"
             + "Strategy modification screen Opened.\nInput received : 4\n"
-            + "Input received for: Enter frequency \n\nInput received : 100\n"
+            + "Input received for: Enter frequency in number of days.\n\nInput received : 100\n"
             + "Strategy modification screen Opened.\nInput received : r\n"
             + "Strategy Menu Screen opened. \nInput received : r\n"
             + "Portfolio Screen Opened.\nInput received : q\n"
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nChange frequency to 100 days.\n",
             logStrategyModel.toString());
   }
@@ -948,9 +964,10 @@ public class HowToInvestControllerTest {
             + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
             + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nChange date from 2018-10-10 to "
-            + "2018-12-12 \n", logStrategyModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
+    assertEquals("All Portfolios\nGet Portfolio 1\nChange date from "
+            + "2018-10-10 to 2018-12-12 \n", logStrategyModel.toString());
   }
 
   @Test
@@ -977,9 +994,10 @@ public class HowToInvestControllerTest {
             + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
             + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nAdd stock to strategy.\n",
-            logStrategyModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
+    assertEquals("All Portfolios\nGet Portfolio 1\n"
+                    + "Add stock to strategy.\n", logStrategyModel.toString());
   }
 
   @Test
@@ -1008,9 +1026,10 @@ public class HowToInvestControllerTest {
             + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
             + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
-    assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nAdd stocks to strategy.\n",
-            logStrategyModel.toString());
+    assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
+            logPortfolioModel.toString());
+    assertEquals("All Portfolios\nGet Portfolio 1\n"
+                    + "Add stocks to strategy.\n", logStrategyModel.toString());
   }
 
   @Test
@@ -1025,7 +1044,8 @@ public class HowToInvestControllerTest {
     String listOfPortfolios = "\nList of Portfolios\n1: Default StockPortfolio\n";
     String queries = "\nEnter stock symbol:\n\nEnter amount for which shares are to be bought:\n"
             + "\nEnter date in format yyyy-mm-dd: \n\nEnter the commission option for the "
-            + "transaction [l, m, h] \n\n9.523809523809524 share(s) of FB bought on 2018-10-10\n"
+            + "transaction [l, m, h] or enter a custom commission value \n\n"
+            + "9.523809523809524 share(s) of FB bought on 2018-10-10\n"
             + "\nBuy more shares? (Y/N)\n\n";
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
@@ -1048,15 +1068,18 @@ public class HowToInvestControllerTest {
     String listOfPortfolios = "\nList of Portfolios\n1: Default StockPortfolio\n";
     String queries = "\nEnter stock symbol:\n\nEnter amount for which shares are to be bought:\n"
             + "\nEnter date in format yyyy-mm-dd: \n\nEnter the commission option for the "
-            + "transaction [l, m, h] \n\n9.523809523809524 share(s) of FB bought on 2018-10-10\n"
+            + "transaction [l, m, h] or enter a custom commission value \n\n9.523809523809524 "
+            + "share(s) of FB bought on 2018-10-10\n"
             + "\nBuy more shares? (Y/N)\n\n";
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
     String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
             + "Enter index of strategy to apply.\n\n\n"
-            + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n"
+            + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n" +
+            "3. Display Stocks\n"
             + "Enter the number for performing operation or r to return to the main menu.\n"
-            + "Enter the commission option for the transaction [l, m, h] \n";
+            + "Enter the commission option for the transaction [l, m, h] or enter "
+            + "custom commission value \n";
     String text = "\n\n2018-01-01\n" + "\n" + "20.00 shares of MSFT bought.\n"
             + "\n" + "\n" + "2018-01-31\n" + "\n" + "20.00 shares of MSFT bought.\n" + "\n"
             + "\n" + "2018-03-02\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
@@ -1069,6 +1092,7 @@ public class HowToInvestControllerTest {
             + "2018-09-28\n" + "\n" + "19.42 shares of MSFT bought.\n" + "\n" + "\n"
             + "2018-10-28\n" + "\n" + "19.42 shares of MSFT bought." + "\n\n\n" + "Strategy Menu\n"
             + "1. Apply Strategy\n" + "2. Modify strategy\n"
+            + "3. Display Stocks\n"
             + "Enter the number for performing operation or r to return to the main menu.\n";
     String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
             + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen
