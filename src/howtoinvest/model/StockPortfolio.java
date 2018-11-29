@@ -238,10 +238,11 @@ public class StockPortfolio implements IPortfolio<Stock> {
   }
 
   /**
-   * Throws an exception if the sum off all the weights do not amount to 100.
+   * Throws an exception if the sum off all the weights do not amount to 100 or if the weights are
+   * negative.
    *
    * @param weights hashmap of stocks and their corresponding weights.
-   * @throws IllegalArgumentException if the input weights is null
+   * @throws IllegalArgumentException if the input weights is null or invalid.
    */
   private void validWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
     if (weights == null) {
@@ -249,6 +250,9 @@ public class StockPortfolio implements IPortfolio<Stock> {
     }
     double total = 0;
     for (String key : weights.keySet()) {
+      if (weights.get(key) < 0) {
+        throw new IllegalArgumentException("Invalid weights");
+      }
       total += weights.get(key);
     }
     if (total != 100) {

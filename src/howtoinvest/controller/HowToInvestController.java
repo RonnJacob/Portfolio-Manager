@@ -488,7 +488,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       }
 
     } catch (IllegalArgumentException ex) {
-      view.promptMessage(ex.getMessage());
+      view.promptMessage("Invalid input:" + ex.getMessage());
     }
     return "r";
   }
