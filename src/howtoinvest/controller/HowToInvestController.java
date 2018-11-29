@@ -108,6 +108,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    *
    * @param view  the class implementing the view of the program.
    * @param model the class implementing the model of the program.
+   * @param strategyModel the class implementing the strategy model of the program.
    */
   public HowToInvestController(IHowToInvestView view, IManager<StockPortfolio> model,
                                IManager<DollarCostAveraging> strategyModel) {
