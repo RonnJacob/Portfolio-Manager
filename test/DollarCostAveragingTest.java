@@ -226,6 +226,15 @@ public class DollarCostAveragingTest {
     dca.addStockToStrategy("FB");
     dca.addStockToStrategy("GOOGL");
 
+    weights.put("MSFT", -50.0);
+    weights.put("FB", 150.0);
+    weights.put("GOOGL", 0.0);
+    try {
+      dca.setWeights(weights);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid weights", ex.getMessage());
+    }
     weights = new TreeMap<>();
     weights.put("FB", 100.0);
     weights.put("GOOGL", 0.0);

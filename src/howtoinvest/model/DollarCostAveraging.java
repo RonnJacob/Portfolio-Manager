@@ -167,9 +167,9 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
    * Checks if the given stock weights contains all the weights for all the stocks in strategy.
    *
    * @param weights stock and theier weights as a Treemap.
-   * @throws IllegalArgumentException if the weights dont add up to 100 or if it contains any stocks
-   *                                  which are not in the startegy or does not contain all the
-   *                                  stocks int he strategy.
+   * @throws IllegalArgumentException if the weights dont add up to 100 or if any of the weight is
+   *                                  negative or if it contains any stocks which are not in the
+   *                                  startegy or does not contain all the stocks in the strategy.
    */
   private void validWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
     if (weights == null) {
@@ -181,6 +181,9 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
     }
     for (String key : weights.keySet()) {
       if (!this.stockWeights.containsKey(key)) {
+        throw new IllegalArgumentException("Invalid weights");
+      }
+      if (weights.get(key) < 0) {
         throw new IllegalArgumentException("Invalid weights");
       }
       total += weights.get(key);
