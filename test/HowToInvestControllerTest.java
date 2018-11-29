@@ -35,8 +35,6 @@ public class HowToInvestControllerTest {
           + "menu or q to quit the application.";
 
 
-
-
   @Test
   public void TestPortfolioManagerEmptyInput() {
     Reader stringReader = new StringReader("");
@@ -52,7 +50,7 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     assertEquals("", logPortfolioManager.toString());
     assertEquals("", logStrategyManager.toString());
-    expected= "Home Screen Opened.\n\nQuitting Manager.\n";
+    expected = "Home Screen Opened.\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("", out.toString());
   }
@@ -72,7 +70,7 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     assertEquals("", logPortfolioManager.toString());
     assertEquals("", logStrategyManager.toString());
-    expected= "Home Screen Opened.\n\nQuitting Manager.\n";
+    expected = "Home Screen Opened.\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("", out.toString());
   }
@@ -90,19 +88,19 @@ public class HowToInvestControllerTest {
     MockViewOne view = new MockViewOne(logView, stringReader, out);
     IHowToInvestController controller;
     try {
-      controller =  new HowToInvestController(null, model, strategyModel);
+      controller = new HowToInvestController(null, model, strategyModel);
       controller.openPortfolioManager();
     } catch (IllegalArgumentException ex) {
       assertEquals(expected, ex.getMessage());
     }
     try {
-      controller =  new HowToInvestController(view, null, strategyModel);
+      controller = new HowToInvestController(view, null, strategyModel);
       controller.openPortfolioManager();
     } catch (IllegalArgumentException ex) {
       assertEquals(expected, ex.getMessage());
     }
     try {
-      controller =  new HowToInvestController(view, model, null);
+      controller = new HowToInvestController(view, model, null);
       controller.openPortfolioManager();
     } catch (IllegalArgumentException ex) {
       assertEquals(expected, ex.getMessage());
@@ -215,7 +213,7 @@ public class HowToInvestControllerTest {
 
     assertEquals(expected, logView.toString());
     assertEquals("Create Portfolio Name P1\nCreate Portfolio Name P2\nGet All Portfolios"
-                    + "\n", logPortfolioModel.toString());
+            + "\n", logPortfolioModel.toString());
   }
 
   @Test
@@ -277,13 +275,13 @@ public class HowToInvestControllerTest {
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \nEnter index of "
             + "Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\nInput received "
             + ": r\nHome Screen Opened.\nInput received : 3\nInput received for: \n"
-            +"Enter index of Portfolio to open.\nInput received : 2\nPortfolio Screen Opened.\n"
+            + "Enter index of Portfolio to open.\nInput received : 2\nPortfolio Screen Opened.\n"
             + "Input received : r\nHome Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 4\nPortfolio Screen Opened.\n"
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet All Portfolios\n"
-            + "Get Portfolio 2\nGet All Portfolios\nGet Portfolio 4\n",
+                    + "Get Portfolio 2\nGet All Portfolios\nGet Portfolio 4\n",
             logPortfolioModel.toString());
   }
 
@@ -455,6 +453,7 @@ public class HowToInvestControllerTest {
     assertEquals("Get All Portfolios\nGet Portfolio 1\n"
             + "Invest 2000.0 true 2018-10-13 100.0\n", logPortfolioModel.toString());
   }
+
   @Test
   public void TestPortfolioManagerSelectingOptionToInvestStocksStrategyUnqualWeights() {
     Reader in = new StringReader("3 1 2 FB 200 2018-10-13 l n 5 2 2000 2018-11-13 100 r q");
@@ -483,9 +482,10 @@ public class HowToInvestControllerTest {
             + "Input received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nAdd stock FB for 200.0 on "
-            + "2018-10-13 with 100.0\nGet composition for 2018-11-13\n",
+                    + "2018-10-13 with 100.0\nGet composition for 2018-11-13\n",
             logPortfolioModel.toString());
   }
+
   @Test
   public void TestPortfolioManagerSelectingOptionToApplyStrategy() {
     Reader in = new StringReader("3 1 6 r q");
@@ -539,12 +539,12 @@ public class HowToInvestControllerTest {
     MockPortfolioManagerOne model = new MockPortfolioManagerOne(logPortfolioModel);
     MockStrategyManagerOne strategyModel = new MockStrategyManagerOne(logStrategyModel);
     IHowToInvestView view = new MockViewOne(logView, in, out);
-    try{
+    try {
 
       IHowToInvestController controller = new HowToInvestController(null, model, strategyModel);
       controller.openPortfolioManager();
       fail();
-    }catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals(expected, ex.getMessage());
     }
   }
@@ -674,10 +674,9 @@ public class HowToInvestControllerTest {
             + "\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nAdd stock AAPL for 100.0 on "
-            + "2018-10-10 with 100.0\nAdd stock GOOG for 20.0 on 2018-10-10 with 100.0\n",
+                    + "2018-10-10 with 100.0\nAdd stock GOOG for 20.0 on 2018-10-10 with 100.0\n",
             logPortfolioModel.toString());
   }
-
 
 
   @Test
@@ -950,7 +949,7 @@ public class HowToInvestControllerTest {
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\n", logPortfolioModel.toString());
     assertEquals("All Portfolios\nGet Portfolio 1\nChange date from 2018-10-10 to "
-                    + "2018-12-12 \n", logStrategyModel.toString());
+            + "2018-12-12 \n", logStrategyModel.toString());
   }
 
   @Test
@@ -1029,8 +1028,8 @@ public class HowToInvestControllerTest {
             + "\nBuy more shares? (Y/N)\n\n";
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
-    String expected = welcome +listOfPortfolios + "\nEnter index of Portfolio to open.\n"
-            +portfolioScreen+queries+portfolioScreen+stockValue+portfolioScreen+"\nQuitting "
+    String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
+            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen + "\nQuitting "
             + "manager\n";
     assertEquals(expected, out.toString());
   }
@@ -1052,34 +1051,27 @@ public class HowToInvestControllerTest {
             + "\nBuy more shares? (Y/N)\n\n";
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
-    String strategyMenu  = "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
+    String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
             + "Enter index of strategy to apply.\n\n\n"
             + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n"
             + "Enter the number for performing operation or r to return to the main menu.\n"
             + "Enter the commission option for the transaction [l, m, h] \n";
-    String text = "\n\n2016-10-22\n\n10.00 shares of FB bought.\n"
-            + "\n\n2016-11-21\n\n20.00 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2016-12-21\n\n20.00 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-01-20\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-02-19\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-03-21\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-04-20\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-05-20\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-06-19\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-07-19\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-08-18\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-09-17\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-10-17\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-11-16\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n2017-12-16\n\n13.31 shares of MSFT bought.\n\n9.52 shares of FB bought.\n"
-            + "\n\n"
-            + "Strategy Menu\n"
-            + "1. Apply Strategy\n"
-            + "2. Modify strategy\n"
+    String text = "\n\n2018-01-01\n" + "\n" + "20.00 shares of MSFT bought.\n"
+            + "\n" + "\n" + "2018-01-31\n" + "\n" + "20.00 shares of MSFT bought.\n" + "\n"
+            + "\n" + "2018-03-02\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-04-01\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-05-01\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-05-31\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-06-30\n" + "\n" + "19.80 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-07-30\n" + "\n" + "19.42 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-08-29\n" + "\n" + "19.42 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-09-28\n" + "\n" + "19.42 shares of MSFT bought.\n" + "\n" + "\n"
+            + "2018-10-28\n" + "\n" + "19.42 shares of MSFT bought." + "\n\n\n" + "Strategy Menu\n"
+            + "1. Apply Strategy\n" + "2. Modify strategy\n"
             + "Enter the number for performing operation or r to return to the main menu.\n";
-    String expected = welcome +listOfPortfolios + "\nEnter index of Portfolio to open.\n"
-            +portfolioScreen+queries+portfolioScreen+stockValue+portfolioScreen+strategyMenu
-            + text + portfolioScreen+"\nQuitting manager\n";
+    String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
+            + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen + strategyMenu
+            + text + portfolioScreen + "\nQuitting manager\n";
     assertEquals(expected, out.toString());
   }
 

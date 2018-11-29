@@ -877,7 +877,7 @@ public class StockPortfolioTest {
   }
 
   @Test
-  public void TestInvestInvalid() {
+  public void TestInvest() {
     portfolio = new StockPortfolio();
 
     TreeMap<String, Double> weights = new TreeMap<>();
@@ -1008,11 +1008,11 @@ public class StockPortfolioTest {
     portfolioData = portfolio.getPortfolioData("2018-11-11");
     assertEquals(3, portfolioData.size());
     assertEquals(119.82, portfolioData.get("GOOGL"), 0.01);
-    assertEquals(14.75, portfolioData.get("MSFT"), 0.01);
+    assertEquals(14.66, portfolioData.get("MSFT"), 0.01);
     assertEquals(10.24, portfolioData.get("FB"), 0.01);
 
     assertEquals(3500.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
-    assertEquals(3984.23, portfolio.getStockValue("2018-11-11"), 0.01);
+    assertEquals(3973.60, portfolio.getStockValue("2018-11-11"), 0.01);
 
     output = portfolio.invest(1000, weights, true, "2016-10-10", 0);
     assertEquals(2, output.size());
@@ -1022,10 +1022,10 @@ public class StockPortfolioTest {
     portfolioData = portfolio.getPortfolioData("2018-11-11");
     assertEquals(3, portfolioData.size());
     assertEquals(203.15, portfolioData.get("GOOGL"), 0.01);
-    assertEquals(14.75, portfolioData.get("MSFT"), 0.01);
+    assertEquals(14.66, portfolioData.get("MSFT"), 0.01);
     assertEquals(13.57, portfolioData.get("FB"), 0.01);
 
     assertEquals(4166.66, portfolio.getStockCostBasis("2018-11-11"), 0.01);
-    assertEquals(5217.29, portfolio.getStockValue("2018-11-11"), 0.01);
+    assertEquals(5206.67, portfolio.getStockValue("2018-11-11"), 0.01);
   }
 }

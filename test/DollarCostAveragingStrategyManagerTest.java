@@ -29,11 +29,11 @@ public class DollarCostAveragingStrategyManagerTest {
      */
     dollarCostAveraging = manager.getByIndex(1);
 
-    assertEquals(2, dollarCostAveraging.getStocks().size());
+    assertEquals(1, dollarCostAveraging.getStocks().size());
 
     this.dollarCostAveraging.addStockToStrategy("GOOGL");
 
-    assertEquals(3, dollarCostAveraging.getStocks().size());
+    assertEquals(2, dollarCostAveraging.getStocks().size());
   }
 
   @Test
@@ -46,14 +46,14 @@ public class DollarCostAveragingStrategyManagerTest {
 
     dollarCostAveraging = manager.getByIndex(1);
 
-    assertEquals(2, dollarCostAveraging.getStocks().size());
+    assertEquals(1, dollarCostAveraging.getStocks().size());
 
     /**
      * Adding stock thats already in it.
      */
     this.dollarCostAveraging.addStockToStrategy("MSFT");
 
-    assertEquals(2, dollarCostAveraging.getStocks().size());
+    assertEquals(1, dollarCostAveraging.getStocks().size());
 
 
     manager.create("A Strategy");
@@ -65,19 +65,19 @@ public class DollarCostAveragingStrategyManagerTest {
 
     dollarCostAveraging = manager.getByIndex(1);
 
-    assertEquals(2, dollarCostAveraging.getStocks().size());
+    assertEquals(1, dollarCostAveraging.getStocks().size());
 
     this.dollarCostAveraging.addStockToStrategy("GOOGL");
 
-    assertEquals(3, dollarCostAveraging.getStocks().size());
+    assertEquals(2, dollarCostAveraging.getStocks().size());
 
     dollarCostAveraging = manager.getByIndex(2);
 
-    assertEquals(2, dollarCostAveraging.getStocks().size());
+    assertEquals(1, dollarCostAveraging.getStocks().size());
 
     dollarCostAveraging = manager.getByIndex(1);
 
-    assertEquals(3, dollarCostAveraging.getStocks().size());
+    assertEquals(2, dollarCostAveraging.getStocks().size());
   }
 
   @Test

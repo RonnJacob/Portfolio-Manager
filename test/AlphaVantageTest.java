@@ -14,86 +14,81 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class AlphaVantageTest {
-  private final IStockDataRetrieval alphavantageApi  = new AlphaVantage();
+  private final IStockDataRetrieval alphavantageApi = new AlphaVantage();
 
   @Test
-  public void testCheckValidityOfAlphaVantageFalse(){
+  public void testCheckValidityOfAlphaVantageFalse() {
     String invalidTickerName = "a1234a1234";
     assertFalse(alphavantageApi.checkValidityOfTickerName(invalidTickerName));
   }
 
   @Test
-  public void testCheckValidityOfAlphaVantageTrue(){
+  public void testCheckValidityOfAlphaVantageTrue() {
     String validTickerName = "FB";
     assertTrue(alphavantageApi.checkValidityOfTickerName(validTickerName));
   }
 
   @Test
-  public void testRetrieveSharePriceOfFutureDate(){
+  public void testRetrieveSharePriceOfFutureDate() {
     String validTickerName = "FB";
     String message = "Cannot fetch share value for a future date";
-    try{
-      Date date = new GregorianCalendar(2019,Calendar.FEBRUARY,10).getTime();
+    try {
+      Date date = new GregorianCalendar(2019, Calendar.FEBRUARY, 10).getTime();
       alphavantageApi.retrieveSharePrice(date, validTickerName);
       fail();
-    }
-    catch(ParseException | IllegalArgumentException ex){
-    assertEquals(message, ex.getMessage());
-    }
-  }
-
-  @Test
-  public void testRetrieveSharePriceOfNonexistentHistory(){
-    String validTickerName = "FB";
-    String message = "Share prices do not exist for given date.";
-    try{
-      Date date = new GregorianCalendar(1990,Calendar.FEBRUARY,10).getTime();
-      alphavantageApi.retrieveSharePrice(date, validTickerName);
-      fail();
-    }
-    catch(ParseException | IllegalArgumentException ex){
+    } catch (ParseException | IllegalArgumentException ex) {
       assertEquals(message, ex.getMessage());
     }
   }
 
   @Test
-  public void testRetrieveSharePriceOfDatePresentNonHoliday(){
+  public void testRetrieveSharePriceOfNonexistentHistory() {
     String validTickerName = "FB";
     String message = "Share prices do not exist for given date.";
-    try{
-      Date date = new GregorianCalendar(2018,Calendar.NOVEMBER,27).getTime();
+    try {
+      Date date = new GregorianCalendar(1990, Calendar.FEBRUARY, 10).getTime();
+      alphavantageApi.retrieveSharePrice(date, validTickerName);
+      fail();
+    } catch (ParseException | IllegalArgumentException ex) {
+      assertEquals(message, ex.getMessage());
+    }
+  }
+
+  @Test
+  public void testRetrieveSharePriceOfDatePresentNonHoliday() {
+    String validTickerName = "FB";
+    String message = "Share prices do not exist for given date.";
+    try {
+      Date date = new GregorianCalendar(2018, Calendar.NOVEMBER, 27).getTime();
       Double price = alphavantageApi.retrieveSharePrice(date, validTickerName);
       assertEquals(price, 135.0000, 0.01);
-    }
-    catch(ParseException | IllegalArgumentException ex){
+    } catch (ParseException | IllegalArgumentException ex) {
       assertEquals(message, ex.getMessage());
     }
   }
 
   @Test
-  public void testRetrieveSharePriceOfDateNotPresentWeekend(){
+  public void testRetrieveSharePriceOfDateNotPresentWeekend() {
     String validTickerName = "FB";
     String message = "Share prices do not exist for given date.";
-    try{
-      Date date = new GregorianCalendar(2018,Calendar.NOVEMBER,25).getTime();
+    try {
+      Date date = new GregorianCalendar(2018, Calendar.NOVEMBER, 25).getTime();
       Double price = alphavantageApi.retrieveSharePrice(date, validTickerName);
       assertEquals(price, 131.7300, 0.01);
-    }
-    catch(ParseException | IllegalArgumentException ex){
+    } catch (ParseException | IllegalArgumentException ex) {
       assertEquals(message, ex.getMessage());
     }
   }
 
   @Test
-  public void testRetrieveSharePriceOfDateHolidayOrClosedExchange(){
+  public void testRetrieveSharePriceOfDateHolidayOrClosedExchange() {
     String validTickerName = "FB";
     String message = "Share prices do not exist for given date.";
-    try{
-      Date date = new GregorianCalendar(2017,Calendar.DECEMBER,25).getTime();
+    try {
+      Date date = new GregorianCalendar(2017, Calendar.DECEMBER, 25).getTime();
       Double price = alphavantageApi.retrieveSharePrice(date, validTickerName);
       assertEquals(price, 177.20, 0.01);
-    }
-    catch(ParseException | IllegalArgumentException ex){
+    } catch (ParseException | IllegalArgumentException ex) {
       assertEquals(message, ex.getMessage());
     }
   }

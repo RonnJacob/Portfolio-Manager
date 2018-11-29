@@ -24,13 +24,11 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
 
   public DollarCostAveraging() throws IllegalArgumentException {
     this.stockWeights = new TreeMap<>();
-    this.stockWeights.put("FB", 50.0);
-    this.stockWeights.put("MSFT", 50.0);
+    this.stockWeights.put("MSFT", 100.0);
     this.amount = 2000;
     this.frequency = 30;
-    this.startDate = parseDate("2015-01-01");
-    this.endDate = parseDate("2017-12-31");
-
+    this.startDate = parseDate("2018-01-01");
+    this.endDate = parseDate("2018-11-25");
   }
 
   private Date parseDate(String date) throws IllegalArgumentException {
@@ -53,8 +51,8 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
     return stocks;
   }
 
-  private Boolean isStockInStrategy(String tickerSymbol) {
-    if (tickerSymbol == null) {
+  private Boolean isStockInStrategy(String tickerSymbol) throws IllegalArgumentException {
+    if (tickerSymbol == null || tickerSymbol.trim().isEmpty()) {
       throw new IllegalArgumentException("Invalid stock");
     }
     for (String key : this.stockWeights.keySet()) {
@@ -66,14 +64,18 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
   }
 
   @Override
-  public void addStockToStrategy(String tickerSymbol) {
+  public void addStockToStrategy(String tickerSymbol) throws IllegalArgumentException {
     if (!isStockInStrategy(tickerSymbol)) {
       this.stockWeights.put(tickerSymbol, 0.0);
     }
   }
 
   @Override
-  public void addMultipleStocksToStrategy(List<String> tickerSymbolList) {
+  public void addMultipleStocksToStrategy(List<String> tickerSymbolList)
+          throws IllegalArgumentException {
+    if (tickerSymbolList == null) {
+      throw new IllegalArgumentException("Invalid stock list");
+    }
     for (String tickerSymbol : tickerSymbolList) {
       if (!isStockInStrategy(tickerSymbol)) {
         this.stockWeights.put(tickerSymbol, 0.0);
@@ -82,9 +84,12 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
   }
 
   @Override
-  public void setWeights(TreeMap<String, Double> weights) {
+  public void setWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
     validWeights(weights);
-    this.stockWeights = weights;
+    this.stockWeights = new TreeMap<>();
+    for(String key: weights.keySet()){
+      this.stockWeights.put(key, weights.get(key));
+    }
   }
 
   private void validWeights(TreeMap<String, Double> weights) throws IllegalArgumentException {
