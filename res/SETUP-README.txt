@@ -38,3 +38,9 @@ Alpha Vantage API
 by '_AlphaVantage' and would contain open, low, high, close prices and volume of shares for
 a particular date in CSV format.
 - The .csv file would be populated by the API.
+
+Commission File Instructions
+-----------------------------
+- Three presets can be set in the commission.csv file that is present in the res folder in the
+format l,m,h which are comma separated. These three values would correspond to low commision value
+, medium commission value and high commission value.
