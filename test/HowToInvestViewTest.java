@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+
 import howtoinvest.view.HowToInvestViewImpl;
 import howtoinvest.view.IHowToInvestView;
 
@@ -350,7 +351,7 @@ public class HowToInvestViewTest {
     }
   }
 
-    @Test
+  @Test
   public void checkViewAppendableException() throws IOException {
     String s = "";
     s += "3 1 2 AAPL 100 2018-10-10 y GOOG 20 2018-10-10 n q";
@@ -369,4 +370,4 @@ public class HowToInvestViewTest {
     }
   }
 
-  }
+}

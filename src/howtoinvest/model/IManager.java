@@ -3,12 +3,11 @@ package howtoinvest.model;
 import java.util.List;
 
 /**
- * Represents an interface to manage all portfolios of type K. This interface provides the ability
- * to list all the existing portfolios, create a new portfolio and retrieve a portfolio. The
- * portfolios are lexicographically ordered with an index to facilitate retrieval of the portfolio
- * with an index.
+ * Represents an interface to manage all items of type K. This interface provides the ability to
+ * list all the existing items, create a new item and retrieve an item. The items are
+ * lexicographically ordered with an index to facilitate retrieval of the item with an index.
  *
- * @param <K> data type
+ * @param <K> data type of the items in the IManager.
  */
 public interface IManager<K> {
 

@@ -18,11 +18,12 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   /**
    * Constructor that takes a readable and appendable object as parameters.s
-   * @param in the readable object.
+   *
+   * @param in  the readable object.
    * @param out the appendable object.
    */
   public HowToInvestViewImpl(Readable in, Appendable out) {
-    if(in == null || out == null){
+    if (in == null || out == null) {
       throw new IllegalArgumentException("Invalid Readable or Appendable object");
     }
     this.in = in;
@@ -118,7 +119,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   @Override
   public String getInput(String message) {
-    if(!message.equals("")){
+    if (!message.equals("")) {
       promptMessage(message);
     }
     if (scan.hasNext()) {

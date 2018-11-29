@@ -298,7 +298,7 @@ public class AlphaVantage implements IStockDataRetrieval {
       output.append(scanner.next() + "\n");
       counter += 1;
     }
-    if(output.toString().length()==0){
+    if (output.toString().length() == 0) {
       return false;
     }
     String outputDates = output.toString().split("\n")[1].split(",")[0];

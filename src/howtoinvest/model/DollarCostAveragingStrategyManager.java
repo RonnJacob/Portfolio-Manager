@@ -4,24 +4,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
+/**
+ * This class represents an Dollar cost averaging strategy  Manager. This manages dollar cost
+ * averaging strategies. The strategies are uniquely identified by their names and are sorted and
+ * stored according to the lexicographical order of their identifier. This strategy manager contains
+ * a Default strategy which is automatically created for the user. Users can add , modify and apply
+ * the strategy ona portfolio by retrieving a strategy of their choice from the manager and
+ * performing the above operations on it.
+ */
 public class DollarCostAveragingStrategyManager
         implements IManager<DollarCostAveraging> {
   /**
-   * tree map of key value pairs where the key is the name of the portfolio and values is the object
-   * of that stock portfolio.
+   * tree map of key value pairs where the key is the name of the strategy and values is the object
+   * of that strategy.
    */
   private TreeMap<String, DollarCostAveraging> strategies = new TreeMap<>();
 
   /**
-   * Constructs a StockPortfolioManager object and adds a default stock portfolio.
+   * Constructs a DollarCostAveraging object and adds a default DollarCostAveraging strategy.
    */
   public DollarCostAveragingStrategyManager() {
     this.strategies.put("Default DollarCostAveraging", new DollarCostAveraging());
   }
 
   /**
-   * Return the indices and the names of all portfolios. Index starts from 1 and the portfolios are
-   * lexicographically ordered based on the names of the stock portfolio.
+   * Return the indices and the names of all strategies. Index starts from 1 and the strategies are
+   * lexicographically ordered based on the names of the strategy.
    */
   @Override
   public List<String> getAll() {
@@ -31,11 +39,11 @@ public class DollarCostAveragingStrategyManager
   }
 
   /**
-   * Creates a new portfolio with the given name.
+   * Creates a new strategy with the given name.
    *
-   * @param name name of the portfolio.
+   * @param name name of the strategy.
    * @throws IllegalArgumentException if the name is null or empty or if the name is already taken
-   *                                  by another portfolio.
+   *                                  by another strategy.
    */
   @Override
   public void create(String name) throws IllegalArgumentException {
@@ -52,11 +60,11 @@ public class DollarCostAveragingStrategyManager
   }
 
   /**
-   * Returns the portfolio of the given index in the lexicographically sorted tree map.
+   * Returns the strategy of the given index in the lexicographically sorted tree map.
    *
-   * @param index of the portfolio.
+   * @param index of the strategy.
    * @return if the index is invalid.
-   * @throws IllegalArgumentException if the portfolio does not exist with the given index.
+   * @throws IllegalArgumentException if the strategy does not exist with the given index.
    */
   @Override
   public DollarCostAveraging getByIndex(int index) {

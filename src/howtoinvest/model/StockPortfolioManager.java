@@ -12,7 +12,7 @@ import java.util.TreeMap;
  * This portfolio manager contains a Default Portfolio which is automatically created for the user.
  * Users can add stocks, view their composition, get total cost basis and total value of the
  * portfolio by retrieving a portfolio of their choice from the StockPortfolioManager and performing
- * the above operations on it..
+ * the above operations on it.
  */
 public class StockPortfolioManager implements IManager<StockPortfolio> {
 
@@ -31,6 +31,7 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
 
   /**
    * Return a list of all the portfolio names in the portfolio.
+   *
    * @return list of portfolio names.
    */
   @Override

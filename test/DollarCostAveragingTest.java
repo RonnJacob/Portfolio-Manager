@@ -446,5 +446,12 @@ public class DollarCostAveragingTest {
     assertEquals(60, portfolio.getStockCostBasis("2016-11-04"), 0.01);
     assertEquals(180, portfolio.getStockCostBasis("2016-11-14"), 0.01);
     assertEquals(0.00, portfolio.getStockCostBasis("2016-10-24"), 0.01);
+
+    try {
+      dca.applyStrategy(null, 10);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Invalid portfolio", ex.getMessage());
+    }
   }
 }

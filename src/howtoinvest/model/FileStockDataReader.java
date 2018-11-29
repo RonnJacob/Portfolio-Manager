@@ -43,7 +43,7 @@ public class FileStockDataReader implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the share price of a company/organization based on the ticker symbol at that date or
-   *         the date that is closest to that date.
+   * the date that is closest to that date.
    */
   @Override
   public boolean checkValidityOfTickerName(String tickerName) {
@@ -57,8 +57,9 @@ public class FileStockDataReader implements IStockDataRetrieval {
    * @param date       the date for which we wish to look up the stock/share price.
    * @param tickerName a unique symbol representing a company/organization.
    * @return the share price for a particular date from the file.
-   * @throws ParseException if the input date is of invalid format or if the retrieved content is
-   *                        not in the right format to retrieve the share price for that date.
+   * @throws ParseException           if the input date is of invalid format or if the retrieved
+   *                                  content is not in the right format to retrieve the share price
+   *                                  for that date.
    * @throws IllegalArgumentException if thr date or tickerName is invalid.
    */
   @Override
