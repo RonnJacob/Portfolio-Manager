@@ -14,6 +14,9 @@ import howtoinvest.model.StockPortfolio;
 
 import static org.junit.Assert.*;
 
+/**
+ * This class contains all the tests for the DollarCostAveraging class.
+ */
 public class DollarCostAveragingTest {
 
   private DollarCostAveraging dca;

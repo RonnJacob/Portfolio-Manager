@@ -12,7 +12,16 @@ import java.util.TreeMap;
  * by buying stocks with commission.Commission fees are charged by the brokerage service that an
  * investor typically use to buy and sell stocks. These fees are usually charged per
  * transaction.Also gives the functionality to Invest a fixed amount into an existing portfolio
- * containing multiple stocks, using a specified weight for each stock in the portfolio.
+ * containing multiple stocks, using a specified weight for each stock in the portfolio. The
+ * following interface provides operations relevant to portfolios which would include retrieving
+ * the stocks and the number of shares present in the portfolio. The cost basis and value of a
+ * portfolio can be retrieved as well and the interface provides the functionality to do so. The
+ * commission for a transaction is divided in three categories (low, medium and high) and the
+ * commission value is retrieved from a .csv file which contains the values corresponding to these
+ * settings for commission. Adding or investing in a stock in the portfolio would include this
+ * commission charge and this would be reflected in the cost basis and value of the portfolio.
+ * The other features would include investing on stocks within a particular portfolio with a set
+ * of weights for each stock in the portfolio and buying/adding of stocks within the portfolio.
  *
  * @param <K> the type of the data of the portfolio.
  */
@@ -25,8 +34,23 @@ public interface IPortfolio<K> {
    */
   HashMap<String, Double> getPortfolioData(String date);
 
+
+  /**
+   * Returns the total cost basis of the portfolio at a given date.
+   *
+   * @param date date for which the cost basis has to be calculated.
+   * @return the total cost basis of the portfolio.
+   * @throws IllegalArgumentException if the stock cost basis cannot be fetched.
+   */
   double getStockCostBasis(String date) throws IllegalArgumentException;
 
+  /**
+   * Returns the total value of the portfolio at a given date.
+   *
+   * @param date date for which the value has to be calculated.
+   * @return the total value of the portfolio.
+   * @throws IllegalArgumentException if the stock value cannot be fetched.
+   */
   double getStockValue(String date) throws IllegalArgumentException;
 
   /**

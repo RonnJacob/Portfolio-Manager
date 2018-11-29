@@ -8,15 +8,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-
-import howtoinvest.controller.HowToInvestController;
-import howtoinvest.controller.IHowToInvestController;
 import howtoinvest.view.HowToInvestViewImpl;
 import howtoinvest.view.IHowToInvestView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * The following class contains tests pertaining to the HowToInvestViewImpl operations.
+ */
 public class HowToInvestViewTest {
   private String expected = "";
   private IHowToInvestView view;

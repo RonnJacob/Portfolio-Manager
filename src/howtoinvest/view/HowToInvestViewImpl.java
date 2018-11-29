@@ -14,9 +14,13 @@ public class HowToInvestViewImpl implements IHowToInvestView {
 
   private final Readable in;
   private final Appendable out;
-
   private Scanner scan;
 
+  /**
+   * Constructor that takes a readable and appendable object as parameters.s
+   * @param in the readable object.
+   * @param out the appendable object.
+   */
   public HowToInvestViewImpl(Readable in, Appendable out) {
     if(in == null || out == null){
       throw new IllegalArgumentException("Invalid Readable or Appendable object");

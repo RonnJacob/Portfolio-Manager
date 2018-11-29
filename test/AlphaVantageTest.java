@@ -13,6 +13,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * This class contains all the tests for the AlphaVantage class.
+ */
 public class AlphaVantageTest {
   private final IStockDataRetrieval alphavantageApi = new AlphaVantage();
 
