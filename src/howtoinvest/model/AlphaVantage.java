@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -303,6 +304,42 @@ public class AlphaVantage implements IStockDataRetrieval {
     }
     String outputDates = output.toString().split("\n")[1].split(",")[0];
     Date latestDate = simpleDateFormat.parse(outputDates);
-    return !latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(new Date())));
+    Date currentDate = new Date();
+    Calendar c = Calendar.getInstance();
+    c.setTime(currentDate);
+    int time = c.get(Calendar.HOUR_OF_DAY);
+    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+    /**
+     * If the day is a saturday or sunday or if the time is before 9am we need to take the previous
+     * working day since the API wont have values for the current day then.
+     */
+    if (dayOfWeek == 7) {
+      currentDate = yesterday();
+    } else if (dayOfWeek == 1) {
+      currentDate = dayBeforeYesterday();
+    } else if (time <= 9) {
+      currentDate = yesterday();
+    }
+    return !latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(currentDate)));
+  }
+
+  /**
+   * Returns the previous date of the current date.
+   * @return the previous date of the current date.
+   */
+  private Date yesterday() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -1);
+    return cal.getTime();
+  }
+
+  /**
+   * Returns the day before of the current date.
+   * @return the day before of the current date.
+   */
+  private Date dayBeforeYesterday() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -2);
+    return cal.getTime();
   }
 }
