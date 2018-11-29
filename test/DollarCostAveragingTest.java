@@ -399,6 +399,11 @@ public class DollarCostAveragingTest {
     assertEquals(6000.00, portfolio.getStockCostBasis("2018-08-01"), 0.01);
     assertEquals(0.00, portfolio.getStockCostBasis("2018-05-30"), 0.01);
 
+    assertEquals(2000.00, portfolio.getStockValue("2018-06-01"), 0.01);
+    assertEquals(4039.60, portfolio.getStockValue("2018-07-01"), 0.01);
+    assertEquals(6039.60, portfolio.getStockValue("2018-08-01"), 0.01);
+    assertEquals(0.00, portfolio.getStockValue("2018-05-30"), 0.01);
+
     dca = new DollarCostAveraging();
     portfolio = new StockPortfolio();
 
@@ -458,10 +463,45 @@ public class DollarCostAveragingTest {
     assertEquals(0.00, portfolio.getStockCostBasis("2016-10-24"), 0.01);
 
     try {
+      assertEquals(30, portfolio.getStockValue("2016-10-25"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Cannot fetch current share price:Share"
+              + " prices do not exist for given date.", ex.getMessage());
+    }
+    try {
+      assertEquals(60, portfolio.getStockValue("2016-11-04"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Cannot fetch current share price:Share"
+              + " prices do not exist for given date.", ex.getMessage());
+    }
+    assertEquals(150, portfolio.getStockValue("2016-11-14"), 0.01);
+
+    try {
+      assertEquals(0.00, portfolio.getStockValue("2016-10-24"), 0.01);
+      fail();
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Cannot fetch current share price:Share"
+              + " prices do not exist for given date.", ex.getMessage());
+    }
+
+    try {
       dca.applyStrategy(null, 10);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid portfolio", ex.getMessage());
     }
+
+    output = dca.applyStrategy(portfolio, -1);
+    assertEquals(3, output.size());
+    date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-10-25");
+    assertEquals(0, output.get(date).size());
+
+    date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-04");
+    assertEquals(0, output.get(date).size());
+
+    date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-14");
+    assertEquals(0, output.get(date).size());
   }
 }
