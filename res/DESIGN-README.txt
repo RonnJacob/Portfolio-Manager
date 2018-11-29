@@ -66,10 +66,11 @@ would be used by StockPortfolio class.
 
 - IPortfolio is an interface that represents a portfolio in the real world and is a collection of investments.
 The interface provides operations like getting an overall portfolio cost basis/value as of a particular date,
-adding an investment worth a particular amount for a specified date and a meaningful representation of data.
-StockPortfolio is a class implementing this interface and provides all the above operations. This class
-contains a HashMap where the key is the identifier for the Stock and value would be the Stock object. This 
-class would be used by StockPortfolioManager class.
+adding an investment worth a particular amount for a specified date, investing with a specific set of weights
+for the stocks in the portfolio and a meaningful representation of data. All investments take the commmision
+values into account. StockPortfolio is a class implementing this interface and provides all the above
+operations. This class contains a HashMap where the key is the identifier for the Stock and value would
+be the Stock object. This class would be used by StockPortfolioManager class.
 
 - IPortfolioManager<K> interface is parametrized over the type of portfolios it manages which is 
 created to manage portfolios and provides operations for listing all the portfolios, creation of 
