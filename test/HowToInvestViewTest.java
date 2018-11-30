@@ -49,6 +49,8 @@ public class HowToInvestViewTest {
     expected += "4. Get Value of portfolio\n";
     expected += "5. Invest on stocks in portfolio. \n";
     expected += "6. Apply investment strategy. \n";
+    expected += "7. Create investment strategy. \n";
+    expected += "8. Display investment strategies. \n";
     expected += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.\n";
     view.openPortfolioMenu();

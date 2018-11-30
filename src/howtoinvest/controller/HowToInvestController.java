@@ -268,6 +268,26 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             view.openPortfolioMenu();
             break;
           /**
+           * Option 6 would correspond to strategy related operations which would include applying
+           * a strategy to a portfolio and modifying the strategies parameters.
+           */
+          case "7":
+            strategyModel.create(view.getInput("Enter the name of strategy to be created.\n"));
+            view.openPortfolioMenu();
+            break;
+          /**
+           * Option 6 would correspond to strategy related operations which would include applying
+           * a strategy to a portfolio and modifying the strategies parameters.
+           */
+          case "8":
+            int counter = 1;
+            for(String strategy: strategyModel.getAll()){
+              view.displayList(counter,strategy,"Strategies");
+              counter += 1;
+            }
+            view.openPortfolioMenu();
+            break;
+          /**
            * If a user inputs 'r', the program returns to the portfolio manager menu.
            */
           case "r":

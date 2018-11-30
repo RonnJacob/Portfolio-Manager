@@ -31,6 +31,8 @@ public class HowToInvestControllerTest {
           + "4. Get Value of portfolio\n"
           + "5. Invest on stocks in portfolio. \n"
           + "6. Apply investment strategy. \n"
+          + "7. Create investment strategy. \n"
+          + "8. Display investment strategies. \n"
           + "Enter the number for performing operation, r to return to the main "
           + "menu or q to quit the application.";
 

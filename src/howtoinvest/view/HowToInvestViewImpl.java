@@ -46,6 +46,8 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "4. Get Value of portfolio\n";
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
     portfolioScreen += "6. Apply investment strategy. \n";
+    portfolioScreen += "7. Create investment strategy. \n";
+    portfolioScreen += "8. Display investment strategies. \n";
     portfolioScreen += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.";
     promptMessage(portfolioScreen);
