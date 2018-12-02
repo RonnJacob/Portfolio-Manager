@@ -25,16 +25,21 @@ public class HowToInvestControllerTest {
           + "2. Get existing portfolios.\n"
           + "3. Enter portfolio.\n"
           + "Enter the number for performing operation or q to quit application.\n";
+
   private String portfolioScreen = "\n1. Examine composition of portfolio\n"
           + "2. Buy shares of a stock with portfolio.\n"
           + "3. Get Cost Basis of portfolio\n"
           + "4. Get Value of portfolio\n"
           + "5. Invest on stocks in portfolio. \n"
-          + "6. Apply investment strategy. \n"
-          + "7. Create investment strategy. \n"
-          + "8. Display investment strategies. \n"
+          + "6. Open Strategy Manager Menu. \n"
           + "Enter the number for performing operation, r to return to the main "
           + "menu or q to quit the application.";
+
+  private String strategyMenu = "\nStrategy Manager Menu\n"
+          + "1. Create Strategy\n"
+          + "2. Enter A Strategy\n"
+          + "3. Display Strategies\n"
+          + "Enter the number for performing operation or r to return to the main menu.";
 
 
   @Test
@@ -498,7 +503,7 @@ public class HowToInvestControllerTest {
 
   @Test
   public void TestPortfolioManagerSelectingOptionToApplyStrategy() {
-    Reader in = new StringReader("3 1 6 r q");
+    Reader in = new StringReader("3 1 6 2 r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -511,10 +516,10 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 1\n"
-            + "Portfolio Screen Opened.\nInput received : 6\nInput received for: \n"
-            + "Enter index of strategy to apply.\n\n"
-            + "Input received : r\nPortfolio Screen Opened.\nInput received : q\n"
-            + "\nQuitting Manager.\n";
+            + "Portfolio Screen Opened.\nInput received : 6\nStrategy Manager Menu Opened\n"
+            + "Input received : 2\nInput received for: \nEnter index of strategy to apply.\n"
+            + "\nInput received : r\nStrategy Manager Menu Opened\nInput received : q\n"
+            + "\nQuitting Manager.\nPortfolio Screen Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
@@ -778,9 +783,7 @@ public class HowToInvestControllerTest {
 
   @Test
   public void TestControllerApplyStrategyOption() {
-
-
-    Reader in = new StringReader("3 1 6 r q");
+    Reader in = new StringReader("3 1 6 2 1 r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -794,10 +797,13 @@ public class HowToInvestControllerTest {
     expected = "Home Screen Opened.\nInput received : 3\n"
             + "Input received for: \nEnter index of Portfolio to open.\n"
             + "Input received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \n"
+            + "Input received : 6\n"
+            + "Strategy Manager Menu Opened\n"
+            + "Input received : 2\nInput received for: \n"
             + "Enter index of strategy to apply.\n\n"
-            + "Input received : r\nPortfolio Screen Opened.\n"
-            + "Input received : q\n\nQuitting Manager.\n";
+            + "Input received : 1\nStrategy Menu Screen opened. \nInput received : r\n"
+            + "Strategy Manager Menu Opened\nInput received : q\n\nQuitting Manager.\n"
+            + "Portfolio Screen Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
@@ -805,7 +811,7 @@ public class HowToInvestControllerTest {
 
   @Test
   public void TestControllerApplyStrategy() {
-    Reader in = new StringReader("3 1 6 1 1 l r q");
+    Reader in = new StringReader("3 1 6 2 1 1 l r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -818,24 +824,26 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \nEnter index of strategy to apply.\n"
+            + "Input received : 6\n"
+            + "Strategy Manager Menu Opened\n"
+            + "Input received : 2\nInput received for: \nEnter index of strategy to apply.\n"
             + "\nInput received : 1\nStrategy Menu Screen opened. \n"
             + "Input received : 1\nInput received for: Enter the commission option for the "
             + "transaction [l, m, h] or enter custom commission value \n"
             + "\nInput received : l\nPrompt: No stocks in portfolio to apply strategy.\n"
-            + "Strategy Menu Screen opened. \nInput received : r\nPortfolio Screen Opened.\n"
-            + "Input received : q\n\nQuitting Manager.\n";
+            + "Strategy Menu Screen opened. \nInput received : r\nStrategy Manager Menu Opened\n"
+            + "Input received : q\n\nQuitting Manager.\nPortfolio Screen Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\n" + "Get Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nApply strategy with commision 100.0",
-            logStrategyModel.toString());
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\nApply strategy "
+                    + "with commision 100.0", logStrategyModel.toString());
   }
 
 
   @Test
   public void TestControllerStrategyModifyWeights() {
-    Reader in = new StringReader("3 1 6 1 2 2 r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 2 r r r q q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -853,6 +861,8 @@ public class HowToInvestControllerTest {
             + "Input received : 1\n"
             + "Portfolio Screen Opened.\n"
             + "Input received : 6\n"
+            + "Strategy Manager Menu Opened\n"
+            + "Input received : 2\n"
             + "Input received for: \n"
             + "Enter index of strategy to apply.\n"
             + "\n"
@@ -864,6 +874,8 @@ public class HowToInvestControllerTest {
             + "Strategy modification screen Opened.\n"
             + "Input received : r\n"
             + "Strategy Menu Screen opened. \n"
+            + "Input received : r\n"
+            + "Strategy Manager Menu Opened\n"
             + "Input received : r\n"
             + "Portfolio Screen Opened.\n"
             + "Input received : q\n"
@@ -872,13 +884,13 @@ public class HowToInvestControllerTest {
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nSetting weights\n\n",
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\nSetting weights\n\n",
             logStrategyModel.toString());
   }
 
   @Test
   public void TestControllerStrategyModifyAmount() {
-    Reader in = new StringReader("3 1 6 1 2 3 2000 r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 3 2000 r r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -895,7 +907,7 @@ public class HowToInvestControllerTest {
             + "Enter index of Portfolio to open.\n"
             + "Input received : 1\n"
             + "Portfolio Screen Opened.\n"
-            + "Input received : 6\n"
+            + "Input received : 6\nStrategy Manager Menu Opened\nInput received : 2\n"
             + "Input received for: \n"
             + "Enter index of strategy to apply.\n"
             + "\nInput received : 1\n"
@@ -904,17 +916,19 @@ public class HowToInvestControllerTest {
             + "Input received for: Enter new amount for investing of strategy.\n"
             + "\nInput received : 2000\nStrategy modification screen Opened.\n"
             + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\n"
-            + "Portfolio Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
+            + "Strategy Manager Menu Opened\nInput received : q\n\nQuitting Manager.\nPortfolio "
+            + "Screen Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\n"
             + "Get Portfolio 1\n", logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nChange amount to 2000.0\n",
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\nChange amount to "
+                    + "2000.0\n",
             logStrategyModel.toString());
   }
 
   @Test
   public void TestControllerStrategyModifyFrequency() {
-    Reader in = new StringReader("3 1 6 1 2 4 100 r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 4 100 r r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -928,25 +942,27 @@ public class HowToInvestControllerTest {
     expected = "Home Screen Opened.\nInput received : 3\n"
             + "Input received for: \nEnter index of Portfolio to open.\n"
             + "Input received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \n"
+            + "Input received : 6\nStrategy Manager Menu Opened\n"
+            + "Input received : 2\nInput received for: \n"
             + "Enter index of strategy to apply.\n\nInput received : 1\n"
             + "Strategy Menu Screen opened. \nInput received : 2\n"
             + "Strategy modification screen Opened.\nInput received : 4\n"
             + "Input received for: Enter frequency in number of days.\n\nInput received : 100\n"
             + "Strategy modification screen Opened.\nInput received : r\n"
             + "Strategy Menu Screen opened. \nInput received : r\n"
-            + "Portfolio Screen Opened.\nInput received : q\n"
-            + "\nQuitting Manager.\n";
+            + "Strategy Manager Menu Opened\nInput received : q\n"
+            + "\nQuitting Manager.\nPortfolio Screen Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nChange frequency to 100 days.\n",
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\nChange frequency to "
+                    + "100 days.\n",
             logStrategyModel.toString());
   }
 
   @Test
   public void TestControllerStrategyModifyRange() {
-    Reader in = new StringReader("3 1 6 1 2 5 2018-10-10 2018-12-12 r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 5 2018-10-10 2018-12-12 r r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -959,24 +975,26 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \nEnter index of strategy to apply.\n"
+            + "Input received : 6\nStrategy Manager Menu Opened\n"
+            + "Input received : 2\nInput received for: \nEnter index of strategy to apply.\n"
             + "\nInput received : 1\nStrategy Menu Screen opened. \nInput received : 2\n"
             + "Strategy modification screen Opened.\n"
             + "Input received : 5\nInput received for: Enter start date for investing of strategy"
             + ".\n\nInput received : 2018-10-10\nInput received for: Enter end date for investing"
             + " of strategy.\n\nInput received : 2018-12-12\nStrategy modification screen Opened.\n"
-            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
-            + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
+            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nStrategy "
+            + "Manager Menu Opened\nInput received : q\n\nQuitting Manager.\nPortfolio Screen"
+            + " Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\nChange date from "
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\nChange date from "
             + "2018-10-10 to 2018-12-12 \n", logStrategyModel.toString());
   }
 
   @Test
   public void TestControllerStrategyAddStock() {
-    Reader in = new StringReader("3 1 6 1 2 1 FB n r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 1 FB n r r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -989,24 +1007,26 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \nEnter index of strategy to apply.\n"
+            + "Input received : 6\nStrategy Manager Menu Opened\nInput received : 2\nInput received"
+            + " for: \nEnter index of strategy to apply.\n"
             + "\nInput received : 1\nStrategy Menu Screen opened. \nInput received : 2\n"
             + "Strategy modification screen Opened.\nInput received : 1\n"
             + "Input received for: Enter a stock name (ticker symbol) to add to the strategy: \n"
             + "\nInput received : FB\nPrompt: Add more stocks? (Y/N)\n"
             + "Input received : n\nStrategy modification screen Opened.\n"
-            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
-            + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
+            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nStrategy"
+            + " Manager Menu Opened\nInput received : q\n\nQuitting Manager.\nPortfolio Screen"
+            + " Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\n"
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\n"
             + "Add stock to strategy.\n", logStrategyModel.toString());
   }
 
   @Test
   public void TestControllerStrategyAddStocks() {
-    Reader in = new StringReader("3 1 6 1 2 1 FB y MSFT n r r q");
+    Reader in = new StringReader("3 1 6 2 1 2 1 FB y MSFT n r r q");
     String expected = "";
     StringWriter out = new StringWriter();
     StringBuilder logPortfolioModel = new StringBuilder();
@@ -1019,7 +1039,8 @@ public class HowToInvestControllerTest {
     controller.openPortfolioManager();
     expected = "Home Screen Opened.\nInput received : 3\nInput received for: \n"
             + "Enter index of Portfolio to open.\nInput received : 1\nPortfolio Screen Opened.\n"
-            + "Input received : 6\nInput received for: \nEnter index of strategy to apply.\n"
+            + "Input received : 6\nStrategy Manager Menu Opened\nInput received : 2\nInput received"
+            + " for: \nEnter index of strategy to apply.\n"
             + "\nInput received : 1\nStrategy Menu Screen opened. \nInput received : 2\n"
             + "Strategy modification screen Opened.\nInput received : 1\n"
             + "Input received for: Enter a stock name (ticker symbol) to add to the strategy: \n"
@@ -1027,12 +1048,13 @@ public class HowToInvestControllerTest {
             + "Input received : y\nInput received for: Enter a stock name (ticker symbol) to add "
             + "to the strategy: \n\nInput received : MSFT\nPrompt: Add more stocks? (Y/N)\n"
             + "Input received : n\nStrategy modification screen Opened.\n"
-            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nPortfolio"
-            + " Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
+            + "Input received : r\nStrategy Menu Screen opened. \nInput received : r\nStrategy "
+            + "Manager Menu Opened\nInput received : q\n\nQuitting Manager.\nPortfolio Screen "
+            + "Opened.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
-    assertEquals("All Portfolios\nGet Portfolio 1\n"
+    assertEquals("All Portfolios\nAll Portfolios\nGet Portfolio 1\n"
             + "Add stocks to strategy.\n", logStrategyModel.toString());
   }
 
@@ -1062,7 +1084,7 @@ public class HowToInvestControllerTest {
 
   @Test
   public void TestControllerModelIntegration() {
-    Reader in = new StringReader("3 1 2 FB 1000 2018-10-10 l n 1 2018-10-10 6 1 1 l r q");
+    Reader in = new StringReader("3 1 2 FB 1000 2018-10-10 l n 1 2018-10-10 6 2 1 1 l r q");
     StringWriter out = new StringWriter();
     IManager model = new StockPortfolioManager();
     IManager strategyModel = new DollarCostAveragingStrategyManager();
@@ -1077,7 +1099,8 @@ public class HowToInvestControllerTest {
             + "\nBuy more shares? (Y/N)\n\n";
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
-    String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
+    String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n"
+            +this.strategyMenu+"\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
             + "Enter index of strategy to apply.\n\n\n"
             + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n"
             + "3. Display Stocks\n"
@@ -1098,9 +1121,16 @@ public class HowToInvestControllerTest {
             + "1. Apply Strategy\n" + "2. Modify strategy\n"
             + "3. Display Stocks\n"
             + "Enter the number for performing operation or r to return to the main menu.\n";
+    String strategyManagerMenu = "\n" +
+            "Strategy Manager Menu\n" +
+            "1. Create Strategy\n" +
+            "2. Enter A Strategy\n" +
+            "3. Display Strategies\n" +
+            "Enter the number for performing operation or r to return to the main menu.\n" +
+            "Quitting manager\n";
     String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
             + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen
-            + strategyMenu + text + portfolioScreen + "\nQuitting manager\n";
+            + strategyMenu + text +strategyManagerMenu+ portfolioScreen+"\n";
     assertEquals(expected, out.toString());
   }
 

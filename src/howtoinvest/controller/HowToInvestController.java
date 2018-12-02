@@ -260,36 +260,76 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             view.openPortfolioMenu();
             break;
           /**
-           * Option 6 would correspond to strategy related operations which would include applying
-           * a strategy to a portfolio and modifying the strategies parameters.
+           * Option 6 corresponds to opening a strategy manager menu.
            */
           case "6":
-            message = applyStrategy(selectedPFolio);
-            view.openPortfolioMenu();
-            break;
-          /**
-           * Option 6 would correspond to strategy related operations which would include applying
-           * a strategy to a portfolio and modifying the strategies parameters.
-           */
-          case "7":
-            strategyModel.create(view.getInput("Enter the name of strategy to be created.\n"));
-            view.openPortfolioMenu();
-            break;
-          /**
-           * Option 6 would correspond to strategy related operations which would include applying
-           * a strategy to a portfolio and modifying the strategies parameters.
-           */
-          case "8":
-            int counter = 1;
-            for(String strategy: strategyModel.getAll()){
-              view.displayList(counter,strategy,"Strategies");
-              counter += 1;
-            }
+            openStrategyManager(strategyModel, selectedPFolio);
             view.openPortfolioMenu();
             break;
           /**
            * If a user inputs 'r', the program returns to the portfolio manager menu.
            */
+          case "r":
+            return "r";
+          case "q":
+            view.quitManager();
+            return "q";
+          default:
+            view.promptMessage("Invalid input. Please enter input again.\n");
+            break;
+        }
+      }
+
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage(ex.getMessage());
+    }
+    return "r";
+  }
+
+  private String openStrategyManager(IManager<DollarCostAveraging> strategyModel,
+                                   IPortfolio selectedPFolio) {
+    int counter = 1;
+    /**
+     * Displays all the strategies that the user can choose from.
+     */
+    for (String portfolioName : strategyModel.getAll()) {
+      view.displayList(counter, portfolioName, "Strategies");
+      counter++;
+    }
+
+    view.openStrategyManagerMenu();
+    try {
+      while (true) {
+        String choice = view.getInput("");
+        if (choice.equals("")) {
+          return "q";
+        }
+        switch (choice.toLowerCase()) {
+          /**
+           * Option 1 corresponds to applying the strategy to the portfolio.
+           */
+          case "1":
+            strategyModel.create(view.getInput("Enter the name of strategy to be created.\n"));
+            view.openStrategyManagerMenu();
+            break;
+          /**
+           * Option 2 applying.
+           */
+          case "2":
+            message = applyStrategy(selectedPFolio);
+            view.openStrategyManagerMenu();
+            break;
+          /**
+           * Option 3 corresponds to displaying the strategies.
+           */
+          case "3":
+            counter = 1;
+            for (String portfolioName : strategyModel.getAll()) {
+              view.displayList(counter, portfolioName, "Strategies");
+              counter++;
+            }
+            view.openStrategyManagerMenu();
+            break;
           case "r":
             return "r";
           case "q":

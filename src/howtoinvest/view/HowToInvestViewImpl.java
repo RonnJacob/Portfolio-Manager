@@ -45,9 +45,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "3. Get Cost Basis of portfolio\n";
     portfolioScreen += "4. Get Value of portfolio\n";
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
-    portfolioScreen += "6. Apply investment strategy. \n";
-    portfolioScreen += "7. Create investment strategy. \n";
-    portfolioScreen += "8. Display investment strategies. \n";
+    portfolioScreen += "6. Open Strategy Manager Menu. \n";
     portfolioScreen += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.";
     promptMessage(portfolioScreen);
@@ -73,6 +71,18 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.";
     promptMessage(strategyMenu);
+  }
+
+
+  @Override
+  public void openStrategyManagerMenu() {
+    String strategyManagerMenu = "\nStrategy Manager Menu\n";
+    strategyManagerMenu += "1. Create Strategy\n";
+    strategyManagerMenu += "2. Enter A Strategy\n";
+    strategyManagerMenu += "3. Display Strategies\n";
+    strategyManagerMenu += "Enter the number for performing operation or r to return to the main "
+            + "menu.";
+    promptMessage(strategyManagerMenu);
   }
 
   @Override

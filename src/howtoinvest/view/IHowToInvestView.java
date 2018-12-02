@@ -103,4 +103,6 @@ public interface IHowToInvestView {
    * strategy for the portfolio or modifying the strategy.
    */
   void openStrategyMenu();
+
+  void openStrategyManagerMenu();
 }

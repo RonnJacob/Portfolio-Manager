@@ -48,9 +48,7 @@ public class HowToInvestViewTest {
     expected += "3. Get Cost Basis of portfolio\n";
     expected += "4. Get Value of portfolio\n";
     expected += "5. Invest on stocks in portfolio. \n";
-    expected += "6. Apply investment strategy. \n";
-    expected += "7. Create investment strategy. \n";
-    expected += "8. Display investment strategies. \n";
+    expected += "6. Open Strategy Manager Menu. \n";
     expected += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.\n";
     view.openPortfolioMenu();
@@ -67,6 +65,20 @@ public class HowToInvestViewTest {
     view.openInvestmentMenu();
     assertEquals(expected, out.toString());
   }
+
+
+  @Test
+  public void testOpenStrategyManagerMenu() {
+    expected = "\nStrategy Manager Menu\n";
+    expected += "1. Create Strategy\n";
+    expected += "2. Enter A Strategy\n";
+    expected += "3. Display Strategies\n";
+    expected += "Enter the number for performing operation or r to return to the main "
+            + "menu.\n";
+    view.openStrategyManagerMenu();
+    assertEquals(expected, out.toString());
+  }
+
 
   @Test
   public void testOpenStrategyMenu() {
