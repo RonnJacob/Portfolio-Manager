@@ -120,4 +120,9 @@ public class MockViewOne implements IHowToInvestView {
     this.log.append("Strategy Menu Screen opened. \n");
 
   }
+
+  @Override
+  public void openStrategyManagerMenu() {
+    this.log.append("Strategy Manager Menu Opened\n");
+  }
 }
