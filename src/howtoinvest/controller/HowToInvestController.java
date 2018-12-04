@@ -183,6 +183,16 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
+  @Override
+  public void addPortfolio(String portfolioName) {
+
+  }
+
+  @Override
+  public void openPortfolios(String portfolioToOpen) {
+
+  }
+
   /**
    * The following method opens a portfolio and performs operations pertaining to a particular
    * portfolio depending on user input.

@@ -32,4 +32,7 @@ public interface IHowToInvestController<K> {
    */
   void openPortfolioManager();
 
+  void addPortfolio(String portfolioName);
+
+  void openPortfolios(String portfolioToOpen);
 }
