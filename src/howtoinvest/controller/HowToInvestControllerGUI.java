@@ -1,6 +1,12 @@
 package howtoinvest.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import howtoinvest.model.DollarCostAveraging;
+import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IManager;
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.StockPortfolio;
@@ -14,7 +20,10 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   private final HowToInvestViewGUI view;
   private final IManager<StockPortfolio> model;
   private final IManager<DollarCostAveraging> strategyModel;
+  private static final String datePattern = "yyyy-MM-dd";
+  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
   private IPortfolio selectedPortfolio;
+  private IInvestmentStrategy selectedStrategy;
 
   public HowToInvestControllerGUI(HowToInvestViewGUI view, IManager<StockPortfolio> model,
                                   IManager<DollarCostAveraging> strategyModel) {
@@ -64,13 +73,48 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
                                   String commissionEntered) {
     try{
+      Double commission;
+      if(commissionEntered.equalsIgnoreCase("")){
+        commission = 0.0;
+      }
+      else{
+
+        commission = selectedPortfolio.getCommission(commissionEntered);
+      }
+
       double shares = selectedPortfolio.addStock(stockNameEntered, amountEntered, dateEntered,
-              selectedPortfolio.getCommission(commissionEntered));
+              commission);
       view.logMessage(shares +" share(s) of "+stockNameEntered +" bought for $"+amountEntered
               +" on "+dateEntered +" with a commission charge of "
-              + selectedPortfolio.getCommission(commissionEntered));
+              + commission);
     } catch(IllegalArgumentException ex){
       throw new IllegalArgumentException(ex);
     }
+  }
+
+  public HashMap<String, Double> getStocksInPortfolio(String date) {
+    HashMap<String, Double> stocks;
+    try{
+      stocks = selectedPortfolio.getPortfolioData(simpleDateFormat.format(new Date()));
+    } catch (IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+    return stocks;
+  }
+
+  public String[] getStrategies() {
+    return strategyModel.getAll().stream().toArray(String[]::new);
+  }
+
+  public void applyStrategy(String strategyToApply, String commision) {
+    int counter = 1;
+    for(String strategy: strategyModel.getAll()){
+      if(strategyToApply.equalsIgnoreCase(strategy)){
+        selectedStrategy = strategyModel.getByIndex(counter);
+        break;
+      }
+      counter++;
+    }
+    selectedStrategy.applyStrategy(selectedPortfolio,selectedPortfolio.getCommission(commision));
   }
 }
