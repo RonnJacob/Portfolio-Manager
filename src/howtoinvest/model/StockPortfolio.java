@@ -1,7 +1,12 @@
 package howtoinvest.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -41,6 +46,10 @@ import java.util.TreeMap;
  * Invest a fixed amount into an existing portfolio containing multiple stocks, using a specified
  * weight for each stock in the portfolio. We can specify different weights or equal weights. A
  * hashmap of stocks with their corresponding weights can be given for the portfolio to invest in.
+ * </li>
+ * <li>
+ * Save the portfolio in json format in a folder called Stock Portfolios so that the portfolios can
+ * be retrieved later. If the portfolio already exists it will overwrite.
  * </li>
  * </ul>
  */
@@ -257,6 +266,32 @@ public class StockPortfolio implements IPortfolio<Stock> {
     }
     if (total != 100) {
       throw new IllegalArgumentException("Invalid weights");
+    }
+  }
+
+  /**
+   * Saves the portfolio in the local system with the given file name in json format.
+   *
+   * @param name filename to be saved as.
+   * @throws IllegalArgumentException if the filename is null or empty.
+   * @throws IllegalStateException    if saving the portfolio fails.
+   */
+  @Override
+  public void savePortfolio(String name) {
+    if (name == null || name.trim().isEmpty()) {
+      throw new IllegalArgumentException("Invalid file name");
+    }
+    GsonBuilder builder = new GsonBuilder();
+    builder.setPrettyPrinting();
+    Gson gson = builder.create();
+    try {
+      File dir = new File("Stock Portfolios");
+      dir.mkdirs();
+      FileWriter writer = new FileWriter(new File(dir, name + ".json"));
+      writer.write(gson.toJson(this));
+      writer.close();
+    } catch (IOException ex) {
+      throw new IllegalStateException("Error saving: " + ex.getMessage());
     }
   }
 }

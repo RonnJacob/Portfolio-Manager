@@ -1,5 +1,11 @@
 package howtoinvest.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -33,11 +39,13 @@ import java.util.TreeMap;
  * fails to capitalize on the market ups and downs, it has the potential to produce a more stable
  * gain, when the strategy is followed without hesitation over a long period of time. This strategy
  * is very popular: for example, most people manage their retirement accounts this way.</p>
+ * <p>Save the strategy in json format in a folder called Strategies so that the strategies
+ * can be retrieved later. If the strategy already exists it will overwrite.</p>
  */
 public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
 
-  private final String datePattern = "yyyy-MM-dd";
-  private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+  private static final String datePattern = "yyyy-MM-dd";
+  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
 
   /**
    * Stores teh stocks and weights in the strategy.
@@ -260,5 +268,31 @@ public class DollarCostAveraging implements IInvestmentStrategy<IPortfolio> {
                       commission));
     }
     return investmentsByDate;
+  }
+
+  /**
+   * Saves the strategy in the local system with the given file name in json format.
+   *
+   * @param name filename to be saved as.
+   * @throws IllegalArgumentException if the filename is null or empty.
+   * @throws IllegalStateException    if saving the strategy fails.
+   */
+  @Override
+  public void saveStrategy(String name) {
+    if (name == null || name.trim().isEmpty()) {
+      throw new IllegalArgumentException("Invalid file name");
+    }
+    GsonBuilder builder = new GsonBuilder();
+    builder.setPrettyPrinting();
+    Gson gson = builder.create();
+    try {
+      File dir = new File("Strategies");
+      dir.mkdirs();
+      FileWriter writer = new FileWriter(new File(dir, name + ".json"));
+      writer.write(gson.toJson(this));
+      writer.close();
+    } catch (IOException ex) {
+      throw new IllegalStateException("Error saving: " + ex.getMessage());
+    }
   }
 }

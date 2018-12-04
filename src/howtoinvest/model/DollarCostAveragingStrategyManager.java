@@ -1,5 +1,10 @@
 package howtoinvest.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
@@ -10,7 +15,9 @@ import java.util.TreeMap;
  * stored according to the lexicographical order of their identifier. This strategy manager contains
  * a Default strategy which is automatically created for the user. Users can add , modify and apply
  * the strategy ona portfolio by retrieving a strategy of their choice from the manager and
- * performing the above operations on it.
+ * performing the above operations on it. Also provides the option to retrieve a strategy from a
+ * json file. The file should be in the Strategies folder. The retrieved strategy will be added to
+ * the list of strategies.
  */
 public class DollarCostAveragingStrategyManager
         implements IManager<DollarCostAveraging> {
@@ -76,5 +83,30 @@ public class DollarCostAveragingStrategyManager
       counter++;
     }
     throw new IllegalArgumentException("Invalid index for the strategy");
+  }
+
+  /**
+   * Retrieves the strategy from the with given json file name from the system and adds it to the
+   * strategy list. If the strategy with name already exists it will throw an exception.
+   *
+   * @param name json file name.
+   * @throws IllegalStateException    if the file cannot be retrieved.
+   * @throws IllegalArgumentException if the retrieved item cannot be added to the strategy list.
+   */
+  @Override
+  public void retrieve(String name) throws IllegalArgumentException, IllegalStateException {
+    GsonBuilder builder = new GsonBuilder();
+    builder.setPrettyPrinting();
+    builder.setDateFormat("MMM dd, yyyy HH:mm:ss");
+    Gson gson = builder.create();
+    try {
+      DollarCostAveraging strategy = gson.fromJson
+              (new FileReader("./Strategies/" + name + ".json")
+                      , DollarCostAveraging.class);
+      create(name);
+      this.strategies.put(name, strategy);
+    } catch (FileNotFoundException ex) {
+      throw new IllegalStateException("File not found: " + ex.getMessage());
+    }
   }
 }

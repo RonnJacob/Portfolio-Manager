@@ -21,7 +21,8 @@ import java.util.TreeMap;
  * commission. Adding or investing in a stock in the portfolio would include this commission charge
  * and this would be reflected in the cost basis and value of the portfolio. The other features
  * would include investing on stocks within a particular portfolio with a set of weights for each
- * stock in the portfolio and buying/adding of stocks within the portfolio.
+ * stock in the portfolio and buying/adding of stocks within the portfolio. Portfolios can also be
+ * saved for reuse later.
  *
  * @param <K> the type of the data of the portfolio.
  */
@@ -61,7 +62,7 @@ public interface IPortfolio<K> {
    * @param date       when the stock has to be added.
    * @param commission the commission amount.
    * @return Returns a string that contains the number of shares of a stock bought for an amount at
-   *         a particular date.
+   * a particular date.
    * @throws IllegalArgumentException if the stock ticker symbol, amount, commission or date is
    *                                  invalid.
    */
@@ -93,5 +94,13 @@ public interface IPortfolio<K> {
   HashMap<String, Double> invest(double amount, TreeMap<String, Double> weights,
                                  boolean equalWeights, String date, double commission)
           throws IllegalArgumentException;
+
+  /**
+   * Saves the portfolio in the local system.
+   * @param name filename to be saved as.
+   * @throws IllegalArgumentException if the filename is null or empty.
+   * @throws IllegalStateException if saving the portfolio fails.
+   */
+  void savePortfolio(String name) throws IllegalArgumentException, IllegalStateException;
 }
 

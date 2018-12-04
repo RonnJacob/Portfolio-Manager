@@ -503,5 +503,29 @@ public class DollarCostAveragingTest {
 
     date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-14");
     assertEquals(0, output.get(date).size());
+
+    try {
+      dca.saveStrategy(null);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
+
+    try {
+      dca.saveStrategy("");
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
+
+    try {
+      dca.saveStrategy(" ");
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
   }
 }

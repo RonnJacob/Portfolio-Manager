@@ -33,6 +33,9 @@ import java.util.TreeMap;
  * made by the strategy on the portfolio. Commission amount can be set which will be applied for
  * every transaction.
  * </li>
+ * <li>
+ * Functionality to save a portfolio to a file in the local system for reuse later.
+ * </li>
  * </ul>
  *
  * @param <K> the type of the data for which the strategy can be applied.
@@ -107,4 +110,13 @@ public interface IInvestmentStrategy<K> {
    */
   TreeMap<Date, HashMap<String, Double>> applyStrategy(K portfolio, double commission)
           throws IllegalArgumentException;
+
+  /**
+   * Saves the strategy in the local system.
+   *
+   * @param name filename to be saved as.
+   * @throws IllegalArgumentException if the filename is null or empty.
+   * @throws IllegalStateException    if saving the strategy fails.
+   */
+  void saveStrategy(String name) throws IllegalArgumentException, IllegalStateException;
 }

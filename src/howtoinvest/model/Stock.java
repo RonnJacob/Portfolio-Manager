@@ -41,7 +41,6 @@ public class Stock implements IStock {
    */
   private final String tickerSymbol;
   private TreeMap<Date, Share> shareList;
-  private final IStockDataRetrieval stocksApi;
 
   /**
    * Constructs a stock object with the given ticker symbol and selects the source to retrieve stock
@@ -55,6 +54,7 @@ public class Stock implements IStock {
      * If the key READ_FROM_API is set to 1 in the app.config file, then retrieve stock data using
      * the AlphaVantage API, otherwise retrieve stock data from files.
      */
+    IStockDataRetrieval stocksApi;
     if (loadPropertiesFromConfig()) {
       stocksApi = new AlphaVantage();
     } else {
@@ -144,6 +144,12 @@ public class Stock implements IStock {
   @Override
   public double addShare(double amount, String date, double commission)
           throws IllegalArgumentException {
+    IStockDataRetrieval stocksApi;
+    if (loadPropertiesFromConfig()) {
+      stocksApi = new AlphaVantage();
+    } else {
+      stocksApi = new FileStockDataReader();
+    }
     /**
      * Amount for which shares are to be added cannot be negative.
      */
@@ -229,6 +235,12 @@ public class Stock implements IStock {
    * @throws IllegalArgumentException if the price data cannot be fetched from its source.
    */
   private double getSharePrice(String tickerSymbol, Date date) throws IllegalArgumentException {
+    IStockDataRetrieval stocksApi;
+    if (loadPropertiesFromConfig()) {
+      stocksApi = new AlphaVantage();
+    } else {
+      stocksApi = new FileStockDataReader();
+    }
     try {
       return stocksApi.retrieveSharePrice(date, tickerSymbol);
     } catch (ParseException | IllegalArgumentException ex) {

@@ -1,8 +1,16 @@
 package howtoinvest.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
+
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 
 /**
@@ -12,7 +20,9 @@ import java.util.TreeMap;
  * This portfolio manager contains a Default Portfolio which is automatically created for the user.
  * Users can add stocks, view their composition, get total cost basis and total value of the
  * portfolio by retrieving a portfolio of their choice from the StockPortfolioManager and performing
- * the above operations on it.
+ * the above operations on it. Also provides the option to retrieve a portfolio from a json file.
+ * The file should be in the Stock Portfolios folder. The retrieved portfolio will be added to the
+ * list of portfolios.
  */
 public class StockPortfolioManager implements IManager<StockPortfolio> {
 
@@ -79,5 +89,30 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
       counter++;
     }
     throw new IllegalArgumentException("Invalid index for the Stock Portfolio");
+  }
+
+  /**
+   * Retrieves the portfolio from the with given json file name from the system and adds it to the
+   * portfolio list. If the portfolio with name already exists it will throw an exception.
+   *
+   * @param name json file name.
+   * @throws IllegalStateException    if the file cannot be retrieved.
+   * @throws IllegalArgumentException if the retrieved item cannot be added to the portfolio list.
+   */
+  @Override
+  public void retrieve(String name) throws IllegalArgumentException, IllegalStateException {
+    GsonBuilder builder = new GsonBuilder();
+    builder.setPrettyPrinting();
+    builder.setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    Gson gson = builder.create();
+    try {
+      StockPortfolio stockPortfolio = gson.fromJson
+              (new FileReader("./Stock Portfolios/" + name + ".json")
+                      , StockPortfolio.class);
+      create(name);
+      this.portfolios.put(name, stockPortfolio);
+    } catch (FileNotFoundException ex) {
+      throw new IllegalStateException("File not found: " + ex.getMessage());
+    }
   }
 }

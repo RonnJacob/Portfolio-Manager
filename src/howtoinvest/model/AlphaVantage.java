@@ -44,14 +44,14 @@ import java.util.Scanner;
 public class AlphaVantage implements IStockDataRetrieval {
 
   //The API key provided by the service: : https://www.alphavantage.co/
-  private final String apiKey = "W0M1JOKC82EZEQA8";
+  private static final String apiKey = "W0M1JOKC82EZEQA8";
   //Setting update interval for share prices so that share prices by the minute are retrieved.
-  private final String updateInterval = "1min";
+  private static final String updateInterval = "1min";
   //Setting the format for the date.
-  private final String extension = "_AlphaVantage.csv";
-  private final String datePattern = "yyyy-MM-dd";
-  private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
-  private URL url;
+  private static final String extension = "_AlphaVantage.csv";
+  private static final String datePattern = "yyyy-MM-dd";
+  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+  private static URL url;
 
 
   /**
@@ -59,7 +59,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   *         minute.
+   * minute.
    */
   private String getCurrentSharePrice(String tickerName) throws IllegalArgumentException {
     setURL(tickerName, true);
@@ -318,13 +318,18 @@ public class AlphaVantage implements IStockDataRetrieval {
     } else if (dayOfWeek == 1) {
       currentDate = dayBeforeYesterday();
     } else if (time <= 9) {
-      currentDate = yesterday();
+      if (dayOfWeek == 2) {
+        currentDate = thirdDayBefore();
+      } else {
+        currentDate = yesterday();
+      }
     }
     return !latestDate.before(simpleDateFormat.parse(simpleDateFormat.format(currentDate)));
   }
 
   /**
    * Returns the previous date of the current date.
+   *
    * @return the previous date of the current date.
    */
   private Date yesterday() {
@@ -335,11 +340,23 @@ public class AlphaVantage implements IStockDataRetrieval {
 
   /**
    * Returns the day before of the current date.
+   *
    * @return the day before of the current date.
    */
   private Date dayBeforeYesterday() {
     final Calendar cal = Calendar.getInstance();
     cal.add(Calendar.DATE, -2);
+    return cal.getTime();
+  }
+
+  /**
+   * Returns the day before of the current date.
+   *
+   * @return the day before of the current date.
+   */
+  private Date thirdDayBefore() {
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -3);
     return cal.getTime();
   }
 }

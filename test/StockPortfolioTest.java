@@ -1027,5 +1027,29 @@ public class StockPortfolioTest {
 
     assertEquals(4166.66, portfolio.getStockCostBasis("2018-11-11"), 0.01);
     assertEquals(5206.67, portfolio.getStockValue("2018-11-11"), 0.01);
+
+    try {
+      portfolio.savePortfolio(null);
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
+
+    try {
+      portfolio.savePortfolio("");
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
+
+    try {
+      portfolio.savePortfolio(" ");
+      fail();
+    }
+    catch (IllegalArgumentException ex){
+      assertEquals("Invalid file name", ex.getMessage());
+    }
   }
 }

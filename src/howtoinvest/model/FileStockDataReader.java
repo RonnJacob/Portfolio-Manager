@@ -34,9 +34,9 @@ import java.util.Scanner;
  * </ul>
  */
 public class FileStockDataReader implements IStockDataRetrieval {
-  private final String extension = ".csv";
-  private final String datePattern = "yyyy-MM-dd";
-  private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+  private static final String extension = ".csv";
+  private static final String datePattern = "yyyy-MM-dd";
+  private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
 
   /**
    * Checks whether a file for a particular ticker name representing a stock exists.
