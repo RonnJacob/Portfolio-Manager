@@ -1,0 +1,11 @@
+{
+  "stockWeights": {
+    "GOOGL": 20.0,
+    "Invalid": 0.0,
+    "MSFT": 80.0
+  },
+  "amount": 100.0,
+  "frequency": 10,
+  "startDate": "Oct 25, 2016 12:00:00 AM",
+  "endDate": "Nov 15, 2016 12:00:00 AM"
+}
