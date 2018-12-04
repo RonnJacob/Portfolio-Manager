@@ -3,13 +3,20 @@ package howtoinvest;
 import java.io.InputStreamReader;
 
 import howtoinvest.controller.HowToInvestController;
+import howtoinvest.controller.HowToInvestControllerGUI;
+import howtoinvest.controller.IHowToInvestController;
 import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.DollarCostAveragingStrategyManager;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.model.StockPortfolioManager;
+import howtoinvest.view.HowToInvestViewGUI;
 import howtoinvest.view.IHowToInvestView;
 import howtoinvest.view.HowToInvestViewImpl;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
@@ -45,11 +52,16 @@ public class Main {
             new HowToInvestViewImpl(new InputStreamReader(System.in), System.out);
 
 
+    HowToInvestViewGUI view = new HowToInvestViewGUI();
+
     /**
      * Controller is given the control with the above model as the argument.
      */
-    new HowToInvestController<>(howToInvestView, portfolioManager, strategyManager)
-            .openPortfolioManager();
+    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,portfolioManager,strategyManager);
+    gui.openPortfolioManager();
+//    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
+//            strategyManager);
+//    controller.openPortfolioManager();
 
 
   }
