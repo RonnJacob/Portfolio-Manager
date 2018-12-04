@@ -165,6 +165,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           view.openHomeScreen();
           break;
         /**
+         * If a user inputs 3, then the third option which is opening a particular portfolio
+         * operation is performed.
+         */
+        case "4":
+          load("Portfolio");
+          view.openHomeScreen();
+          break;
+        /**
          * Quit from the application if the user inputs 'q' or empty.
          */
         case "q":
@@ -180,6 +188,23 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           view.promptMessage("Invalid input. Please enter input again.\n");
           break;
       }
+    }
+  }
+
+  private void load(String type) {
+    String loadFile = view.getInput("\nEnter name of file to load: ");
+    try{
+      if(type=="Portfolio"){
+        model.retrieve(loadFile);
+        displayPortfolios();
+      }
+      else if(type == "Strategy"){
+        strategyModel.retrieve(loadFile);
+      }
+      view.promptMessage( type+" "+loadFile+" has been added.");
+    }
+    catch(IllegalStateException ex){
+      view.promptMessage(type+" "+loadFile+" could not be found.");
     }
   }
 
@@ -277,6 +302,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
             view.openPortfolioMenu();
             break;
           /**
+           * Option 6 corresponds to opening a strategy manager menu.
+           */
+          case "7":
+            String fileName = view.getInput("\nSave portfolio as: ");
+            try{
+              selectedPFolio.savePortfolio(fileName);
+              view.promptMessage("Portfolio was successfully saved.\n");
+            }catch (IllegalStateException ex){
+              view.promptMessage("Portfolio could not be saved.\n");
+            }
+            view.openPortfolioMenu();
+            break;
+          /**
            * If a user inputs 'r', the program returns to the portfolio manager menu.
            */
           case "r":
@@ -338,6 +376,14 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
               view.displayList(counter, portfolioName, "Strategies");
               counter++;
             }
+            view.openStrategyManagerMenu();
+            break;
+          /**
+           * If a user inputs 3, then the third option which is opening a particular portfolio
+           * operation is performed.
+           */
+          case "4":
+            load("Strategy");
             view.openStrategyManagerMenu();
             break;
           case "r":
@@ -427,6 +473,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
               counter += 1;
             }
             view.openStrategyMenu();
+            break;
+          /**
+           * Option 3 corresponds to displaying the stocks in a strategy.
+           */
+          case "4":
+            String fileName = view.getInput("\nSave strategy as: ");
+            try{
+              dcaStrategy.saveStrategy(fileName);
+              view.promptMessage("Strategy was successfully saved.\n");
+            }catch (IllegalStateException ex){
+              view.promptMessage("Strategy could not be saved.\n");
+            }
+            view.openPortfolioMenu();
             break;
           case "r":
             return "r";

@@ -34,6 +34,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     homeScreen += "1. Create new portfolio.\n";
     homeScreen += "2. Get existing portfolios.\n";
     homeScreen += "3. Enter portfolio.\n";
+    homeScreen += "4. Load portfolio.\n";
     homeScreen += "Enter the number for performing operation or q to quit application.";
     promptMessage(homeScreen);
   }
@@ -46,6 +47,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     portfolioScreen += "4. Get Value of portfolio\n";
     portfolioScreen += "5. Invest on stocks in portfolio. \n";
     portfolioScreen += "6. Open Strategy Manager Menu. \n";
+    portfolioScreen += "7. Save Portfolio. \n";
     portfolioScreen += "Enter the number for performing operation, r to return to the main "
             + "menu or q to quit the application.";
     promptMessage(portfolioScreen);
@@ -68,6 +70,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyMenu += "1. Apply Strategy\n";
     strategyMenu += "2. Modify strategy\n";
     strategyMenu += "3. Display Stocks\n";
+    strategyMenu += "4. Save Strategy\n";
     strategyMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.";
     promptMessage(strategyMenu);
@@ -80,6 +83,7 @@ public class HowToInvestViewImpl implements IHowToInvestView {
     strategyManagerMenu += "1. Create Strategy\n";
     strategyManagerMenu += "2. Enter A Strategy\n";
     strategyManagerMenu += "3. Display Strategies\n";
+    strategyManagerMenu += "4. Load Strategy\n";
     strategyManagerMenu += "Enter the number for performing operation or r to return to the main "
             + "menu.";
     promptMessage(strategyManagerMenu);
