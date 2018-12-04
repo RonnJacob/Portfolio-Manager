@@ -218,6 +218,11 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
 
   }
 
+  @Override
+  public void loadPortfolio(String text) {
+
+  }
+
   /**
    * The following method opens a portfolio and performs operations pertaining to a particular
    * portfolio depending on user input.

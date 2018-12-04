@@ -57,11 +57,11 @@ public class Main {
     /**
      * Controller is given the control with the above model as the argument.
      */
-//    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,portfolioManager,strategyManager);
-//    gui.openPortfolioManager();
-    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
-            strategyManager);
-    controller.openPortfolioManager();
+    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,portfolioManager,strategyManager);
+    gui.openPortfolioManager();
+//    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
+//            strategyManager);
+//    controller.openPortfolioManager();
 
 
   }

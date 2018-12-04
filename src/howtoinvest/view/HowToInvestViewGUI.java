@@ -33,6 +33,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JButton createPortfolio = new JButton("Create Portfolio");
   private JButton openPortfolio = new JButton("Open Portfolio");
   private JButton closePortfolio = new JButton("Close Portfolio");
+  private JButton loadPortfolio = new JButton("Load Portfolio");
   private DefaultListModel listModel;
   private JComboBox listOfStrategies;
   private static final Object[][] rowData = {};
@@ -66,6 +67,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     list.setSelectedIndex(0);
     list.addListSelectionListener(this);
     JScrollPane listScrollPane = new JScrollPane(list);
+    listScrollPane.setPreferredSize(new Dimension(700, 500));
     mainPortfolioPanel.add(listScrollPane);
     mainPortfolioPanel.add(createPortfolio);
 
@@ -76,10 +78,11 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     newPortfolioName = new JTextField(15);
     createPortfolio.addActionListener(this);
     mainPortfolioPanel.add(createPortfolio);
+    mainPortfolioPanel.add(newPortfolioName);
     openPortfolio.addActionListener(this);
     mainPortfolioPanel.add(openPortfolio);
-    mainPortfolioPanel.add(portfolioNameLabel);
-    mainPortfolioPanel.add(newPortfolioName);
+    loadPortfolio.addActionListener(this);
+    mainPortfolioPanel.add(loadPortfolio);
     this.add(mainPortfolioPanel);
     pack();
     setVisible(true);
@@ -124,6 +127,24 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         } catch(IllegalArgumentException ex){
         }
       }
+    );
+
+    loadPortfolio.addActionListener((ActionEvent e)-> {
+      JTextField fileName = new JTextField();
+      Object[] message = {
+              "Load Portfolio :", fileName,
+      };
+
+      int option = JOptionPane.showConfirmDialog(null, message,
+              "Load Portfolio",
+              JOptionPane.OK_CANCEL_OPTION);
+      if (option == JOptionPane.OK_OPTION) {
+        controller.loadPortfolio(fileName.getText());
+        listModel.insertElementAt(fileName.getText(), listModel.size()-1);
+        log.setText("Portfolio "+fileName.getText() + " has been loaded.");
+      } else {
+        promptMessage("Portfolio could not be loaded.");
+      }}
     );
 
   }
@@ -171,6 +192,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     JButton displayStocks = new JButton( "Display Stocks In Portfolio");
     JButton invest = new JButton("Invest in Portfolio.");
     JButton applyStrategy = new JButton( "Apply Strategy");
+    JButton saveStrategy = new JButton( "Save Portfolio");
     JButton getCostBasis = new JButton( "Get Portfolio Cost Basis for Date");
     JButton getValue = new JButton( "Get Portfolio Value for Date");
     JButton closeP = new JButton( "Close Portfolio");
@@ -250,10 +272,34 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     });
 
+    saveStrategy.addActionListener((ActionEvent e)->{
+      try{
+        JTextField fileName = new JTextField();
+        Object[] message = {
+                "Save as :", fileName,
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message,
+                "Save Strategy",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+          controller.savePortfolio(fileName.getText());
+        } else {
+          System.out.println("");
+        }
+        log.setText("Portfolio  "+fileName.getText() + " has been saved.");
+        openPortfolio.setEnabled(false);
+        closePortfolio.setEnabled(true);
+      } catch(IllegalArgumentException ex){
+        promptMessage("Portfolio could not be saved.");
+      }
+    });
+
 
     stockPanel.add(buyShares);
     stockPanel.add(displayStocks);
     stockPanel.add(invest);
+    stockPanel.add(saveStrategy);
     stockPanel.add(applyStrategy);
     stockPanel.add(listOfStrategies);
     stockPanel.add(getCostBasis);

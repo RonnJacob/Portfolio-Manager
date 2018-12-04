@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.*;
+
 import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IManager;
@@ -59,6 +61,15 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
         counter++;
       }
     view.openPortfolioScreen(this);
+  }
+
+  @Override
+  public void loadPortfolio(String fileName) {
+    try{
+      model.retrieve(fileName);
+    }catch(IllegalStateException ex){
+      throw new IllegalArgumentException(ex);
+    }
   }
 
   public String getPortfolioCostBasis(String date) {
@@ -116,5 +127,13 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       counter++;
     }
     selectedStrategy.applyStrategy(selectedPortfolio,selectedPortfolio.getCommission(commision));
+  }
+
+  public void savePortfolio(String fileName) {
+    try{
+      selectedPortfolio.savePortfolio(fileName);
+    } catch(IllegalStateException ex){
+      throw new IllegalArgumentException(ex);
+    }
   }
 }
