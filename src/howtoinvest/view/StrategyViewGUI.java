@@ -30,7 +30,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
   private JPanel mainStrategyPanel = new JPanel();
   private JPanel loggerPanel = new JPanel();
   private JPanel stockDisplayPanel = new JPanel();
-  private JLabel log = new JLabel();
+  private JTextArea log = new JTextArea();
   private JTextField newStrategyName;
   private JButton createStrategy = new JButton("Create Strategy");
   private JButton openStrategy = new JButton("Open Strategy");
@@ -49,7 +49,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     loggerPanel.setLayout(new GridLayout(6, 6));
     strategyPanel.setLayout(new GridLayout(6, 6));
     mainStrategyPanel.setLayout(new GridLayout(6, 6));
-    stockDisplayPanel.setLayout(new GridLayout(2,12));
+    stockDisplayPanel.setLayout(new GridLayout(2, 12));
     loggerPanel.add(log);
     this.add(loggerPanel);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,7 +104,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
   public void addFeatures(HowToInvestControllerGUI controller) {
     createStrategy.addActionListener((ActionEvent e) -> {
               String strategyName = newStrategyName.getText();
-              if (strategyName.equals("")) {
+              if (strategyName.trim().isEmpty()) {
                 promptMessage("Please enter strategy name.\n");
                 return;
               }
@@ -113,7 +113,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
                 listModel.insertElementAt(strategyName, listModel.size() - 1);
                 newStrategyName.setText("");
               } catch (IllegalArgumentException ex) {
-                promptMessage("Strategy " + strategyName + " already exists.\n");
+                promptMessage("Failed to create Strategy: " + ex.getMessage());
               }
             }
     );
@@ -126,26 +126,30 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
                 openStrategy.setEnabled(false);
                 closeStrategy.setEnabled(true);
               } catch (IllegalArgumentException ex) {
+                promptMessage("Failed to open Strategy: " + ex.getMessage());
               }
             }
     );
 
-    loadStrategy.addActionListener((ActionEvent e)-> {
-      JTextField fileName = new JTextField();
-      Object[] message = {
-              "Load Strategy :", fileName,
-      };
+    loadStrategy.addActionListener((ActionEvent e) -> {
+              JTextField fileName = new JTextField();
+              Object[] message = {
+                      "Load Strategy :", fileName,
+              };
 
-      int option = JOptionPane.showConfirmDialog(null, message,
-              "Load Strategy",
-              JOptionPane.OK_CANCEL_OPTION);
-      if (option == JOptionPane.OK_OPTION) {
-        controller.loadList(fileName.getText(),"Strategy");
-        listModel.insertElementAt(fileName.getText(), listModel.size()-1);
-        log.setText("Strategy "+fileName.getText() + " has been loaded.");
-      } else {
-        promptMessage("Strategy could not be loaded.");
-      }}
+              int option = JOptionPane.showConfirmDialog(null, message,
+                      "Load Strategy",
+                      JOptionPane.OK_CANCEL_OPTION);
+              if (option == JOptionPane.OK_OPTION) {
+                try {
+                  controller.loadList(fileName.getText(), "Strategy");
+                  listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
+                  log.setText("Strategy " + fileName.getText() + " has been loaded.");
+                } catch (IllegalArgumentException ex) {
+                  promptMessage("Failed to load Strategy: " + ex.getMessage());
+                }
+              }
+            }
     );
 
   }
@@ -159,15 +163,14 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
   }
 
   public void openStrategyScreen(HowToInvestControllerGUI controller) {
-
-    JButton displayStocks = new JButton( "Display Stocks In Strategy");
-    displayStocks.addActionListener((ActionEvent e)->{
-        try{
-          openStocksInStrategy(controller);
-          openStocksInStrategy(controller);
-        }catch(IllegalArgumentException ex){
-          promptMessage("Display Unsuccessful. Please try again.");
-        }
+    JButton displayStocks = new JButton("Display Stocks In Strategy");
+    displayStocks.addActionListener((ActionEvent e) -> {
+      try {
+        openStocksInStrategy(controller);
+        openStocksInStrategy(controller);
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Display Unsuccessful. Please try again.");
+      }
     });
     JButton addStock = new JButton("Add stock");
     addStock.addActionListener((ActionEvent e) -> {
@@ -182,10 +185,8 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         try {
           controller.addStockToStrategy(stockSymbol.getText());
         } catch (IllegalArgumentException ex) {
-          promptMessage("Add failed. Please try again.");
+          promptMessage("Add failed: " + ex.getMessage());
         }
-      } else {
-        System.out.println("Add failed");
       }
     });
     JButton setAmount = new JButton("Set amount");
@@ -201,10 +202,8 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         try {
           controller.setStrategyAmount(amount.getText());
         } catch (IllegalArgumentException ex) {
-          promptMessage("Action failed. Please try again.");
+          promptMessage("Action failed: " + ex.getMessage());
         }
-      } else {
-        System.out.println("Action failed");
       }
     });
     JButton setFrequency = new JButton("Set frequency");
@@ -220,13 +219,11 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         try {
           controller.setStrategyFrequency(frequency.getText());
         } catch (IllegalArgumentException ex) {
-          promptMessage("Action failed. Please try again.");
+          promptMessage("Action failed: " + ex.getMessage());
         }
-      } else {
-        System.out.println("Action failed");
       }
     });
-    JButton setTimeRange = new JButton( "Set time-range");
+    JButton setTimeRange = new JButton("Set time-range");
     setTimeRange.addActionListener((ActionEvent e) -> {
       JTextField begDate = new JTextField();
       JTextField endDate = new JTextField();
@@ -241,15 +238,13 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         try {
           controller.setStrategyTimerange(begDate.getText(), endDate.getText());
         } catch (IllegalArgumentException ex) {
-          promptMessage("Action failed. Please try again.");
+          promptMessage("Action failed: " + ex.getMessage());
         }
-      } else {
-        System.out.println("Action failed");
       }
     });
-    JButton saveStrategy = new JButton( "Save Strategy");
-    saveStrategy.addActionListener((ActionEvent e)->{
-      try{
+    JButton saveStrategy = new JButton("Save Strategy");
+    saveStrategy.addActionListener((ActionEvent e) -> {
+      try {
         JTextField fileName = new JTextField();
         Object[] message = {
                 "Save as :", fileName,
@@ -263,45 +258,44 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         } else {
           System.out.println("");
         }
-        log.setText("Strategy  "+fileName.getText() + " has been saved.");
+        log.setText("Strategy  " + fileName.getText() + " has been saved.");
         openStrategy.setEnabled(false);
         closeStrategy.setEnabled(true);
-      } catch(IllegalArgumentException ex){
-        promptMessage("Strategy could not be saved.");
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Action failed: " + ex.getMessage());
       }
     });
     JButton setWeights = new JButton("Set Weights");
-    setWeights.addActionListener((ActionEvent e)->{
-      try{
+    setWeights.addActionListener((ActionEvent e) -> {
+      try {
         List<String> stocks = controller.getStocksInStrategy();
-        Object[] message = new Object[(stocks.size()*2)];
+        Object[] message = new Object[(stocks.size() * 2)];
         int counter = 0;
         List<JTextField> listOfWeights = new ArrayList<>();
-        for(String stockName: stocks){
-          message[counter] = "Enter weights for "+stockName;
+        for (String stockName : stocks) {
+          message[counter] = "Enter weights for " + stockName;
           JTextField field = new JTextField();
           listOfWeights.add(field);
-          message[counter+1] = field;
-          counter+=2;
+          message[counter + 1] = field;
+          counter += 2;
         }
         int option = JOptionPane.showConfirmDialog(null, message,
                 "Set weights",
                 JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-//          openStocksInPortfolio(controller,date.getText());
-        } else {
-          System.out.println("");
+
+          TreeMap<String, Double> weights = new TreeMap<>();
+          int i = 0;
+          for (String stock : stocks) {
+            weights.put(stock, Double.parseDouble(listOfWeights.get(i).getText()));
+            i++;
+          }
+          controller.setStrategyWeights(weights);
         }
-        TreeMap<String, Double> weights = new TreeMap<>();
-        int i =0;
-        for(String stock: stocks){
-          weights.put(stock,Double.parseDouble(listOfWeights.get(i).getText()));
-          i++;
-        }
-        controller.setStrategyWeights(weights);
-      } catch(IllegalArgumentException | IllegalStateException ex){
-        promptMessage("Invalid input. Please enter correct input.");
+      } catch (IllegalArgumentException | IllegalStateException ex) {
+        promptMessage("Action failed: " + ex.getMessage());
       }
+
     });
 
     JButton closeS = new JButton("Close Strategy");
@@ -315,7 +309,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     strategyPanel.add(closeS);
 
     closeS.addActionListener((ActionEvent e) -> {
-      for (Component c : this.getContentPane().getComponents())    {
+      for (Component c : this.getContentPane().getComponents()) {
         if (c.equals(stockDisplayPanel)) {
           stockDisplayPanel.removeAll();
           this.remove(stockDisplayPanel);
@@ -334,7 +328,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   private void openStocksInStrategy(HowToInvestControllerGUI controller) {
 
-    for (Component c : this.getContentPane().getComponents())    {
+    for (Component c : this.getContentPane().getComponents()) {
       if (c.equals(stockDisplayPanel)) {
         stockDisplayPanel.removeAll();
         stockDisplayPanel.revalidate();
@@ -361,22 +355,23 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
       JTable listTable;
       listTable = new JTable(tableModel);
       listTable.setFillsViewportHeight(true);
-      listTable.setPreferredSize(new Dimension(300,150));
+      listTable.setPreferredSize(new Dimension(300, 150));
       listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
       stockDisplayPanel.add(new JScrollPane(listTable));
-      JButton closeP = new JButton( "Close Stock List");
-      closeP.addActionListener((ActionEvent e)->{
+      JButton closeP = new JButton("Close Stock List");
+      closeP.addActionListener((ActionEvent e) -> {
         stockDisplayPanel.removeAll();
         stockDisplayPanel.revalidate();
-        stockDisplayPanel.repaint();});
+        stockDisplayPanel.repaint();
+      });
 
       stockDisplayPanel.add(closeP);
 
       stockDisplayPanel.setVisible(true);
 
       this.add(stockDisplayPanel);
-    }catch(IllegalArgumentException ex){
-      promptMessage("Failed to load stocks");
+    } catch (IllegalArgumentException ex) {
+      promptMessage("Action failed: " + ex.getMessage());
     }
   }
 }

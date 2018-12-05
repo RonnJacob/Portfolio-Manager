@@ -374,8 +374,8 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
               true, date, selectedPortfolio.getCommission(commission));
       String message = "";
       for (Map.Entry<String, Double> investment : investments.entrySet()) {
-        message += "[" + investment.getValue() + " share(s) of " + investment.getKey()
-                + " on " + date + "]";
+        message += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date + "\n";
       }
       view.logMessage(message);
     } catch (IllegalArgumentException | IllegalStateException ex) {

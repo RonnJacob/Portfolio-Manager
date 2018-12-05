@@ -52,10 +52,10 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     setLocation(200, 200);
     Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
     this.setPreferredSize(DimMax);
-    loggerPanel.setLayout(new GridLayout(3,1));
+    loggerPanel.setLayout(new GridLayout(3, 1));
     stockPanel.setLayout(new GridLayout(6, 2));
-    stockDisplayPanel.setLayout(new GridLayout(2,12));
-    listOfPortfoliosPanel.setLayout(new GridLayout(3,1));
+    stockDisplayPanel.setLayout(new GridLayout(2, 12));
+    listOfPortfoliosPanel.setLayout(new GridLayout(3, 1));
     mainPortfolioPanel.setLayout(new GridLayout(3, 2));
     log.setEditable(false);
     JScrollPane sp = new JScrollPane(log);
@@ -96,6 +96,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
           newPortfolioName.setForeground(Color.BLACK);
         }
       }
+
       @Override
       public void focusLost(FocusEvent e) {
         if (newPortfolioName.getText().isEmpty()) {
@@ -129,22 +130,22 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   }
 
   public void addFeatures(HowToInvestControllerGUI controller) {
-    createPortfolio.addActionListener((ActionEvent e)-> {
-        String portfolioName = newPortfolioName.getText();
-      if (portfolioName.trim().isEmpty() ||
-              portfolioName.equals("Enter Name Of Portfolio Here")) {
-        promptMessage("Please enter portfolio name.\n");
-          return;
-        }
-        try{
-          controller.createPortfolio(portfolioName);
-          listModel.insertElementAt(portfolioName, listModel.size()-1);
-          newPortfolioName.setText("");
-          closePortfolioButtonClicked();
-        } catch(IllegalArgumentException ex){
-          promptMessage("Portfolio "+portfolioName+" already exists.\n");
-        }
-      }
+    createPortfolio.addActionListener((ActionEvent e) -> {
+              String portfolioName = newPortfolioName.getText();
+              if (portfolioName.trim().isEmpty() ||
+                      portfolioName.equals("Enter Name Of Portfolio Here")) {
+                promptMessage("Please enter portfolio name.\n");
+                return;
+              }
+              try {
+                controller.createPortfolio(portfolioName);
+                listModel.insertElementAt(portfolioName, listModel.size() - 1);
+                newPortfolioName.setText("");
+                closePortfolioButtonClicked();
+              } catch (IllegalArgumentException ex) {
+                promptMessage("Portfolio " + portfolioName + " already exists.\n");
+              }
+            }
     );
 
     openPortfolio.addActionListener((ActionEvent e) -> {
@@ -192,8 +193,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   }
 
   public void openPortfolioScreen(HowToInvestControllerGUI controller) {
-    JButton displayStocks = new JButton( "Display Stocks In Portfolio");
-    displayStocks.addActionListener((ActionEvent e)->{
+    JButton displayStocks = new JButton("Display Stocks In Portfolio");
+    displayStocks.addActionListener((ActionEvent e) -> {
       JTextField date = new JTextField();
       Object[] message = {
               "Date [yyyy-mm-dd] :", date,
@@ -308,7 +309,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         }
       }
     });
-
 
 
     applyStrategy.addActionListener((ActionEvent e) -> {
@@ -446,9 +446,11 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     stockPanel.add(dateField);
     stockPanel.add(closeP);
 
-      closeP.addActionListener((ActionEvent e)->{closePortfolioButtonClicked();});
+    closeP.addActionListener((ActionEvent e) -> {
+      closePortfolioButtonClicked();
+    });
 
-      this.add(stockPanel);
+    this.add(stockPanel);
     pack();
     setVisible(true);
   }
@@ -504,8 +506,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     }
   }
 
-  private void closePortfolioButtonClicked(){
-    for (Component c : this.getContentPane().getComponents())    {
+  private void closePortfolioButtonClicked() {
+    for (Component c : this.getContentPane().getComponents()) {
       if (c.equals(stockDisplayPanel)) {
         stockDisplayPanel.removeAll();
         this.remove(stockDisplayPanel);
