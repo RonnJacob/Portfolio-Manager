@@ -17,34 +17,37 @@ import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.IHowToInvestView;
 
 /**
- * The following HowToInvestController class is an implementation of the IHowToInvestController
- * interface and provides an operation to open up a portfolio manager wherein a user would be able
- * to make choices provided by a specific implementation of IPortfolio manager type class. A
- * portfolio manager would offer operations such as creation of portfolios, examining the
- * composition of portfolios which would ideally be made up of stocks and shares for a particular
- * company or organization, adding shares/stocks to a portfolio for a particular date and retrieving
- * the cost basis and value of stocks or of a portfolio for a given date. The controller would
- * provide a method for opening up the home screen wherein the user can choose to perform operations
- * depending on the specific input. The home screen would provide operations for a user to create a
- * portfolio, retrieve a list of portfolios and enter a particular portfolio. If a user enters a
- * particular portfolio then further operations are made open to the user where a user can observe
- * the composition of a particular portfolio at the time, add a share/stock at a particular date
- * that is input by the user. The valid sequence of inputs for adding a share would be the unique
- * ticker symbol representing a company in string format, the amount for which a user wants to buy
- * shares of that company and the date for which the user is planning to add or buy that share for.
- * The final operation in the stock menu would be to get or retrieve the cost basis or value of a
- * portfolio at a particular date which is input by the user The user would be able to invest a
- * fixed amount into an existing portfolio containing multiple stocks, using a specified weight for
- * each stock in the portfolio. This would aid the user in learning about how the investment cycle
- * would work and how the value would dip and spike depending on the date at which the investments
- * were made or the date at which the value is being retrieved for. The user would be able to
- * seamlessly choose between selection of equal weight investment for stocks in the portfolio or
- * could enter weights of the user's choice. Another feature offered would be the higher investment
- * strategies offered by the program. This would allow for a user to apply a strategy and modify the
- * strategies preferences namely the stock(s) in the strategy, the weights for investment, the
- * frequency of investing, the start and end date for investment and the amount to be invested. Note
- * that each transaction (adding/buying of a stock to a portfolio) would include a commission charge
- * which would be included in the cost basis/value.
+ * This class tends to the console view which would have different user interactions as compared to
+ * the graphical user interface. The following HowToInvestController class is an implementation of
+ * the IHowToInvestController interface and provides an operation to open up a portfolio manager
+ * wherein a user would be able to make choices provided by a specific implementation of IPortfolio
+ * manager type class. A portfolio manager would offer operations such as creation of portfolios,
+ * examining the composition of portfolios which would ideally be made up of stocks and shares for a
+ * particular company or organization, adding shares/stocks to a portfolio for a particular date and
+ * retrieving the cost basis and value of stocks or of a portfolio for a given date. The controller
+ * would provide a method for opening up the home screen wherein the user can choose to perform
+ * operations depending on the specific input. The home screen would provide operations for a user
+ * to create a portfolio, retrieve a list of portfolios and enter a particular portfolio. If a user
+ * enters a particular portfolio then further operations are made open to the user where a user can
+ * observe the composition of a particular portfolio at the time, add a share/stock at a particular
+ * date that is input by the user. The valid sequence of inputs for adding a share would be the
+ * unique ticker symbol representing a company in string format, the amount for which a user wants
+ * to buy shares of that company and the date for which the user is planning to add or buy that
+ * share for. The final operation in the stock menu would be to get or retrieve the cost basis or
+ * value of a portfolio at a particular date which is input by the user The user would be able to
+ * invest a fixed amount into an existing portfolio containing multiple stocks, using a specified
+ * weight for each stock in the portfolio. This would aid the user in learning about how the
+ * investment cycle would work and how the value would dip and spike depending on the date at which
+ * the investments were made or the date at which the value is being retrieved for. The user would
+ * be able to seamlessly choose between selection of equal weight investment for stocks in the
+ * portfolio or could enter weights of the user's choice. Another feature offered would be the
+ * higher investment strategies offered by the program. This would allow for a user to apply a
+ * strategy and modify the strategies preferences namely the stock(s) in the strategy, the weights
+ * for investment, the frequency of investing, the start and end date for investment and the amount
+ * to be invested. Note that each transaction (adding/buying of a stock to a portfolio) would
+ * include a commission charge which would be included in the cost basis/value. Additionally, there
+ * would be operations to load and save strategies and portfolios. Additionally, there would be
+ * operations to load and save strategies and portfolios.
  * <ul>
  * <li>
  * Inputs provided by the user would eventually end with the closing of the application by the user
@@ -123,8 +126,6 @@ public class HowToInvestController implements IHowToInvestController {
     this.view = view;
     this.strategyModel = strategyModel;
   }
-
-
 
 
   /**
@@ -414,7 +415,7 @@ public class HowToInvestController implements IHowToInvestController {
    */
   @Override
   public String openStrategies(String option) {
-   this.showStrategies();
+    this.showStrategies();
     String strategyChoice = view.getInput("\nEnter index of strategy to apply.\n");
     if (strategyChoice.equals("")) {
       return "q";
@@ -487,9 +488,9 @@ public class HowToInvestController implements IHowToInvestController {
 
   @Override
   public void addStockToStrategy(String stockNameEntered) {
-    try{
+    try {
       selectedStrategy.addStockToStrategy(stockNameEntered);
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       view.promptMessage("Stock cannot be added.");
     }
 
@@ -497,9 +498,9 @@ public class HowToInvestController implements IHowToInvestController {
 
   @Override
   public void setStrategyAmount(String amount) {
-    try{
+    try {
       selectedStrategy.setAmount(Double.parseDouble(amount));
-    }catch(NumberFormatException ex){
+    } catch (NumberFormatException ex) {
       view.promptMessage("Invalid input. Please enter amount again.");
     }
 
@@ -507,9 +508,9 @@ public class HowToInvestController implements IHowToInvestController {
 
   @Override
   public void setStrategyFrequency(String frequency) {
-    try{
+    try {
       selectedStrategy.setFrequency(Integer.parseInt(frequency));
-    } catch (NumberFormatException ex){
+    } catch (NumberFormatException ex) {
       view.promptMessage("Invalid input. Please enter again.");
     }
   }
@@ -614,7 +615,7 @@ public class HowToInvestController implements IHowToInvestController {
           case "5":
             String startDate = view.getInput("Enter start date for investing of strategy.\n");
             String endDate = view.getInput("Enter end date for investing of strategy.\n");
-            this.setStrategyTimerange(startDate,endDate);
+            this.setStrategyTimerange(startDate, endDate);
             view.strategyModificationMenu();
             break;
           case "r":
@@ -742,7 +743,6 @@ public class HowToInvestController implements IHowToInvestController {
               + "transaction [l, m, h] or enter custom commission value \n");
       HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
       if (map.size() != 0) {
-//        TreeMap<String, Double> weights = new TreeMap<>();
         List<Double> weights = new LinkedList<>();
         /**
          * The user is prompted to enter weights for each stock in the portfolio.
@@ -750,10 +750,9 @@ public class HowToInvestController implements IHowToInvestController {
         for (Map.Entry<String, Double> entry : map.entrySet()) {
           Double weight = Double.parseDouble(view.getInput("Enter weight for " + entry.getKey()
                   + " : \n"));
-//          weights.put(entry.getKey(), weight);
           weights.add(weight);
         }
-      this.investWithWeights(amount,date,commision, weights);
+        this.investWithWeights(amount, date, commision, weights);
 
       } else {
         view.promptMessage("No stocks present in the portfolio.\n");
@@ -823,8 +822,8 @@ public class HowToInvestController implements IHowToInvestController {
   @Override
   public List<String> getStocksInStrategy() {
     List<String> m = selectedStrategy.getStocks();
-    for (int counter = 1; counter< m.size(); counter++) {
-      view.displayList(counter, m.get(counter-1), "Stocks");
+    for (int counter = 1; counter < m.size(); counter++) {
+      view.displayList(counter, m.get(counter - 1), "Stocks");
       counter += 1;
     }
     return m;
@@ -838,7 +837,7 @@ public class HowToInvestController implements IHowToInvestController {
      * Displays all the strategies that the user can choose from.
      */
     for (String portfolioName : strategyModel.getAll()) {
-      strategies[counter-1] = portfolioName;
+      strategies[counter - 1] = portfolioName;
       view.displayList(counter, portfolioName, "Strategies");
       counter++;
     }
@@ -848,13 +847,13 @@ public class HowToInvestController implements IHowToInvestController {
 
   @Override
   public void applyStrategy(String strategyToApply, String commision) {
-    try{
+    try {
 
       TreeMap<Date, HashMap<String, Double>> strategyApplied =
               selectedStrategy.applyStrategy(selectedPortfolio,
                       selectedPortfolio.getCommission(commision));
       apply(strategyApplied);
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       view.promptMessage(ex.getMessage() + "\n");
     }
   }
@@ -920,9 +919,9 @@ public class HowToInvestController implements IHowToInvestController {
 
   @Override
   public void setStrategyWeights(TreeMap<String, Double> weights) {
-    try{
+    try {
       selectedStrategy.setWeights(weights);
-    }catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       view.promptMessage("Invalid weights. Please try again.");
     }
   }

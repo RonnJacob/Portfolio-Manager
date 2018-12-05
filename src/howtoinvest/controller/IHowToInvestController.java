@@ -79,40 +79,133 @@ public interface IHowToInvestController {
    * @param stockNameEntered the ticker symbol of the stock that is to be added to the portfolio.
    * @param amountEntered the amount for which stocks are to be entered.
    * @param dateEntered the date for which the share(s) are to be bought.
-   * @param commissionEntered
+   * @param commissionEntered the commission that is to be taken into account while buying the
+   *                          share(s).
    */
   void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
                            String commissionEntered);
 
+  /**
+   * Retrieves stocks in a portfolio as of a date which is received as input from the view and
+   * passed on to the model.
+   * @param date the date for which stocks in a portfolio are to be retrieved.
+   * @return the stocks and the number of stocks in portfolio as of a particular date which is
+   *         input.
+   *
+   */
   HashMap<String, Double> getStocksInPortfolio(String date);
 
+  /**
+   * Retrieves the stocks in a strategy.
+   * @return the list of stocks that are part of a particular strategy.
+   */
   List<String> getStocksInStrategy();
 
+
+  /**
+   * Displays the strategy by calling the strategy model.
+   * @return the list of strategies available.
+   */
   String[] showStrategies();
 
 
+  /**
+   * Applies a strategy that is input by the user with an input commission for the investment as
+   * well.
+   * @param strategyToApply the strategy that is to be applied to a portfolio.
+   * @param commision the commission that is to be taken into account for the investment.
+   */
   void applyStrategy(String strategyToApply, String commision);
 
+  /**
+   * Saves a portfolio with the file name which is input by the user. This filename is passed on
+   * to the model to carry out the saving operation.
+   * @param fileName the filename under which the portfolio is to be saved.
+   */
   void savePortfolio(String fileName);
 
+  /**
+   * Saves a strategy with the file name which is input by the user. This filename is passed on
+   * to the model to carry out the saving operation.
+   * @param fileName the filename under which the strategy is to be saved.
+   */
   void saveStrategy(String fileName);
 
+  /**
+   * Creates a strategy with the input received from the view. Passes the strategy name to the
+   * model and creates a new strategy which will be added to the list of strategy.
+   * @param strategyName the name of the portfolio to be created.
+   */
   void addStrategy(String strategyName);
 
+  /**
+   * Opens the strategy with the name passed as an argument. Retrieves the strategy with the name
+   * passed as an argument from a list of strategy and opens the strategy.
+   * @param strategyToOpen the strategy that is to be opened.
+   * @return a return message saying that the strategy has been opened.
+   */
   String openStrategies(String strategyToOpen);
 
+  /**
+   * Adds a stock which is input by the user through the view to the list of stocks in a strategy.
+   * This user input is passed to the model so that the stock can be added to the list of stocks
+   * in the strategy.
+   * @param stockNameEntered the stock that is to be added to the list of stocks present in the
+   *                        strategy
+   */
   void addStockToStrategy(String stockNameEntered);
 
+  /**
+   * Modifies the amount for investment within a strategy with the amount input by the user via
+   * the view. This amount input would passed to the model for modifying the investment amount
+   * in the strategy.
+   * @param amount the new amount for investment within in the investment strategy.
+   */
   void setStrategyAmount(String amount);
 
+
+  /**
+   * Modifies the frequency for investment within a strategy with the frequency input by the user
+   * via the view. This frequency input would passed to the model for modifying the frequency
+   * in the strategy.
+   * @param frequency the new frequency for investment within in the investment strategy.
+   */
   void setStrategyFrequency(String frequency);
 
+  /**
+   * Modifies the range for which the investment is to be made within a strategy. The user input for
+   * the beggining and end dates are received via the input and passed to the model in order to
+   * modify the range of investment strategy.
+   * @param begDate the start date of the range for the investment period.
+   * @param endDate the end date of the range for the investment period.
+   */
   void setStrategyTimerange(String begDate, String endDate);
 
+  /**
+   * Invest in a strategy with the inputs received from the view. The inputs are passed onto the
+   * model in order to carry out the investment operation with custom weights.
+   * @param amount the amount for which the user wishes to invest in the portfolio.
+   * @param date the date on which the user wishes to invest in the portfolio.
+   * @param commision the commission for the investment.
+   * @param weights the weights with which investment is to be made for portfolio.
+   */
   void investWithWeights(Double amount, String date, String commision,
                          List<Double> weights);
 
+  /**
+   * Modifies the weights for investment within a strategy with the weights input by the user
+   * via the view. This weights input would be passed to the model for modifying the weights
+   * in the strategy.
+   * @param weights the new weights for investment within in the investment strategy.
+   */
   void setStrategyWeights(TreeMap<String, Double> weights);
 
+  /**
+   * Invest in a strategy with the inputs received from the view. The inputs are passed onto the
+   * model in order to carry out the investment operation with equal weights.
+   * @param amount the amount for which the user wishes to invest in the portfolio.
+   * @param date the date on which the user wishes to invest in the portfolio.
+   * @param commision the commission for the investment.
+   */
   void investEqually(Double amount, String date, String commision);
 }
