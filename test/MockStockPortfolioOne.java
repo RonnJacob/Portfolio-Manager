@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import howtoinvest.model.IPortfolio;
+import howtoinvest.model.StockPortfolio;
 
 /**
  * This class is a mock class for testing the controller implementation and HowToInvestController
@@ -16,7 +17,7 @@ import howtoinvest.model.IPortfolio;
  * called would log that the method was called and display parameters along within the log message
  * if parameters were provided.
  */
-public class MockStockPortfolioOne implements IPortfolio {
+public class MockStockPortfolioOne extends StockPortfolio{
 
   private StringBuilder log;
 

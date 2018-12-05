@@ -2,6 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import howtoinvest.model.IManager;
+import howtoinvest.model.StockPortfolio;
 
 /**
  * This class is a mock class for testing the controller implementation and HowToInvestController
@@ -16,7 +17,7 @@ import howtoinvest.model.IManager;
  * method called would log that the method was called and display parameters along within the log
  * message if parameters were provided.
  */
-public class MockPortfolioManagerOne implements IManager<MockStockPortfolioOne> {
+public class MockPortfolioManagerOne implements IManager<StockPortfolio> {
   protected StringBuilder log;
 
   /**

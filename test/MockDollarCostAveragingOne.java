@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
+import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IInvestmentStrategy;
+import howtoinvest.model.IPortfolio;
 
 /**
  * This class is a mock DollarCostAveraging class for testing the controller implementation and
@@ -19,7 +21,7 @@ import howtoinvest.model.IInvestmentStrategy;
  * . Note that each method called would log that the method was called and display parameters along
  * within the log message if parameters were provided.
  */
-public class MockDollarCostAveragingOne implements IInvestmentStrategy {
+public class MockDollarCostAveragingOne implements IInvestmentStrategy<IPortfolio> {
 
   private StringBuilder log;
 
@@ -64,7 +66,8 @@ public class MockDollarCostAveragingOne implements IInvestmentStrategy {
   }
 
   @Override
-  public TreeMap<Date, HashMap<String, Double>> applyStrategy(Object portfolio, double commission) {
+  public TreeMap<Date, HashMap<String, Double>> applyStrategy(IPortfolio portfolio,
+                                                              double commission) {
     this.log.append("Apply strategy with commision " + commission);
     return new TreeMap<>();
   }

@@ -124,6 +124,9 @@ public class HowToInvestController implements IHowToInvestController {
     this.strategyModel = strategyModel;
   }
 
+
+
+
   /**
    * The following method opens a portfolio manager which offers functionalities and performs
    * operations based on user input.
@@ -252,7 +255,7 @@ public class HowToInvestController implements IHowToInvestController {
       try {
         selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
       } catch (NumberFormatException ex) {
-        view.promptMessage("Cannot fetch portfolio.\n");
+        return "i";
       }
     } catch (IllegalArgumentException ex) {
       return "i";
@@ -465,7 +468,7 @@ public class HowToInvestController implements IHowToInvestController {
           case "4":
             String fileName = view.getInput("\nSave strategy as: ");
             this.saveStrategy(fileName);
-            view.openPortfolioMenu();
+            view.openStrategyMenu();
             break;
           case "r":
             return "r";
