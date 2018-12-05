@@ -96,11 +96,11 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
    * portfolio list. If the portfolio with name already exists it will throw an exception.
    *
    * @param name json file name.
-   * @throws IllegalStateException    if the file cannot be retrieved.
-   * @throws IllegalArgumentException if the retrieved item cannot be added to the portfolio list.
+   * @throws IllegalArgumentException if the file cannot be retrieved or the retrieved item cannot
+   *                                  be added to the portfolio list.
    */
   @Override
-  public void retrieve(String name) throws IllegalArgumentException, IllegalStateException {
+  public void retrieve(String name) throws IllegalArgumentException {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -112,7 +112,7 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
       create(name);
       this.portfolios.put(name, stockPortfolio);
     } catch (FileNotFoundException ex) {
-      throw new IllegalStateException("File not found: " + ex.getMessage());
+      throw new IllegalArgumentException("File not found: " + ex.getMessage());
     }
   }
 }

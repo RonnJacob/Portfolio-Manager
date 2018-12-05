@@ -111,7 +111,7 @@ public class StockPortfolioManagerTest {
     try {
       portfolioManager.retrieve("p1");
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Stock Portfolios/p1.json (No such file or directory)",
               ex.getMessage());
     }
@@ -121,7 +121,7 @@ public class StockPortfolioManagerTest {
     try {
       portfolioManager.retrieve("");
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Stock Portfolios/.json (No such file or directory)",
               ex.getMessage());
     }
@@ -129,7 +129,7 @@ public class StockPortfolioManagerTest {
     try {
       portfolioManager.retrieve(null);
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Stock Portfolios/null.json (No such file or directory)",
               ex.getMessage());
     }

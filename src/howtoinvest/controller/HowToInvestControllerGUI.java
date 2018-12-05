@@ -43,9 +43,10 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   @Override
   public void openPortfolioManager()
   {
+    strategyView.openHomeScreen(strategyModel.getAll());
+    strategyView.addFeatures(this);
     view.openHomeScreen(model.getAll());
     view.addFeatures(this);
-    strategyView.addFeatures(this);
   }
 
   @Override
@@ -74,7 +75,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void loadPortfolio(String fileName) {
     try{
       model.retrieve(fileName);
-    }catch(IllegalStateException ex){
+    }catch(IllegalArgumentException ex){
       throw new IllegalArgumentException(ex);
     }
   }
@@ -154,10 +155,20 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
-  public void openStrategyManager()
-  {
-    view.openHomeScreen(strategyModel.getAll());
-    view.addFeatures(this);
+  public void loadStrategy(String fileName) {
+    try{
+      strategyModel.retrieve(fileName);
+    }catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void saveStrategy(String fileName) {
+    try{
+      selectedStrategy.saveStrategy(fileName);
+    } catch(IllegalStateException ex){
+      throw new IllegalArgumentException(ex);
+    }
   }
 
   public void addStrategy(String strategyName) {
@@ -177,13 +188,40 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       }
       counter++;
     }
-    view.openPortfolioScreen(this);
+    strategyView.openStrategyScreen(this);
   }
 
   public void addStockToStrategy(String stockNameEntered) {
     try{
       selectedStrategy.addStockToStrategy(stockNameEntered);
-      view.logMessage("Stock added");
+      strategyView.logMessage("Stock added");
+    } catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void setStrategyAmount(String amount) {
+    try{
+      selectedStrategy.setAmount(Double.parseDouble(amount));
+      strategyView.logMessage("Amount set");
+    } catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void setStrategyFrequency(String frequency) {
+    try{
+      selectedStrategy.setAmount(Integer.parseInt(frequency));
+      strategyView.logMessage("Frequency set");
+    } catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void setStrategyTimerange(String begDate, String endDate) {
+    try{
+      selectedStrategy.setTimeRange(begDate, endDate);
+      strategyView.logMessage("Timerange set");
     } catch(IllegalArgumentException ex){
       throw new IllegalArgumentException(ex);
     }

@@ -155,15 +155,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         promptMessage("Portfolio could not be loaded.");
       }}
     );
-
-    openStrategyMenu.addActionListener((ActionEvent e)->{
-      StrategyViewGUI strategyMenu = new StrategyViewGUI();
-      strategyMenu.addFeatures((HowToInvestControllerGUI)controller);
-      strategyMenu.openHomeScreen(controller.loadList("Strategy"));
-      strategyMenu.setDefaultCloseOperation(HIDE_ON_CLOSE);
-    });
-
-
   }
 
   public void promptMessage(String message) {
@@ -205,14 +196,13 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       } else {
         System.out.println("Transaction Unsuccessful");
       }
-
     });
 
     JButton displayStocks = new JButton( "Display Stocks In Portfolio");
     JButton invest = new JButton("Invest With Custom Weights");
     JButton investEqualWeights = new JButton("Invest With Equal Weights");
     JButton applyStrategy = new JButton( "Apply Strategy");
-    JButton saveStrategy = new JButton( "Save Portfolio");
+    JButton savePortfolio = new JButton( "Save Portfolio");
     JTextField dateField = new JTextField();
     JButton getCostBasis = new JButton( "Get Portfolio Cost Basis for Date");
     JButton getValue = new JButton( "Get Portfolio Value for Date");
@@ -293,7 +283,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     });
 
-    saveStrategy.addActionListener((ActionEvent e)->{
+    savePortfolio.addActionListener((ActionEvent e)->{
       try{
         JTextField fileName = new JTextField();
         Object[] message = {
@@ -301,7 +291,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         };
 
         int option = JOptionPane.showConfirmDialog(null, message,
-                "Save Strategy",
+                "Save Portfolio",
                 JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
           controller.savePortfolio(fileName.getText());
@@ -402,7 +392,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     stockPanel.add(listOfStrategies);
     stockPanel.add(getCostBasis);
     stockPanel.add(getValue);
-    stockPanel.add(saveStrategy);
+    stockPanel.add(savePortfolio);
     stockPanel.add(investEqualWeights);
     stockPanel.add(invest);
     stockPanel.add(dateField);
@@ -436,30 +426,31 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     };
 
-    try{
+    try {
 
       HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
 
-      for(Map.Entry<String, Double> stock: stocks.entrySet()){
+      for (Map.Entry<String, Double> stock : stocks.entrySet()) {
         String stockName = stock.getKey();
         String numberOfShares = stock.getValue().toString();
-        tableModel.addRow(new Object[]{stockName,numberOfShares});
+        tableModel.addRow(new Object[]{stockName, numberOfShares});
       }
 
       JTable listTable;
       listTable = new JTable(tableModel);
 //    listTable.setPreferredScrollableViewportSize(new Dimension(100, 200));
       listTable.setFillsViewportHeight(true);
-      listTable.setPreferredSize(new Dimension(300,500));
+      listTable.setPreferredSize(new Dimension(300, 500));
       listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
       stocksPortfolioPanel.add(new JScrollPane(listTable));
-      JButton closeP = new JButton( "Close Stock List");
+      JButton closeP = new JButton("Close Stock List");
       stocksPortfolioPanel.add(closeP);
 
-      closeP.addActionListener((ActionEvent e)->{
+      closeP.addActionListener((ActionEvent e) -> {
         stocksPortfolioPanel.removeAll();
         stocksPortfolioPanel.revalidate();
-        stocksPortfolioPanel.repaint();});
+        stocksPortfolioPanel.repaint();
+      });
       stocksPortfolioPanel.setVisible(true);
       this.add(stocksPortfolioPanel);
     }catch(IllegalArgumentException ex){

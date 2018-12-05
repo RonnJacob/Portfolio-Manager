@@ -90,7 +90,7 @@ public class DollarCostAveragingStrategyManagerTest {
     try {
       manager.retrieve("s2");
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Strategies/s2.json (No such file or directory)",
               ex.getMessage());
     }
@@ -101,7 +101,7 @@ public class DollarCostAveragingStrategyManagerTest {
     try {
       manager.retrieve("");
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Strategies/.json (No such file or directory)",
               ex.getMessage());
     }
@@ -109,7 +109,7 @@ public class DollarCostAveragingStrategyManagerTest {
     try {
       manager.retrieve(null);
       fail();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalArgumentException ex) {
       assertEquals("File not found: ./Strategies/null.json (No such file or directory)",
               ex.getMessage());
     }

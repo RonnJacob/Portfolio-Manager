@@ -90,11 +90,11 @@ public class DollarCostAveragingStrategyManager
    * strategy list. If the strategy with name already exists it will throw an exception.
    *
    * @param name json file name.
-   * @throws IllegalStateException    if the file cannot be retrieved.
-   * @throws IllegalArgumentException if the retrieved item cannot be added to the strategy list.
+   * @throws IllegalArgumentException if the file cannot be retrieved or retrieved item cannot be
+   *                                  added to the strategy list.
    */
   @Override
-  public void retrieve(String name) throws IllegalArgumentException, IllegalStateException {
+  public void retrieve(String name) throws IllegalArgumentException {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     builder.setDateFormat("MMM dd, yyyy HH:mm:ss");
@@ -106,7 +106,7 @@ public class DollarCostAveragingStrategyManager
       create(name);
       this.strategies.put(name, strategy);
     } catch (FileNotFoundException ex) {
-      throw new IllegalStateException("File not found: " + ex.getMessage());
+      throw new IllegalArgumentException("File not found: " + ex.getMessage());
     }
   }
 }
