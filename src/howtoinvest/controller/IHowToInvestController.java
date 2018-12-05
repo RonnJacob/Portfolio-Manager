@@ -34,9 +34,9 @@ public interface IHowToInvestController<K> {
    */
   void openPortfolioManager();
 
-  void addPortfolio(String portfolioName);
+  void createPortfolio(String portfolioName);
 
-  void openPortfolios(String portfolioToOpen);
+  String openPortfolios(String portfolioToOpen);
 
   void loadPortfolio(String text);
 

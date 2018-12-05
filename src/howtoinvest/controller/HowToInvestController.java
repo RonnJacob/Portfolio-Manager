@@ -1,5 +1,6 @@
 package howtoinvest.controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,7 +129,6 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   @Override
   public void openPortfolioManager() {
-
     view.openHomeScreen();
 
     while (true) {
@@ -154,7 +154,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * operation is performed.
          */
         case "3":
-          String returnCode = openPortfolio();
+          String returnCode = openPortfolios("open");
           /**
            * If the returned code is q then quit from the application.
            */
@@ -192,32 +192,31 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
+  @Override
+  public void createPortfolio(String portfolioName) {
+    try {
+      model.create(portfolioName);
+      view.promptMessage("Portfolio " + portfolioName + " has been created.\n");
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage("Portfolio with that name exists\n");
+    }
+  }
+
   private void load(String type) {
     String loadFile = view.getInput("\nEnter name of file to load: ");
-    try{
-      if(type=="Portfolio"){
+    try {
+      if (type == "Portfolio") {
         model.retrieve(loadFile);
         displayPortfolios();
-      }
-      else if(type == "Strategy"){
+      } else if (type == "Strategy") {
         strategyModel.retrieve(loadFile);
       }
-      view.promptMessage( type+" "+loadFile+" has been added.");
+      view.promptMessage(type + " " + loadFile + " has been added.");
+    } catch (IllegalStateException ex) {
+      view.promptMessage(type + " " + loadFile + " could not be found.");
     }
-    catch(IllegalStateException ex){
-      view.promptMessage(type+" "+loadFile+" could not be found.");
-    }
   }
 
-  @Override
-  public void addPortfolio(String portfolioName) {
-
-  }
-
-  @Override
-  public void openPortfolios(String portfolioToOpen) {
-
-  }
 
   @Override
   public void loadPortfolio(String text) {
@@ -226,10 +225,9 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
 
   @Override
   public List<String> loadList(String typeOfList) {
-    if(typeOfList=="Strategy"){
+    if (typeOfList == "Strategy") {
       return strategyModel.getAll();
-    }
-    else{
+    } else {
       return model.getAll();
     }
   }
@@ -241,7 +239,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    *
    * @return a return code based on the operation and user input.
    */
-  private String openPortfolio() {
+  @Override
+  public String openPortfolios(String name) {
     displayPortfolios();
     String pfolioName = view.getInput("\nEnter index of Portfolio to open.");
     if (pfolioName.equals("")) {
@@ -323,10 +322,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "7":
             String fileName = view.getInput("\nSave portfolio as: ");
-            try{
+            try {
               selectedPFolio.savePortfolio(fileName);
               view.promptMessage("Portfolio was successfully saved.\n");
-            }catch (IllegalStateException ex){
+            } catch (IllegalStateException ex) {
               view.promptMessage("Portfolio could not be saved.\n");
             }
             view.openPortfolioMenu();
@@ -352,7 +351,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   }
 
   private String openStrategyManager(IManager<DollarCostAveraging> strategyModel,
-                                   IPortfolio selectedPFolio) {
+                                     IPortfolio selectedPFolio) {
     int counter = 1;
     /**
      * Displays all the strategies that the user can choose from.
@@ -496,10 +495,10 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "4":
             String fileName = view.getInput("\nSave strategy as: ");
-            try{
+            try {
               dcaStrategy.saveStrategy(fileName);
               view.promptMessage("Strategy was successfully saved.\n");
-            }catch (IllegalStateException ex){
+            } catch (IllegalStateException ex) {
               view.promptMessage("Strategy could not be saved.\n");
             }
             view.openPortfolioMenu();
@@ -861,22 +860,29 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
    */
   private void addPortfoliosToManager() {
     do {
-      try {
-        String nameOfPortfolio = view.getInput("Enter the name of the portfolio to be created\n");
-        if (nameOfPortfolio.equals("")) {
-          return;
-        }
-        model.create(nameOfPortfolio);
-        view.promptMessage("Portfolio " + nameOfPortfolio + " has been created.\n");
-      } catch (IllegalArgumentException ex) {
-        view.promptMessage("Portfolio with that name exists\n");
+      String nameOfPortfolio = view.getInput("Enter the name of the portfolio to be created\n");
+      if (nameOfPortfolio.equals("")) {
+        return;
       }
-      /**
-       * Add more portfolios if need be.
-       */
+      this.createPortfolio(nameOfPortfolio);
       view.promptMessage("Add more portfolios? (Y/N)\n");
     }
     while (view.getInput("").equalsIgnoreCase("y"));
+  }
+
+
+  public void loadData() {
+    File folder = new File("./Stock Portfolios/");
+    File[] listOfFiles = folder.listFiles();
+
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        String name[] = listOfFiles[i].getName().split(".json");
+        model.retrieve(name[0]);
+      } else if (listOfFiles[i].isDirectory()) {
+        System.out.println("Directory " + listOfFiles[i].getName());
+      }
+    }
   }
 
 

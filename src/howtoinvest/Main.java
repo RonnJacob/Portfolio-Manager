@@ -1,5 +1,6 @@
 package howtoinvest;
 
+import java.io.Console;
 import java.io.InputStreamReader;
 
 import howtoinvest.controller.HowToInvestController;
@@ -60,12 +61,26 @@ public class Main {
     /**
      * Controller is given the control with the above model as the argument.
      */
-    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
-    gui.openPortfolioManager();
+//    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
+//    gui.openPortfolioManager();
 //    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
 //            strategyManager);
 //    controller.openPortfolioManager();
 
+    String arg1 = "console";
+    if(arg1 == "gui"){
+      HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
+      gui.openPortfolioManager();
+    }
+    else if(arg1 == "console"){
+
+    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
+            strategyManager);
+    controller.openPortfolioManager();
+    }
+    else {
+      throw new IllegalArgumentException("Cannot open application.");
+    }
 
   }
 }

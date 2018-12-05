@@ -50,7 +50,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   }
 
   @Override
-  public void addPortfolio(String portfolioName) {
+  public void createPortfolio(String portfolioName) {
     try{
       model.create(portfolioName);
     }catch(IllegalArgumentException ex){
@@ -59,7 +59,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   }
 
   @Override
-  public void openPortfolios(String portfolioToOpen) {
+  public String openPortfolios(String portfolioToOpen) {
       int counter = 1;
       for(String pfolio: model.getAll()){
         if(pfolio.equalsIgnoreCase(portfolioToOpen)){
@@ -69,6 +69,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
         counter++;
       }
     view.openPortfolioScreen(this);
+    return "";
   }
 
   @Override
@@ -257,4 +258,5 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       throw new IllegalArgumentException(ex);
     }
   }
+
 }
