@@ -22,7 +22,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import howtoinvest.controller.HowToInvestControllerGUI;
-import howtoinvest.controller.IHowToInvestController;
 
 public class HowToInvestViewGUI extends JFrame implements ActionListener,
         ListSelectionListener {
@@ -132,7 +131,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
 
   }
 
-  public void addFeatures(IHowToInvestController controller) {
+  public void addFeatures(HowToInvestControllerGUI controller) {
     createPortfolio.addActionListener((ActionEvent e)-> {
         String portfolioName = newPortfolioName.getText();
         if(portfolioName.equals("")||
@@ -173,7 +172,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
               "Load Portfolio",
               JOptionPane.OK_CANCEL_OPTION);
       if (option == JOptionPane.OK_OPTION) {
-        controller.loadPortfolio(fileName.getText());
+        controller.loadList(fileName.getText(),"Portfolio");
         listModel.insertElementAt(fileName.getText(), listModel.size()-1);
         log.setText("Portfolio "+fileName.getText() + " has been loaded.");
       } else {
@@ -394,7 +393,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         } else {
           System.out.println("");
         }
-         List<Double> weights = new LinkedList<>();
+         List<Double> weights = new LinkedList<Double>();
         for(int i=0; i<listOfweights.size();i++){
           weights.add(Double.parseDouble(listOfweights.get(i).getText()));
         }

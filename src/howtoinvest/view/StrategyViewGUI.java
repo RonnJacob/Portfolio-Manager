@@ -129,7 +129,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
               "Load Strategy",
               JOptionPane.OK_CANCEL_OPTION);
       if (option == JOptionPane.OK_OPTION) {
-        controller.loadStrategy(fileName.getText());
+        controller.loadList(fileName.getText(),"Strategy");
         listModel.insertElementAt(fileName.getText(), listModel.size()-1);
         log.setText("Strategy "+fileName.getText() + " has been loaded.");
       } else {

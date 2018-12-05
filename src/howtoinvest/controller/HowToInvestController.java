@@ -15,7 +15,6 @@ import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.IHowToInvestView;
-import howtoinvest.view.StrategyViewGUI;
 
 /**
  * The following HowToInvestController class is an implementation of the IHowToInvestController
@@ -95,7 +94,7 @@ import howtoinvest.view.StrategyViewGUI;
  * </li>
  * </ul>
  */
-public class HowToInvestController<K> implements IHowToInvestController<K> {
+public class HowToInvestController implements IHowToInvestController {
 
   /**
    * Variables initializing models and view objects.
@@ -104,6 +103,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   private final IManager<StockPortfolio> model;
   private final IManager<DollarCostAveraging> strategyModel;
   private String message;
+  private IPortfolio selectedPortfolio;
 
   /**
    * Constructor that takes a portfolio manager model, strategy manager model and view and sets the
@@ -170,7 +170,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * operation is performed.
          */
         case "4":
-          load("Portfolio");
+          String pfolioName = view.getInput("\nEnter name of file to be loaded.");
+          loadList(pfolioName, "Portfolio");
           view.openHomeScreen();
           break;
         /**
@@ -202,36 +203,38 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
-  private void load(String type) {
-    String loadFile = view.getInput("\nEnter name of file to load: ");
+  @Override
+  public void loadList(String fileName, String type) {
     try {
       if (type == "Portfolio") {
-        model.retrieve(loadFile);
+        model.retrieve(fileName);
         displayPortfolios();
       } else if (type == "Strategy") {
-        strategyModel.retrieve(loadFile);
+        strategyModel.retrieve(fileName);
       }
-      view.promptMessage(type + " " + loadFile + " has been added.");
+      view.promptMessage(type + " " + fileName + " has been added.");
     } catch (IllegalStateException ex) {
-      view.promptMessage(type + " " + loadFile + " could not be found.");
+      view.promptMessage(type + " " + fileName + " could not be found.");
     }
   }
 
-
   @Override
-  public void loadPortfolio(String text) {
-
+  public String getPortfolioCostBasis(String date) {
+    view.displayPortfolioCostBasis(date, selectedPortfolio.getStockCostBasis(date));
+    return "Cost Basis";
   }
 
   @Override
-  public List<String> loadList(String typeOfList) {
-    if (typeOfList == "Strategy") {
-      return strategyModel.getAll();
-    } else {
-      return model.getAll();
-    }
+  public String getPortfolioValue(String date) {
+    view.displayPortfolioValue(date, selectedPortfolio.getStockValue(date));
+    return "Value";
   }
 
+
+//  @Override
+//  public void loadPortfolio(String text) {
+//
+//  }
 
   /**
    * The following method opens a portfolio and performs operations pertaining to a particular
@@ -262,6 +265,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     view.openPortfolioMenu();
     try {
       selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
+      selectedPortfolio = selectedPFolio;
+      String date;
       while (true) {
         String choice = view.getInput("");
         if (choice.equals("")) {
@@ -274,7 +279,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           case "1":
             message = "Enter date in format yyyy-mm-dd: \n";
             selectedPFolio = model.getByIndex(Integer.parseInt(pfolioName));
-            retrieveComposition(selectedPFolio);
+            String dateToExamine = view.getInput(message);
+            getStocksInPortfolio(dateToExamine);
             view.openPortfolioMenu();
             break;
           /**
@@ -289,8 +295,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            */
           case "3":
             message = "Enter date in format yyyy-mm-dd: \n";
-            String date = view.getInput(message);
-            view.displayPortfolioCostBasis(date, selectedPFolio.getStockCostBasis(date));
+            date = view.getInput(message);
+            this.getPortfolioCostBasis(date);
             view.openPortfolioMenu();
             break;
           /**
@@ -299,7 +305,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
           case "4":
             message = "Enter date in format yyyy-mm-dd: \n";
             date = view.getInput(message);
-            view.displayPortfolioValue(date, selectedPFolio.getStockValue(date));
+            this.getPortfolioValue(date);
             view.openPortfolioMenu();
             break;
           /**
@@ -321,13 +327,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * Option 6 corresponds to opening a strategy manager menu.
            */
           case "7":
-            String fileName = view.getInput("\nSave portfolio as: ");
-            try {
-              selectedPFolio.savePortfolio(fileName);
-              view.promptMessage("Portfolio was successfully saved.\n");
-            } catch (IllegalStateException ex) {
-              view.promptMessage("Portfolio could not be saved.\n");
-            }
+            this.savePortfolio(view.getInput("\nSave portfolio as: "));
             view.openPortfolioMenu();
             break;
           /**
@@ -399,7 +399,8 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
            * operation is performed.
            */
           case "4":
-            load("Strategy");
+            String fileName = view.getInput("Enter the name of file to be loaded.\n");
+            loadList(fileName, "Strategy");
             view.openStrategyManagerMenu();
             break;
           case "r":
@@ -693,20 +694,6 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     }
   }
 
-
-  /**
-   * Retrieves the composition of the given portfolio as an argument.
-   *
-   * @param selectedPFolio the portfolio of which the composition is to be examined.
-   */
-  private void retrieveComposition(IPortfolio selectedPFolio) {
-    String dateToExamine = view.getInput(message);
-    HashMap<String, Double> map = selectedPFolio.getPortfolioData(dateToExamine);
-    for (Map.Entry<String, Double> entry : map.entrySet()) {
-      view.displayPortfolioComposition(entry.getKey(), entry.getValue());
-    }
-  }
-
   /**
    * This method simulates the investment of a fixed amount on a stock within a portfolio and
    * carries out operations based on the preference of weights.
@@ -722,21 +709,11 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
          * the portfolio.
          */
         case "1":
-
-          try {
-            Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
-            String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
-            String commision = view.getInput("Enter the commission option for the "
-                    + "transaction [l, m, h] or enter custom commission value \n");
-            HashMap<String, Double> investments = selectedPFolio.invest(amount, new TreeMap<>(),
-                    true, date, selectedPFolio.getCommission(commision));
-            for (Map.Entry<String, Double> inv : investments.entrySet()) {
-              view.promptMessage(inv.getValue() + " shares of " + inv.getKey() + " bought.");
-            }
-          } catch (NumberFormatException ex) {
-            view.promptMessage("Invalid input for applying investment.\n");
-          }
-
+          Double amount = Double.parseDouble(view.getInput("Enter amount to invest: \n"));
+          String date = view.getInput("Enter date in format yyyy-mm-dd: \n");
+          String commision = view.getInput("Enter the commission option for the "
+                  + "transaction [l, m, h] or enter custom commission value \n");
+          this.investEqually(amount, date, commision);
           view.openInvestmentMenu();
           break;
         /**
@@ -770,30 +747,19 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
               + "transaction [l, m, h] or enter custom commission value \n");
       HashMap<String, Double> map = selectedPFolio.getPortfolioData(date);
       if (map.size() != 0) {
-        TreeMap<String, Double> weights = new TreeMap<>();
+//        TreeMap<String, Double> weights = new TreeMap<>();
+        List<Double> weights = new LinkedList<>();
         /**
          * The user is prompted to enter weights for each stock in the portfolio.
          */
         for (Map.Entry<String, Double> entry : map.entrySet()) {
           Double weight = Double.parseDouble(view.getInput("Enter weight for " + entry.getKey()
                   + " : \n"));
-          weights.put(entry.getKey(), weight);
+//          weights.put(entry.getKey(), weight);
+          weights.add(weight);
         }
+      this.investWithWeights(amount,date,commision, weights);
 
-        /**
-         * The invest method in the model is called using the weights which were input by the user
-         * along with the commission amount for the transactions.
-         */
-        try {
-          HashMap<String, Double> investments = selectedPFolio.invest(amount, weights,
-                  false, date, selectedPFolio.getCommission(commision));
-          for (Map.Entry<String, Double> investment : investments.entrySet()) {
-            view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey()
-                    + " on " + date);
-          }
-        } catch (IllegalStateException ex) {
-          view.promptMessage(ex.getMessage());
-        }
       } else {
         view.promptMessage("No stocks present in the portfolio.\n");
       }
@@ -801,6 +767,7 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       view.promptMessage("Invalid input for investing with custom weights\n");
     }
   }
+
 
   /**
    * The following method adds a particular stock/share based on user input. A valid sequence for
@@ -817,22 +784,12 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
        * added to the portfolio.
        */
 
-      try {
-        String stockName = buyDetails[0];
-        Double amount = Double.parseDouble(buyDetails[1]);
-        String date = buyDetails[2];
-        String commissionOption = buyDetails[3];
+      String stockName = buyDetails[0];
+      Double amount = Double.parseDouble(buyDetails[1]);
+      String date = buyDetails[2];
+      String commissionOption = buyDetails[3];
 
-
-        Double commission = selectedPFolio.getCommission(commissionOption);
-        /**
-         * Adds share and prompts a message specifying the number of shares bought for that amount.
-         */
-        view.promptMessage(selectedPFolio.addStock(stockName, amount, date, commission)
-                + " share(s) of " + stockName + " bought on " + date + "\n");
-      } catch (IllegalArgumentException ex) {
-        view.promptMessage("Invalid input for buying shares " + ex.getMessage() + "\n");
-      }
+      this.addStockToPortfolio(stockName, amount, date, commissionOption);
       /**
        * Add more shares to the portfolio manager object.
        */
@@ -841,6 +798,83 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
     while (view.getInput("").equalsIgnoreCase("y"));
   }
 
+
+  @Override
+  public void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
+                                  String commissionEntered) {
+    try {
+
+      Double commission = selectedPortfolio.getCommission(commissionEntered);
+      /**
+       * Adds share and prompts a message specifying the number of shares bought for that amount.
+       */
+      view.promptMessage(selectedPortfolio.addStock(stockNameEntered, amountEntered, dateEntered,
+              commission) + " share(s) of " + stockNameEntered + " bought on " + dateEntered
+              + "\n");
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage("Invalid input for buying shares " + ex.getMessage() + "\n");
+    }
+  }
+
+  @Override
+  public HashMap<String, Double> getStocksInPortfolio(String date) {
+    HashMap<String, Double> map = selectedPortfolio.getPortfolioData(date);
+    for (Map.Entry<String, Double> entry : map.entrySet()) {
+      view.displayPortfolioComposition(entry.getKey(), entry.getValue());
+    }
+    return map;
+  }
+
+  @Override
+  public void savePortfolio(String fileName) {
+    try {
+      selectedPortfolio.savePortfolio(fileName);
+      view.promptMessage("Portfolio was successfully saved.\n");
+    } catch (IllegalStateException ex) {
+      view.promptMessage("Portfolio could not be saved.\n");
+    }
+  }
+
+  @Override
+  public void investWithWeights(Double amount, String date, String commision,
+                                List<Double> weights) {
+
+    /**
+     * The invest method in the model is called using the weights which were input by the user
+     * along with the commission amount for the transactions.
+     */
+    try {
+
+      TreeMap<String, Double> investWeights = new TreeMap<>();
+      HashMap<String, Double> map = selectedPortfolio.getPortfolioData(date);
+      int counter = 0;
+      for (Map.Entry<String, Double> m : map.entrySet()) {
+        investWeights.put(m.getKey(), weights.get(counter));
+        counter++;
+      }
+      HashMap<String, Double> investments = selectedPortfolio.invest(amount, investWeights,
+              false, date, selectedPortfolio.getCommission(commision));
+      for (Map.Entry<String, Double> investment : investments.entrySet()) {
+        view.promptMessage(investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date);
+      }
+    } catch (IllegalStateException ex) {
+      view.promptMessage(ex.getMessage());
+    }
+  }
+
+  @Override
+  public void investEqually(Double amount, String date, String commision) {
+    try {
+      HashMap<String, Double> investments = selectedPortfolio.invest(amount, new TreeMap<>(),
+              true, date, selectedPortfolio.getCommission(commision));
+      for (Map.Entry<String, Double> inv : investments.entrySet()) {
+        view.promptMessage(inv.getValue() + " shares of " + inv.getKey() + " bought.");
+      }
+    } catch (NumberFormatException ex) {
+      view.promptMessage("Invalid input for applying investment.\n");
+    }
+  }
 
   /**
    * The following method retrieves the list of portfolios present in the portfolio manager and
@@ -868,21 +902,6 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
       view.promptMessage("Add more portfolios? (Y/N)\n");
     }
     while (view.getInput("").equalsIgnoreCase("y"));
-  }
-
-
-  public void loadData() {
-    File folder = new File("./Stock Portfolios/");
-    File[] listOfFiles = folder.listFiles();
-
-    for (int i = 0; i < listOfFiles.length; i++) {
-      if (listOfFiles[i].isFile()) {
-        String name[] = listOfFiles[i].getName().split(".json");
-        model.retrieve(name[0]);
-      } else if (listOfFiles[i].isDirectory()) {
-        System.out.println("Directory " + listOfFiles[i].getName());
-      }
-    }
   }
 
 

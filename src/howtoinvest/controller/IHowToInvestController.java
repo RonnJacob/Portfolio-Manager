@@ -1,5 +1,6 @@
 package howtoinvest.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  * transaction (adding/buying of a stock to a portfolio) would include a commission charge which
  * would be included in the cost basis/value.
  */
-public interface IHowToInvestController<K> {
+public interface IHowToInvestController {
 
 
   /**
@@ -38,7 +39,21 @@ public interface IHowToInvestController<K> {
 
   String openPortfolios(String portfolioToOpen);
 
-  void loadPortfolio(String text);
+  void loadList(String filename, String typeOfList);
 
-  List<String> loadList(String typeOfList);
+  String getPortfolioCostBasis(String date);
+
+  String getPortfolioValue(String date);
+
+  void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
+                           String commissionEntered);
+
+  HashMap<String, Double> getStocksInPortfolio(String date);
+
+  void savePortfolio(String fileName);
+
+  void investWithWeights(Double amount, String date, String commision,
+                         List<Double> weights);
+
+  void investEqually(Double amount, String date, String commision);
 }

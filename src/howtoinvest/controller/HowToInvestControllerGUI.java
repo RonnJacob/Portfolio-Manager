@@ -41,8 +41,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   }
 
   @Override
-  public void openPortfolioManager()
-  {
+  public void openPortfolioManager() {
     strategyView.openHomeScreen(strategyModel.getAll());
     strategyView.addFeatures(this);
     view.openHomeScreen(model.getAll());
@@ -51,82 +50,79 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
 
   @Override
   public void createPortfolio(String portfolioName) {
-    try{
+    try {
       model.create(portfolioName);
-    }catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   @Override
   public String openPortfolios(String portfolioToOpen) {
-      int counter = 1;
-      for(String pfolio: model.getAll()){
-        if(pfolio.equalsIgnoreCase(portfolioToOpen)){
-          selectedPortfolio = model.getByIndex(counter);
-          break;
-        }
-        counter++;
+    int counter = 1;
+    for (String pfolio : model.getAll()) {
+      if (pfolio.equalsIgnoreCase(portfolioToOpen)) {
+        selectedPortfolio = model.getByIndex(counter);
+        break;
       }
+      counter++;
+    }
     view.openPortfolioScreen(this);
-    return "";
+    return "opened";
+  }
+
+
+  @Override
+  public void loadList(String filename, String typeOfList) {
+    try {
+      if (typeOfList == "Portfolio") {
+        model.retrieve(filename);
+      } else if (typeOfList == "Strategy") {
+        strategyModel.retrieve(filename);
+      }
+      view.promptMessage(typeOfList + " " + filename + " has been added.");
+    } catch (IllegalStateException ex) {
+      view.promptMessage(typeOfList + " " + filename + " could not be found.");
+    }
   }
 
   @Override
-  public void loadPortfolio(String fileName) {
-    try{
-      model.retrieve(fileName);
-    }catch(IllegalArgumentException ex){
-      throw new IllegalArgumentException(ex);
-    }
-  }
-
-  @Override
-  public List<String> loadList(String typeOfList) {
-    if(typeOfList=="Strategy"){
-      return strategyModel.getAll();
-    }
-    else{
-      return model.getAll();
-    }
-  }
-
   public String getPortfolioCostBasis(String date) {
-//    selectedPortfolio.addStock("FB",2000,"2018-11-06",2.0);
-    return String.format("%.2f",selectedPortfolio.getStockCostBasis("2018-11-14"));
+    return String.format("%.2f", selectedPortfolio.getStockCostBasis("2018-11-14"));
   }
 
+  @Override
   public String getPortfolioValue(String date) {
-    return String.format("%.2f",selectedPortfolio.getStockValue("2018-11-14"));
+    return String.format("%.2f", selectedPortfolio.getStockValue("2018-11-14"));
   }
 
+  @Override
   public void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
                                   String commissionEntered) {
-    try{
+    try {
       Double commission;
-      if(commissionEntered.equalsIgnoreCase("")){
+      if (commissionEntered.equalsIgnoreCase("")) {
         commission = 0.0;
-      }
-      else{
-
+      } else {
         commission = selectedPortfolio.getCommission(commissionEntered);
       }
 
       double shares = selectedPortfolio.addStock(stockNameEntered, amountEntered, dateEntered,
               commission);
-      view.logMessage(shares +" share(s) of "+stockNameEntered +" bought for $"+amountEntered
-              +" on "+dateEntered +" with a commission charge of "
+      view.logMessage(shares + " share(s) of " + stockNameEntered + " bought for $" + amountEntered
+              + " on " + dateEntered + " with a commission charge of "
               + commission);
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
+  @Override
   public HashMap<String, Double> getStocksInPortfolio(String date) {
     HashMap<String, Double> stocks;
-    try{
+    try {
       stocks = selectedPortfolio.getPortfolioData(date);
-    } catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
     return stocks;
@@ -138,52 +134,53 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
 
   public void applyStrategy(String strategyToApply, String commision) {
     int counter = 1;
-    for(String strategy: strategyModel.getAll()){
-      if(strategyToApply.equalsIgnoreCase(strategy)){
+    for (String strategy : strategyModel.getAll()) {
+      if (strategyToApply.equalsIgnoreCase(strategy)) {
         selectedStrategy = strategyModel.getByIndex(counter);
         break;
       }
       counter++;
     }
-    selectedStrategy.applyStrategy(selectedPortfolio,selectedPortfolio.getCommission(commision));
+    selectedStrategy.applyStrategy(selectedPortfolio, selectedPortfolio.getCommission(commision));
   }
 
+  @Override
   public void savePortfolio(String fileName) {
-    try{
+    try {
       selectedPortfolio.savePortfolio(fileName);
-    } catch(IllegalStateException ex){
+    } catch (IllegalStateException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void loadStrategy(String fileName) {
-    try{
+    try {
       strategyModel.retrieve(fileName);
-    }catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void saveStrategy(String fileName) {
-    try{
+    try {
       selectedStrategy.saveStrategy(fileName);
-    } catch(IllegalStateException ex){
+    } catch (IllegalStateException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void addStrategy(String strategyName) {
-    try{
+    try {
       strategyModel.create(strategyName);
-    }catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void openStrategies(String strategyToOpen) {
     int counter = 1;
-    for(String pfolio: strategyModel.getAll()){
-      if(pfolio.equalsIgnoreCase(strategyToOpen)){
+    for (String pfolio : strategyModel.getAll()) {
+      if (pfolio.equalsIgnoreCase(strategyToOpen)) {
         selectedStrategy = strategyModel.getByIndex(counter);
         break;
       }
@@ -193,60 +190,62 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   }
 
   public void addStockToStrategy(String stockNameEntered) {
-    try{
+    try {
       selectedStrategy.addStockToStrategy(stockNameEntered);
       strategyView.logMessage("Stock added");
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void setStrategyAmount(String amount) {
-    try{
+    try {
       selectedStrategy.setAmount(Double.parseDouble(amount));
       strategyView.logMessage("Amount set");
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void setStrategyFrequency(String frequency) {
-    try{
+    try {
       selectedStrategy.setAmount(Integer.parseInt(frequency));
       strategyView.logMessage("Frequency set");
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
   public void setStrategyTimerange(String begDate, String endDate) {
-    try{
+    try {
       selectedStrategy.setTimeRange(begDate, endDate);
       strategyView.logMessage("Timerange set");
-    } catch(IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
+  @Override
   public void investWithWeights(Double amount, String date, String commision,
-                                List<Double> weights){
-    try{
+                                List<Double> weights) {
+    try {
       TreeMap<String, Double> investWeights = new TreeMap<>();
       HashMap<String, Double> map = selectedPortfolio.getPortfolioData(date);
       int counter = 0;
-      for(Map.Entry<String, Double> m: map.entrySet()){
-        investWeights.put(m.getKey(),weights.get(counter));
+      for (Map.Entry<String, Double> m : map.entrySet()) {
+        investWeights.put(m.getKey(), weights.get(counter));
         counter++;
       }
       selectedPortfolio.invest(amount, investWeights, false, date,
               selectedPortfolio.getCommission(commision));
-    } catch(IllegalArgumentException | IllegalStateException ex){
+    } catch (IllegalArgumentException | IllegalStateException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
 
-  public void investEqually(Double amount, String date, String commision){
-    try{
+  @Override
+  public void investEqually(Double amount, String date, String commision) {
+    try {
       TreeMap<String, Double> investWeights = new TreeMap<>();
       HashMap<String, Double> investments = selectedPortfolio.invest(amount, investWeights,
               true, date, selectedPortfolio.getCommission(commision));
@@ -254,7 +253,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
         view.logMessage(investment.getValue() + " share(s) of " + investment.getKey()
                 + " on " + date);
       }
-    } catch(IllegalArgumentException | IllegalStateException ex){
+    } catch (IllegalArgumentException | IllegalStateException ex) {
       throw new IllegalArgumentException(ex);
     }
   }
