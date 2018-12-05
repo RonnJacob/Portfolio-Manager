@@ -4,7 +4,9 @@ package howtoinvest.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -38,6 +40,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JButton loadPortfolio = new JButton("Load Portfolio");
   private DefaultListModel listModel;
   private JComboBox listOfStrategies;
+  private static List<JLabel> listOfStocks = new ArrayList<JLabel>();
+  private static List<JTextField> listOfweights = new ArrayList<JTextField>();
   private static final Object[][] rowData = {};
   private static final Object[] columnNames = {"Stock", "Number Of Shares"};
 
@@ -52,6 +56,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     mainPortfolioPanel.setLayout(new GridLayout(6, 6));
     loggerPanel.add(log);
     this.add(loggerPanel);
+    createPortfolio.setText("Create Portfolio");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    this.setLayout(new FlowLayout());
     this.setLayout(new GridLayout(6, 24));
@@ -193,16 +198,19 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
 
           controller.addStockToPortfolio(stockSymbol.getText(), Double.parseDouble(amount.getText()),
                   date.getText(), commision.getText());
+          openStocksInPortfolio(controller,date.getText());
         }catch(IllegalArgumentException ex){
           promptMessage("Transaction Unsuccessful. Please try again.");
         }
       } else {
         System.out.println("Transaction Unsuccessful");
       }
+
     });
 
     JButton displayStocks = new JButton( "Display Stocks In Portfolio");
-    JButton invest = new JButton("Invest in Portfolio.");
+    JButton invest = new JButton("Invest With Custom Weights");
+    JButton investEqualWeights = new JButton("Invest With Equal Weights");
     JButton applyStrategy = new JButton( "Apply Strategy");
     JButton saveStrategy = new JButton( "Save Portfolio");
     JTextField dateField = new JTextField();
@@ -310,30 +318,94 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
 
     invest.addActionListener((ActionEvent e)->{
 
+      JTextField dateToInvest = new JTextField();
+      JTextField commision = new JTextField();
+      JTextField amount = new JTextField();
       String date = dateField.getText();
       if(date.equals("")){
         promptMessage("Please enter a date to invest in stocks.");
+        return;
       }
       try{
+        HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
+        Object[] message = new Object[(stocks.size()*2)+6];
+        int counter = 0;
+        for(String stockName: stocks.keySet()){
+          message[counter] = "Enter weights for "+stockName;
+          JTextField field = new JTextField();
+          listOfweights.add(field);
+          message[counter+1] = field;
+          counter+=2;
+        }
+        message[counter++] = "Amount: ";
+        message[counter++] = amount;
+        message[counter++] = "Commission: ";
+        message[counter++] = commision;
+
+        int option = JOptionPane.showConfirmDialog(null, message,
+                "Invest",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+//          openStocksInPortfolio(controller,date.getText());
+        } else {
+          System.out.println("");
+        }
+         List<Double> weights = new LinkedList<>();
+        for(int i=0; i<listOfweights.size();i++){
+          weights.add(Double.parseDouble(listOfweights.get(i).getText()));
+        }
+
+        controller.investWithWeights(Double.parseDouble(amount.getText()), date,
+                commision.getText(), weights);
+        openStocksInPortfolio(controller,date);
+
+      } catch(IllegalArgumentException | IllegalStateException ex){
+        promptMessage("Invalid input. Please enter correct input.");
+      }
+    });
+
+    investEqualWeights.addActionListener((ActionEvent e)->{
+
+      JTextField dateToInvest = new JTextField();
+      JTextField commision = new JTextField();
+      JTextField amount = new JTextField();
+      try{
+        Object[] message = {
+                "Date [yyyy-mm-dd] :", dateToInvest,
+                "Amount: ",amount,
+                "Commision: ", commision
+        };
 
 
-      } catch(IllegalArgumentException ex){
-        /**
-         * HANDLE EXCEPTION CASE.
-         */
+        int option = JOptionPane.showConfirmDialog(null, message,
+                "Invest",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+//          openStocksInPortfolio(controller,date.getText());
+        } else {
+          System.out.println("");
+        }
+        List<Double> weights = new LinkedList<>();
+        controller.investEqually(Double.parseDouble(amount.getText()), dateToInvest.getText(),
+                commision.getText());
+        openStocksInPortfolio(controller,dateToInvest.getText());
+
+      } catch(IllegalArgumentException | IllegalStateException ex){
+        promptMessage("Invalid input. Please enter correct input.");
       }
     });
 
 
     stockPanel.add(buyShares);
     stockPanel.add(displayStocks);
-    stockPanel.add(invest);
-    stockPanel.add(dateField);
     stockPanel.add(applyStrategy);
     stockPanel.add(listOfStrategies);
     stockPanel.add(getCostBasis);
     stockPanel.add(getValue);
     stockPanel.add(saveStrategy);
+    stockPanel.add(investEqualWeights);
+    stockPanel.add(invest);
+    stockPanel.add(dateField);
     stockPanel.add(closeP);
 
     closeP.addActionListener((ActionEvent e)->{
@@ -349,7 +421,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
 
   private void openStocksInPortfolio(HowToInvestControllerGUI controller, String date) {
 
-    log.setText("Stocks in portfolio have been opened for " + date);
     for (Component c : this.getContentPane().getComponents())    {
       if (c.equals(stocksPortfolioPanel)) {
         stocksPortfolioPanel.removeAll();
@@ -365,29 +436,35 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     };
 
-    HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
-    for(Map.Entry<String, Double> stock: stocks.entrySet()){
-      String stockName = stock.getKey();
-      String numberOfShares = stock.getValue().toString();
-      tableModel.addRow(new Object[]{stockName,numberOfShares});
-    }
+    try{
 
-    JTable listTable;
-    listTable = new JTable(tableModel);
+      HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
+
+      for(Map.Entry<String, Double> stock: stocks.entrySet()){
+        String stockName = stock.getKey();
+        String numberOfShares = stock.getValue().toString();
+        tableModel.addRow(new Object[]{stockName,numberOfShares});
+      }
+
+      JTable listTable;
+      listTable = new JTable(tableModel);
 //    listTable.setPreferredScrollableViewportSize(new Dimension(100, 200));
-    listTable.setFillsViewportHeight(true);
-    listTable.setPreferredSize(new Dimension(300,500));
-    listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    stocksPortfolioPanel.add(new JScrollPane(listTable));
-    JButton closeP = new JButton( "Close Stock List");
-    stocksPortfolioPanel.add(closeP);
+      listTable.setFillsViewportHeight(true);
+      listTable.setPreferredSize(new Dimension(300,500));
+      listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+      stocksPortfolioPanel.add(new JScrollPane(listTable));
+      JButton closeP = new JButton( "Close Stock List");
+      stocksPortfolioPanel.add(closeP);
 
-    closeP.addActionListener((ActionEvent e)->{
-      stocksPortfolioPanel.removeAll();
-      stocksPortfolioPanel.revalidate();
-      stocksPortfolioPanel.repaint();});
-    stocksPortfolioPanel.setVisible(true);
-    this.add(stocksPortfolioPanel);
+      closeP.addActionListener((ActionEvent e)->{
+        stocksPortfolioPanel.removeAll();
+        stocksPortfolioPanel.revalidate();
+        stocksPortfolioPanel.repaint();});
+      stocksPortfolioPanel.setVisible(true);
+      this.add(stocksPortfolioPanel);
+    }catch(IllegalArgumentException ex){
+      promptMessage("Enter valid date.");
+    }
   }
 }
 

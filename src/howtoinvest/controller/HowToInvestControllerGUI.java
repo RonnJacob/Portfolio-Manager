@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.*;
 
@@ -26,7 +28,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   private final IManager<DollarCostAveraging> strategyModel;
   private static final String datePattern = "yyyy-MM-dd";
   private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
-  private IPortfolio selectedPortfolio;
+  private StockPortfolio selectedPortfolio;
   private IInvestmentStrategy selectedStrategy;
 
   public HowToInvestControllerGUI(HowToInvestViewGUI view, StrategyViewGUI strategyView,
@@ -121,7 +123,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public HashMap<String, Double> getStocksInPortfolio(String date) {
     HashMap<String, Double> stocks;
     try{
-      stocks = selectedPortfolio.getPortfolioData(simpleDateFormat.format(new Date()));
+      stocks = selectedPortfolio.getPortfolioData(date);
     } catch (IllegalArgumentException ex){
       throw new IllegalArgumentException(ex);
     }
@@ -183,6 +185,37 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       selectedStrategy.addStockToStrategy(stockNameEntered);
       view.logMessage("Stock added");
     } catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void investWithWeights(Double amount, String date, String commision,
+                                List<Double> weights){
+    try{
+      TreeMap<String, Double> investWeights = new TreeMap<>();
+      HashMap<String, Double> map = selectedPortfolio.getPortfolioData(date);
+      int counter = 0;
+      for(Map.Entry<String, Double> m: map.entrySet()){
+        investWeights.put(m.getKey(),weights.get(counter));
+        counter++;
+      }
+      selectedPortfolio.invest(amount, investWeights, false, date,
+              selectedPortfolio.getCommission(commision));
+    } catch(IllegalArgumentException | IllegalStateException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void investEqually(Double amount, String date, String commision){
+    try{
+      TreeMap<String, Double> investWeights = new TreeMap<>();
+      HashMap<String, Double> investments = selectedPortfolio.invest(amount, investWeights,
+              true, date, selectedPortfolio.getCommission(commision));
+      for (Map.Entry<String, Double> investment : investments.entrySet()) {
+        view.logMessage(investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date);
+      }
+    } catch(IllegalArgumentException | IllegalStateException ex){
       throw new IllegalArgumentException(ex);
     }
   }
