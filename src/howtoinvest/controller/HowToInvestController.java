@@ -223,15 +223,13 @@ public class HowToInvestController implements IHowToInvestController {
   }
 
   @Override
-  public String getPortfolioCostBasis(String date) {
-    view.displayPortfolioCostBasis(date, selectedPortfolio.getStockCostBasis(date));
-    return "Cost Basis";
+  public Double getPortfolioCostBasis(String date) {
+    return selectedPortfolio.getStockCostBasis(date);
   }
 
   @Override
-  public String getPortfolioValue(String date) {
-    view.displayPortfolioValue(date, selectedPortfolio.getStockValue(date));
-    return "Value";
+  public Double getPortfolioValue(String date) {
+    return selectedPortfolio.getStockValue(date);
   }
 
   /**
@@ -294,7 +292,7 @@ public class HowToInvestController implements IHowToInvestController {
           case "3":
             message = "Enter date in format yyyy-mm-dd: \n";
             date = view.getInput(message);
-            this.getPortfolioCostBasis(date);
+            view.displayPortfolioCostBasis(date, this.getPortfolioCostBasis(date));
             view.openPortfolioMenu();
             break;
           /**
@@ -303,7 +301,7 @@ public class HowToInvestController implements IHowToInvestController {
           case "4":
             message = "Enter date in format yyyy-mm-dd: \n";
             date = view.getInput(message);
-            this.getPortfolioValue(date);
+            view.displayPortfolioValue(date, this.getPortfolioValue(date));
             view.openPortfolioMenu();
             break;
           /**

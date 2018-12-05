@@ -36,16 +36,51 @@ public interface IHowToInvestController {
    */
   void openPortfolioManager();
 
+  /**
+   * Creates a portfolio with the input received from the view. Passes the portfolio name to the
+   * model and creates a new portfolio which will be added to the list of portfolios.
+   * @param portfolioName the name of the portfolio to be created.
+   */
   void createPortfolio(String portfolioName);
 
+  /**
+   * Opens the portfolio with the name passed as an argument. Retrieves the portfolio with the name
+   * passed as an argument from a list of portfolios and opens the portfolio.
+   * @param portfolioToOpen the portfolio that is to be opened.
+   * @return a return message saying that the portfolio has been opened.
+   */
   String openPortfolios(String portfolioToOpen);
 
+  /**
+   * Loads an object of type passed as an argument with a specified name.
+   * @param filename the name of the file to be loaded.
+   * @param typeOfList the type of the object.
+   */
   void loadList(String filename, String typeOfList);
 
-  String getPortfolioCostBasis(String date);
+  /**
+   * Retrieves the cost basis of the portfolio as of a date which is received as input from the
+   * view and passed onto the model.
+   * @param date the date for which we wish to retrieve the cost basis of the portfolio.
+   * @return the cost basis of portfolio as of a specified date
+   */
+  Double getPortfolioCostBasis(String date);
 
-  String getPortfolioValue(String date);
+  /**
+   * Retrieves the value of the portfolio as of a date which is received as input from the
+   * view and passed onto the model.
+   * @param date the date for which we wish to retrieve the value of the portfolio.
+   * @return the cost basis of portfolio as of a specified date
+   */
+  Double getPortfolioValue(String date);
 
+  /**
+   * Retrieves input from the view and passes the input in order to add a stock to a portfolio.
+   * @param stockNameEntered the ticker symbol of the stock that is to be added to the portfolio.
+   * @param amountEntered the amount for which stocks are to be entered.
+   * @param dateEntered the date for which the share(s) are to be bought.
+   * @param commissionEntered
+   */
   void addStockToPortfolio(String stockNameEntered, double amountEntered, String dateEntered,
                            String commissionEntered);
 

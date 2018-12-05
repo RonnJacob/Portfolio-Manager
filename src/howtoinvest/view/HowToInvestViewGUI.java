@@ -282,8 +282,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       if (option == JOptionPane.OK_OPTION) {
         try {
           String dateToQuery = date.getText();
-          log.setText("Cost basis of Portfolio as of " + dateToQuery + " is " +
-                  controller.getPortfolioCostBasis(dateToQuery));
+          String costbasis = String.format("%.2f",controller.getPortfolioCostBasis(dateToQuery));
+          log.setText("Cost basis of Portfolio as of " + dateToQuery + " is " +costbasis);
         } catch (IllegalArgumentException ex) {
           promptMessage("Action failed: " + ex.getMessage());
         }
@@ -301,8 +301,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       if (option == JOptionPane.OK_OPTION) {
         try {
           String dateToQuery = date.getText();
-          log.setText("Value of Portfolio as of " + dateToQuery + " is " +
-                  controller.getPortfolioValue(dateToQuery));
+          String value = String.format("%.2f", controller.getPortfolioValue(dateToQuery));
+          log.setText("Value of Portfolio as of " + dateToQuery + " is " +value);
         } catch (IllegalArgumentException ex) {
           promptMessage("Action failed: " + ex.getMessage());
         }

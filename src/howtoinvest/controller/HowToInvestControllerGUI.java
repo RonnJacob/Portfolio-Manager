@@ -90,18 +90,18 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   }
 
   @Override
-  public String getPortfolioCostBasis(String date) throws IllegalArgumentException {
+  public Double getPortfolioCostBasis(String date) throws IllegalArgumentException {
     try {
-      return String.format("%.2f", selectedPortfolio.getStockCostBasis(date));
+      return  selectedPortfolio.getStockCostBasis(date);
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
   }
 
   @Override
-  public String getPortfolioValue(String date) throws IllegalArgumentException {
+  public Double getPortfolioValue(String date) throws IllegalArgumentException {
     try {
-      return String.format("%.2f", selectedPortfolio.getStockValue(date));
+      return  selectedPortfolio.getStockValue(date);
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
