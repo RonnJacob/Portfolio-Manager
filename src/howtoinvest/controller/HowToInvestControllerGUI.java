@@ -244,6 +244,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void investWithWeights(Double amount, String date, String commision,
                                 List<Double> weights){
     try{
+      String investmentsLog = "";
       TreeMap<String, Double> investWeights = new TreeMap<>();
       HashMap<String, Double> map = selectedPortfolio.getPortfolioData(date);
       int counter = 0;
@@ -251,8 +252,14 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
         investWeights.put(m.getKey(),weights.get(counter));
         counter++;
       }
-      selectedPortfolio.invest(amount, investWeights, false, date,
+      HashMap<String, Double> investments =
+              selectedPortfolio.invest(amount, investWeights, false, date,
               selectedPortfolio.getCommission(commision));
+      for (Map.Entry<String, Double> investment : investments.entrySet()) {
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+      }
+      view.logMessage(investmentsLog);
     } catch(IllegalArgumentException | IllegalStateException ex){
       throw new IllegalArgumentException(ex);
     }
@@ -270,13 +277,25 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   @Override
   public void investEqually(Double amount, String date, String commision) {
     try {
+      String investmentsLog = "";
       TreeMap<String, Double> investWeights = new TreeMap<>();
       HashMap<String, Double> investments = selectedPortfolio.invest(amount, investWeights,
               true, date, selectedPortfolio.getCommission(commision));
       for (Map.Entry<String, Double> investment : investments.entrySet()) {
-        view.logMessage(investment.getValue() + " share(s) of " + investment.getKey()
-                + " on " + date);
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
+        investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
+                + " on " + date+"\n";
       }
+      view.logMessage(investmentsLog);
     } catch(IllegalArgumentException | IllegalStateException ex){
       throw new IllegalArgumentException(ex);
     }

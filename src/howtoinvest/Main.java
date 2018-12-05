@@ -61,15 +61,11 @@ public class Main {
     /**
      * Controller is given the control with the above model as the argument.
      */
-//    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
-//    gui.openPortfolioManager();
-//    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
-//            strategyManager);
-//    controller.openPortfolioManager();
 
-    String arg1 = "console";
+    String arg1 = "gui";
     if(arg1 == "gui"){
-      HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
+      HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,
+              strategyManager);
       gui.openPortfolioManager();
     }
     else if(arg1 == "console"){

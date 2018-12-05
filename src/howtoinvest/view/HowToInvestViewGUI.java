@@ -33,7 +33,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JPanel listOfPortfoliosPanel = new JPanel();
   private JPanel stocksPortfolioPanel = new JPanel();
   private JPanel stockDisplayPanel = new JPanel();
-  private JTextField log = new JTextField();
+  private JTextArea log = new JTextArea();
   private JTextField newPortfolioName;
   private JButton createPortfolio = new JButton("Create Portfolio");
   private JButton openPortfolio = new JButton("Open Portfolio");
@@ -58,12 +58,12 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     listOfPortfoliosPanel.setLayout(new GridLayout(3,1));
     mainPortfolioPanel.setLayout(new GridLayout(3, 2));
     log.setEditable(false);
+    JScrollPane sp = new JScrollPane(log);
     loggerPanel.add(new JLabel("Messages"));
-    loggerPanel.add(log);
+    loggerPanel.add(sp);
     this.add(loggerPanel);
     createPortfolio.setText("Create Portfolio");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    this.setLayout(new FlowLayout());
     this.setLayout(new GridLayout(5, 2));
 
   }
@@ -140,6 +140,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
           controller.createPortfolio(portfolioName);
           listModel.insertElementAt(portfolioName, listModel.size()-1);
           newPortfolioName.setText("");
+          closePortfolioButtonClicked();
         } catch(IllegalArgumentException ex){
           promptMessage("Portfolio "+portfolioName+" already exists.\n");
         }
@@ -172,6 +173,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         controller.loadList(fileName.getText(),"Portfolio");
         listModel.insertElementAt(fileName.getText(), listModel.size()-1);
         log.setText("Portfolio "+fileName.getText() + " has been loaded.");
+        closePortfolioButtonClicked();
       } else {
         promptMessage("Portfolio could not be loaded.");
       }}
@@ -189,10 +191,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   public void openPortfolioScreen(HowToInvestControllerGUI controller) {
     JButton displayStocks = new JButton( "Display Stocks In Portfolio");
     displayStocks.addActionListener((ActionEvent e)->{
-      JTextField stockSymbol = new JTextField();
-      JTextField amount = new JTextField();
       JTextField date = new JTextField();
-      JTextField commision = new JTextField();
       Object[] message = {
               "Date [yyyy-mm-dd] :", date,
       };
@@ -238,7 +237,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
 
           controller.addStockToPortfolio(stockSymbol.getText(), Double.parseDouble(amount.getText()),
                   date.getText(), commision.getText());
-//          openStocksInPortfolio(controller,date.getText());
         }catch(IllegalArgumentException ex){
           promptMessage("Transaction Unsuccessful. Please try again.");
         }
@@ -386,7 +384,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
                 "Invest",
                 JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-//          openStocksInPortfolio(controller,date.getText());
         } else {
           System.out.println("");
         }
@@ -421,7 +418,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
                 "Invest",
                 JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-//          openStocksInPortfolio(controller,date.getText());
         } else {
           System.out.println("");
         }
@@ -448,20 +444,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     stockPanel.add(dateField);
     stockPanel.add(closeP);
 
-    closeP.addActionListener((ActionEvent e)->{
-      for (Component c : this.getContentPane().getComponents())    {
-        if (c.equals(stockDisplayPanel)) {
-          stockDisplayPanel.removeAll();
-          this.remove(stockDisplayPanel);
-        }
-      }
-      stockPanel.removeAll();
-      stockPanel.revalidate();
-      stockPanel.repaint();
-      openPortfolio.setEnabled(true);
-      closePortfolio.setEnabled(false);
-      this.revalidate();
-      this.repaint();});
+    closeP.addActionListener((ActionEvent e)->{closePortfolioButtonClicked();});
     this.add(stockPanel);
     pack();
     setVisible(true);
@@ -514,6 +497,22 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     }catch(IllegalArgumentException ex){
       promptMessage("Enter valid date.");
     }
+  }
+
+  private void closePortfolioButtonClicked(){
+    for (Component c : this.getContentPane().getComponents())    {
+      if (c.equals(stockDisplayPanel)) {
+        stockDisplayPanel.removeAll();
+        this.remove(stockDisplayPanel);
+      }
+    }
+    stockPanel.removeAll();
+    stockPanel.revalidate();
+    stockPanel.repaint();
+    openPortfolio.setEnabled(true);
+    closePortfolio.setEnabled(false);
+    this.revalidate();
+    this.repaint();
   }
 
 
