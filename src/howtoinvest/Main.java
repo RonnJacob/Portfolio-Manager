@@ -67,7 +67,7 @@ public class Main {
 //            strategyManager);
 //    controller.openPortfolioManager();
 
-    String arg1 = "gui";
+    String arg1 = "console";
     if(arg1 == "gui"){
       HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
       gui.openPortfolioManager();

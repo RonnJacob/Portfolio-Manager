@@ -130,6 +130,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     return stocks;
   }
 
+  @Override
   public List<String> getStocksInStrategy() {
     List<String> stocks;
     try{
@@ -140,10 +141,12 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     return stocks;
   }
 
-  public String[] getStrategies() {
+  @Override
+  public String[] showStrategies() {
     return strategyModel.getAll().stream().toArray(String[]::new);
   }
 
+  @Override
   public void applyStrategy(String strategyToApply, String commision) {
     int counter = 1;
     for(String strategy: strategyModel.getAll()){
@@ -165,14 +168,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
-  public void loadStrategy(String fileName) {
-    try{
-      strategyModel.retrieve(fileName);
-    }catch(IllegalArgumentException ex){
-      throw new IllegalArgumentException(ex);
-    }
-  }
-
+  @Override
   public void saveStrategy(String fileName) {
     try{
       selectedStrategy.saveStrategy(fileName);
@@ -181,6 +177,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
+  @Override
   public void addStrategy(String strategyName) {
     try{
       strategyModel.create(strategyName);
@@ -189,7 +186,8 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
-  public void openStrategies(String strategyToOpen) {
+  @Override
+  public String openStrategies(String strategyToOpen) {
     int counter = 1;
     for(String pfolio: strategyModel.getAll()){
       if(pfolio.equalsIgnoreCase(strategyToOpen)){
@@ -199,8 +197,10 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       counter++;
     }
     strategyView.openStrategyScreen(this);
+    return "Strategy Opened";
   }
 
+  @Override
   public void addStockToStrategy(String stockNameEntered) {
     try{
       selectedStrategy.addStockToStrategy(stockNameEntered);
@@ -210,6 +210,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
+  @Override
   public void setStrategyAmount(String amount) {
     try{
       selectedStrategy.setAmount(Double.parseDouble(amount));
@@ -219,6 +220,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
+  @Override
   public void setStrategyFrequency(String frequency) {
     try{
       selectedStrategy.setAmount(Integer.parseInt(frequency));
@@ -228,6 +230,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
+  @Override
   public void setStrategyTimerange(String begDate, String endDate) {
     try{
       selectedStrategy.setTimeRange(begDate, endDate);
@@ -255,6 +258,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     }
   }
 
+  @Override
   public void setStrategyWeights(TreeMap<String, Double> weights){
     try{
       selectedStrategy.setWeights(weights);

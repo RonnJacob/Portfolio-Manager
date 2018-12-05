@@ -22,7 +22,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import howtoinvest.controller.HowToInvestControllerGUI;
-import howtoinvest.controller.IHowToInvestController;
 
 public class HowToInvestViewGUI extends JFrame implements ActionListener,
         ListSelectionListener {
@@ -216,7 +215,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     });
     JButton buyShares = new JButton("Buy Shares");
-    listOfStrategies = new JComboBox(controller.getStrategies());
+    listOfStrategies = new JComboBox(controller.showStrategies());
     ((JLabel) listOfStrategies.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
     listOfStrategies.setSelectedIndex(0);
     listOfStrategies.addActionListener(this);

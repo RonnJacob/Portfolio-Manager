@@ -2,6 +2,7 @@ package howtoinvest.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Interface for the how-to-invest-for-dummies application. An implementation would work with
@@ -50,10 +51,33 @@ public interface IHowToInvestController {
 
   HashMap<String, Double> getStocksInPortfolio(String date);
 
+  List<String> getStocksInStrategy();
+
+  String[] showStrategies();
+
+
+  void applyStrategy(String strategyToApply, String commision);
+
   void savePortfolio(String fileName);
+
+  void saveStrategy(String fileName);
+
+  void addStrategy(String strategyName);
+
+  String openStrategies(String strategyToOpen);
+
+  void addStockToStrategy(String stockNameEntered);
+
+  void setStrategyAmount(String amount);
+
+  void setStrategyFrequency(String frequency);
+
+  void setStrategyTimerange(String begDate, String endDate);
 
   void investWithWeights(Double amount, String date, String commision,
                          List<Double> weights);
+
+  void setStrategyWeights(TreeMap<String, Double> weights);
 
   void investEqually(Double amount, String date, String commision);
 }

@@ -1,6 +1,6 @@
 package howtoinvest.controller;
 
-import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -104,6 +104,7 @@ public class HowToInvestController implements IHowToInvestController {
   private final IManager<DollarCostAveraging> strategyModel;
   private String message;
   private IPortfolio selectedPortfolio;
+  private IInvestmentStrategy selectedStrategy;
 
   /**
    * Constructor that takes a portfolio manager model, strategy manager model and view and sets the
@@ -230,12 +231,6 @@ public class HowToInvestController implements IHowToInvestController {
     return "Value";
   }
 
-
-//  @Override
-//  public void loadPortfolio(String text) {
-//
-//  }
-
   /**
    * The following method opens a portfolio and performs operations pertaining to a particular
    * portfolio depending on user input.
@@ -352,14 +347,8 @@ public class HowToInvestController implements IHowToInvestController {
 
   private String openStrategyManager(IManager<DollarCostAveraging> strategyModel,
                                      IPortfolio selectedPFolio) {
-    int counter = 1;
-    /**
-     * Displays all the strategies that the user can choose from.
-     */
-    for (String portfolioName : strategyModel.getAll()) {
-      view.displayList(counter, portfolioName, "Strategies");
-      counter++;
-    }
+
+    this.showStrategies();
 
     view.openStrategyManagerMenu();
     try {
@@ -373,25 +362,21 @@ public class HowToInvestController implements IHowToInvestController {
            * Option 1 corresponds to applying the strategy to the portfolio.
            */
           case "1":
-            strategyModel.create(view.getInput("Enter the name of strategy to be created.\n"));
+            this.addStrategy(view.getInput("Enter the name of strategy to be created.\n"));
             view.openStrategyManagerMenu();
             break;
           /**
            * Option 2 applying.
            */
           case "2":
-            message = applyStrategy(selectedPFolio);
+            message = openStrategies("Open Strategy");
             view.openStrategyManagerMenu();
             break;
           /**
            * Option 3 corresponds to displaying the strategies.
            */
           case "3":
-            counter = 1;
-            for (String portfolioName : strategyModel.getAll()) {
-              view.displayList(counter, portfolioName, "Strategies");
-              counter++;
-            }
+            this.showStrategies();
             view.openStrategyManagerMenu();
             break;
           /**
@@ -424,18 +409,11 @@ public class HowToInvestController implements IHowToInvestController {
    * Enters a strategy menu listing out possible strategies and a means to modify the strategy.
    * Dollar cost averaging is an example of a strategy.
    *
-   * @param portfolio the portfolio to which the strategy is to be applied.
    * @return the return code from successful/unsuccessful application of strategy operations.
    */
-  private String applyStrategy(IPortfolio portfolio) {
-    int counter = 1;
-    /**
-     * Displays all the strategies that the user can choose from.
-     */
-    for (String portfolioName : strategyModel.getAll()) {
-      view.displayList(counter, portfolioName, "Strategies");
-      counter++;
-    }
+  @Override
+  public String openStrategies(String option) {
+   this.showStrategies();
     String strategyChoice = view.getInput("\nEnter index of strategy to apply.\n");
     if (strategyChoice.equals("")) {
       return "q";
@@ -443,6 +421,7 @@ public class HowToInvestController implements IHowToInvestController {
     IInvestmentStrategy<IPortfolio> dcaStrategy;
     try {
       dcaStrategy = strategyModel.getByIndex(Integer.parseInt(strategyChoice));
+      selectedStrategy = dcaStrategy;
     } catch (IllegalArgumentException ex) {
       /**
        * Returns 'i' if the portfolio to be opened does not exist.
@@ -463,32 +442,21 @@ public class HowToInvestController implements IHowToInvestController {
           case "1":
             String commisionString = view.getInput("Enter the commission option for the "
                     + "transaction [l, m, h] or enter custom commission value \n");
-            try {
-              TreeMap<Date, HashMap<String, Double>> strategyApplied =
-                      dcaStrategy.applyStrategy(portfolio,
-                              portfolio.getCommission(commisionString));
-              apply(strategyApplied);
-            } catch (IllegalArgumentException ex) {
-              view.promptMessage(ex.getMessage() + "\n");
-            }
+            this.applyStrategy("Apply", commisionString);
             view.openStrategyMenu();
             break;
           /**
            * Option 2 corresponds to opening menu for modifying the strategy preferences.
            */
           case "2":
-            modificationMenu(portfolio, dcaStrategy);
+            modificationMenu(selectedPortfolio, dcaStrategy);
             view.openStrategyMenu();
             break;
           /**
            * Option 3 corresponds to displaying the stocks in a strategy.
            */
           case "3":
-            counter = 1;
-            for (String stock : dcaStrategy.getStocks()) {
-              view.displayList(counter, stock, "Stocks");
-              counter += 1;
-            }
+            this.getStocksInStrategy();
             view.openStrategyMenu();
             break;
           /**
@@ -496,12 +464,7 @@ public class HowToInvestController implements IHowToInvestController {
            */
           case "4":
             String fileName = view.getInput("\nSave strategy as: ");
-            try {
-              dcaStrategy.saveStrategy(fileName);
-              view.promptMessage("Strategy was successfully saved.\n");
-            } catch (IllegalStateException ex) {
-              view.promptMessage("Strategy could not be saved.\n");
-            }
+            this.saveStrategy(fileName);
             view.openPortfolioMenu();
             break;
           case "r":
@@ -519,6 +482,44 @@ public class HowToInvestController implements IHowToInvestController {
       view.promptMessage(ex.getMessage());
     }
     return "r";
+  }
+
+  @Override
+  public void addStockToStrategy(String stockNameEntered) {
+    try{
+      selectedStrategy.addStockToStrategy(stockNameEntered);
+    } catch(IllegalArgumentException ex){
+      view.promptMessage("Stock cannot be added.");
+    }
+
+  }
+
+  @Override
+  public void setStrategyAmount(String amount) {
+    try{
+      selectedStrategy.setAmount(Double.parseDouble(amount));
+    }catch(NumberFormatException ex){
+      view.promptMessage("Invalid input. Please enter amount again.");
+    }
+
+  }
+
+  @Override
+  public void setStrategyFrequency(String frequency) {
+    try{
+      selectedStrategy.setFrequency(Integer.parseInt(frequency));
+    } catch (NumberFormatException ex){
+      view.promptMessage("Invalid input. Please enter again.");
+    }
+  }
+
+  @Override
+  public void setStrategyTimerange(String begDate, String endDate) {
+    try {
+      selectedStrategy.setTimeRange(begDate, endDate);
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage("Invalid input. Please enter range again.");
+    }
   }
 
   /**
@@ -595,22 +596,15 @@ public class HowToInvestController implements IHowToInvestController {
            * Option 3 corresponds to modifying the amount for investment for stocks in a strategy.
            */
           case "3":
-            Double amount = Double.parseDouble(view.getInput("Enter new amount for investing of "
+            this.setStrategyAmount(view.getInput("Enter new amount for investing of "
                     + "strategy.\n"));
-            strategyModel.setAmount(amount);
             view.strategyModificationMenu();
             break;
           /**
            * Option 4 corresponds to modifying the frequency of investment for stocks in a strategy.
            */
           case "4":
-            int days;
-            try {
-              days = Integer.parseInt(view.getInput("Enter frequency in number of days.\n"));
-              strategyModel.setFrequency(days);
-            } catch (NumberFormatException ex) {
-              view.promptMessage("Invalid input frequency.\n");
-            }
+            this.setStrategyFrequency(view.getInput("Enter frequency in number of days.\n"));
             view.strategyModificationMenu();
             break;
           /**
@@ -619,7 +613,7 @@ public class HowToInvestController implements IHowToInvestController {
           case "5":
             String startDate = view.getInput("Enter start date for investing of strategy.\n");
             String endDate = view.getInput("Enter end date for investing of strategy.\n");
-            strategyModel.setTimeRange(startDate, endDate);
+            this.setStrategyTimerange(startDate,endDate);
             view.strategyModificationMenu();
             break;
           case "r":
@@ -664,7 +658,7 @@ public class HowToInvestController implements IHowToInvestController {
      * list.
      */
     if (stocks.size() == 1) {
-      strategyModel.addStockToStrategy(stocks.get(0));
+      this.addStockToStrategy(stocks.get(0));
     } else {
       strategyModel.addMultipleStocksToStrategy(stocks);
     }
@@ -688,7 +682,7 @@ public class HowToInvestController implements IHowToInvestController {
                 + " : \n"));
         weights.put(stock, weight);
       }
-      strategyModel.setWeights(weights);
+      this.setStrategyWeights(weights);
     } catch (NumberFormatException ex) {
       view.promptMessage("Invalid input for modifying weights " + ex + "\n");
     }
@@ -826,6 +820,45 @@ public class HowToInvestController implements IHowToInvestController {
   }
 
   @Override
+  public List<String> getStocksInStrategy() {
+    List<String> m = selectedStrategy.getStocks();
+    for (int counter = 1; counter< m.size(); counter++) {
+      view.displayList(counter, m.get(counter-1), "Stocks");
+      counter += 1;
+    }
+    return m;
+  }
+
+  @Override
+  public String[] showStrategies() {
+    String[] strategies = new String[strategyModel.getAll().size()];
+    int counter = 1;
+    /**
+     * Displays all the strategies that the user can choose from.
+     */
+    for (String portfolioName : strategyModel.getAll()) {
+      strategies[counter-1] = portfolioName;
+      view.displayList(counter, portfolioName, "Strategies");
+      counter++;
+    }
+    return strategies;
+
+  }
+
+  @Override
+  public void applyStrategy(String strategyToApply, String commision) {
+    try{
+
+      TreeMap<Date, HashMap<String, Double>> strategyApplied =
+              selectedStrategy.applyStrategy(selectedPortfolio,
+                      selectedPortfolio.getCommission(commision));
+      apply(strategyApplied);
+    } catch(IllegalArgumentException ex){
+      view.promptMessage(ex.getMessage() + "\n");
+    }
+  }
+
+  @Override
   public void savePortfolio(String fileName) {
     try {
       selectedPortfolio.savePortfolio(fileName);
@@ -833,6 +866,27 @@ public class HowToInvestController implements IHowToInvestController {
     } catch (IllegalStateException ex) {
       view.promptMessage("Portfolio could not be saved.\n");
     }
+  }
+
+  @Override
+  public void saveStrategy(String fileName) {
+    try {
+      selectedStrategy.saveStrategy(fileName);
+      view.promptMessage("Strategy was successfully saved.\n");
+    } catch (IllegalStateException ex) {
+      view.promptMessage("Strategy could not be saved.\n");
+    }
+  }
+
+  @Override
+  public void addStrategy(String strategyName) {
+    try {
+      strategyModel.create(strategyName);
+      view.promptMessage("Strategy " + strategyName + " has been created.\n");
+    } catch (IllegalArgumentException ex) {
+      view.promptMessage("Strategy with that name exists\n");
+    }
+
   }
 
   @Override
@@ -860,6 +914,15 @@ public class HowToInvestController implements IHowToInvestController {
       }
     } catch (IllegalStateException ex) {
       view.promptMessage(ex.getMessage());
+    }
+  }
+
+  @Override
+  public void setStrategyWeights(TreeMap<String, Double> weights) {
+    try{
+      selectedStrategy.setWeights(weights);
+    }catch(IllegalArgumentException ex){
+      view.promptMessage("Invalid weights. Please try again.");
     }
   }
 
