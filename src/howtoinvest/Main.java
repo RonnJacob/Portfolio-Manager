@@ -13,6 +13,7 @@ import howtoinvest.model.StockPortfolioManager;
 import howtoinvest.view.HowToInvestViewGUI;
 import howtoinvest.view.IHowToInvestView;
 import howtoinvest.view.HowToInvestViewImpl;
+import howtoinvest.view.StrategyViewGUI;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -54,10 +55,12 @@ public class Main {
 
     HowToInvestViewGUI view = new HowToInvestViewGUI();
 
+    StrategyViewGUI sview = new StrategyViewGUI();
+
     /**
      * Controller is given the control with the above model as the argument.
      */
-    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,portfolioManager,strategyManager);
+    HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,strategyManager);
     gui.openPortfolioManager();
 //    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
 //            strategyManager);

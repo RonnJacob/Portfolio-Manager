@@ -14,6 +14,7 @@ import howtoinvest.model.IPortfolio;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.IHowToInvestView;
+import howtoinvest.view.StrategyViewGUI;
 
 /**
  * The following HowToInvestController class is an implementation of the IHowToInvestController
@@ -222,6 +223,17 @@ public class HowToInvestController<K> implements IHowToInvestController<K> {
   public void loadPortfolio(String text) {
 
   }
+
+  @Override
+  public List<String> loadList(String typeOfList) {
+    if(typeOfList=="Strategy"){
+      return strategyModel.getAll();
+    }
+    else{
+      return model.getAll();
+    }
+  }
+
 
   /**
    * The following method opens a portfolio and performs operations pertaining to a particular

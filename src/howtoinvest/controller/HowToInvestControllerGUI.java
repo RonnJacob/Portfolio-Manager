@@ -13,6 +13,7 @@ import howtoinvest.model.IManager;
 import howtoinvest.model.IPortfolio;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.HowToInvestViewGUI;
+import howtoinvest.view.StrategyViewGUI;
 
 public class HowToInvestControllerGUI implements IHowToInvestController {
 
@@ -20,6 +21,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
    * Variables initializing models and view objects.
    */
   private final HowToInvestViewGUI view;
+  private final StrategyViewGUI strategyView;
   private final IManager<StockPortfolio> model;
   private final IManager<DollarCostAveraging> strategyModel;
   private static final String datePattern = "yyyy-MM-dd";
@@ -27,11 +29,13 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   private IPortfolio selectedPortfolio;
   private IInvestmentStrategy selectedStrategy;
 
-  public HowToInvestControllerGUI(HowToInvestViewGUI view, IManager<StockPortfolio> model,
+  public HowToInvestControllerGUI(HowToInvestViewGUI view, StrategyViewGUI strategyView,
+                                  IManager<StockPortfolio> model,
                                   IManager<DollarCostAveraging> strategyModel) {
     this.model = model;
     this.view = view;
     this.strategyModel = strategyModel;
+    this.strategyView = strategyView;
   }
 
   @Override
@@ -39,6 +43,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   {
     view.openHomeScreen(model.getAll());
     view.addFeatures(this);
+    strategyView.addFeatures(this);
   }
 
   @Override
@@ -69,6 +74,16 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       model.retrieve(fileName);
     }catch(IllegalStateException ex){
       throw new IllegalArgumentException(ex);
+    }
+  }
+
+  @Override
+  public List<String> loadList(String typeOfList) {
+    if(typeOfList=="Strategy"){
+      return strategyModel.getAll();
+    }
+    else{
+      return model.getAll();
     }
   }
 

@@ -1,5 +1,7 @@
 package howtoinvest.controller;
 
+import java.util.List;
+
 /**
  * Interface for the how-to-invest-for-dummies application. An implementation would work with
  * IPortfolio manager interface which would represent a type of portfolio manager and a strategy
@@ -37,4 +39,6 @@ public interface IHowToInvestController<K> {
   void openPortfolios(String portfolioToOpen);
 
   void loadPortfolio(String text);
+
+  List<String> loadList(String typeOfList);
 }

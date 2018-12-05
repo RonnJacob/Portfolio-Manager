@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,6 +34,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JButton createPortfolio = new JButton("Create Portfolio");
   private JButton openPortfolio = new JButton("Open Portfolio");
   private JButton closePortfolio = new JButton("Close Portfolio");
+  private JButton openStrategyMenu = new JButton("Open Strategy Menu");
   private JButton loadPortfolio = new JButton("Load Portfolio");
   private DefaultListModel listModel;
   private JComboBox listOfStrategies;
@@ -83,6 +85,8 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     mainPortfolioPanel.add(openPortfolio);
     loadPortfolio.addActionListener(this);
     mainPortfolioPanel.add(loadPortfolio);
+    openStrategyMenu.addActionListener(this);
+    mainPortfolioPanel.add(openStrategyMenu);
     this.add(mainPortfolioPanel);
     pack();
     setVisible(true);
@@ -147,6 +151,14 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }}
     );
 
+    openStrategyMenu.addActionListener((ActionEvent e)->{
+      StrategyViewGUI strategyMenu = new StrategyViewGUI();
+      strategyMenu.addFeatures((HowToInvestControllerGUI)controller);
+      strategyMenu.openHomeScreen(controller.loadList("Strategy"));
+      strategyMenu.setDefaultCloseOperation(HIDE_ON_CLOSE);
+    });
+
+
   }
 
   public void promptMessage(String message) {
@@ -193,6 +205,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     JButton invest = new JButton("Invest in Portfolio.");
     JButton applyStrategy = new JButton( "Apply Strategy");
     JButton saveStrategy = new JButton( "Save Portfolio");
+    JTextField dateField = new JTextField();
     JButton getCostBasis = new JButton( "Get Portfolio Cost Basis for Date");
     JButton getValue = new JButton( "Get Portfolio Value for Date");
     JButton closeP = new JButton( "Close Portfolio");
@@ -295,15 +308,32 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
       }
     });
 
+    invest.addActionListener((ActionEvent e)->{
+
+      String date = dateField.getText();
+      if(date.equals("")){
+        promptMessage("Please enter a date to invest in stocks.");
+      }
+      try{
+
+
+      } catch(IllegalArgumentException ex){
+        /**
+         * HANDLE EXCEPTION CASE.
+         */
+      }
+    });
+
 
     stockPanel.add(buyShares);
     stockPanel.add(displayStocks);
     stockPanel.add(invest);
-    stockPanel.add(saveStrategy);
+    stockPanel.add(dateField);
     stockPanel.add(applyStrategy);
     stockPanel.add(listOfStrategies);
     stockPanel.add(getCostBasis);
     stockPanel.add(getValue);
+    stockPanel.add(saveStrategy);
     stockPanel.add(closeP);
 
     closeP.addActionListener((ActionEvent e)->{
