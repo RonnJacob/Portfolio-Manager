@@ -4,7 +4,12 @@ package howtoinvest.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import howtoinvest.controller.HowToInvestControllerGUI;
 
@@ -23,12 +29,16 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
   private JPanel strategyPanel = new JPanel();
   private JPanel mainStrategyPanel = new JPanel();
   private JPanel loggerPanel = new JPanel();
+  private JPanel stockDisplayPanel = new JPanel();
   private JLabel log = new JLabel();
   private JTextField newStrategyName;
   private JButton createStrategy = new JButton("Create Strategy");
   private JButton openStrategy = new JButton("Open Strategy");
   private JButton closeStrategy = new JButton("Close Strategy");
   private JButton loadStrategy = new JButton("Load Strategy");
+
+  private static final Object[][] rowData = {};
+  private static final Object[] columnNames = {"Stock"};
   private DefaultListModel listModel;
 
   public StrategyViewGUI() {
@@ -39,6 +49,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     loggerPanel.setLayout(new GridLayout(6, 6));
     strategyPanel.setLayout(new GridLayout(6, 6));
     mainStrategyPanel.setLayout(new GridLayout(6, 6));
+    stockDisplayPanel.setLayout(new GridLayout(2,12));
     loggerPanel.add(log);
     this.add(loggerPanel);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -149,6 +160,15 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   public void openStrategyScreen(HowToInvestControllerGUI controller) {
 
+    JButton displayStocks = new JButton( "Display Stocks In Strategy");
+    displayStocks.addActionListener((ActionEvent e)->{
+        try{
+          openStocksInStrategy(controller);
+          openStocksInStrategy(controller);
+        }catch(IllegalArgumentException ex){
+          promptMessage("Display Unsuccessful. Please try again.");
+        }
+    });
     JButton addStock = new JButton("Add stock");
     addStock.addActionListener((ActionEvent e) -> {
       JTextField stockSymbol = new JTextField();
@@ -250,16 +270,57 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         promptMessage("Strategy could not be saved.");
       }
     });
+    JButton setWeights = new JButton("Set Weights");
+    setWeights.addActionListener((ActionEvent e)->{
+      try{
+        List<String> stocks = controller.getStocksInStrategy();
+        Object[] message = new Object[(stocks.size()*2)];
+        int counter = 0;
+        List<JTextField> listOfWeights = new ArrayList<>();
+        for(String stockName: stocks){
+          message[counter] = "Enter weights for "+stockName;
+          JTextField field = new JTextField();
+          listOfWeights.add(field);
+          message[counter+1] = field;
+          counter+=2;
+        }
+        int option = JOptionPane.showConfirmDialog(null, message,
+                "Set weights",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+//          openStocksInPortfolio(controller,date.getText());
+        } else {
+          System.out.println("");
+        }
+        TreeMap<String, Double> weights = new TreeMap<>();
+        int i =0;
+        for(String stock: stocks){
+          weights.put(stock,Double.parseDouble(listOfWeights.get(i).getText()));
+          i++;
+        }
+        controller.setStrategyWeights(weights);
+      } catch(IllegalArgumentException | IllegalStateException ex){
+        promptMessage("Invalid input. Please enter correct input.");
+      }
+    });
+
     JButton closeS = new JButton("Close Strategy");
+    strategyPanel.add(displayStocks);
     strategyPanel.add(addStock);
     strategyPanel.add(setAmount);
     strategyPanel.add(setFrequency);
-
     strategyPanel.add(setTimeRange);
+    strategyPanel.add(setWeights);
     strategyPanel.add(saveStrategy);
     strategyPanel.add(closeS);
 
     closeS.addActionListener((ActionEvent e) -> {
+      for (Component c : this.getContentPane().getComponents())    {
+        if (c.equals(stockDisplayPanel)) {
+          stockDisplayPanel.removeAll();
+          this.remove(stockDisplayPanel);
+        }
+      }
       strategyPanel.removeAll();
       strategyPanel.revalidate();
       strategyPanel.repaint();
@@ -269,6 +330,54 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     this.add(strategyPanel);
     pack();
     setVisible(true);
+  }
+
+  private void openStocksInStrategy(HowToInvestControllerGUI controller) {
+
+    for (Component c : this.getContentPane().getComponents())    {
+      if (c.equals(stockDisplayPanel)) {
+        stockDisplayPanel.removeAll();
+        stockDisplayPanel.revalidate();
+        stockDisplayPanel.repaint();
+      }
+    }
+    DefaultTableModel tableModel = new DefaultTableModel(rowData, columnNames) {
+
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+
+    try {
+
+      List<String> stocks = controller.getStocksInStrategy();
+
+      for (String stock : stocks) {
+        String stockName = stock;
+        tableModel.addRow(new Object[]{stockName});
+      }
+
+      JTable listTable;
+      listTable = new JTable(tableModel);
+      listTable.setFillsViewportHeight(true);
+      listTable.setPreferredSize(new Dimension(300,150));
+      listTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+      stockDisplayPanel.add(new JScrollPane(listTable));
+      JButton closeP = new JButton( "Close Stock List");
+      closeP.addActionListener((ActionEvent e)->{
+        stockDisplayPanel.removeAll();
+        stockDisplayPanel.revalidate();
+        stockDisplayPanel.repaint();});
+
+      stockDisplayPanel.add(closeP);
+
+      stockDisplayPanel.setVisible(true);
+
+      this.add(stockDisplayPanel);
+    }catch(IllegalArgumentException ex){
+      promptMessage("Failed to load stocks");
+    }
   }
 }
 

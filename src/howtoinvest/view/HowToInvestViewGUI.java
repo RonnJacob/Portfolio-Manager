@@ -22,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import howtoinvest.controller.HowToInvestControllerGUI;
+import howtoinvest.controller.IHowToInvestController;
 
 public class HowToInvestViewGUI extends JFrame implements ActionListener,
         ListSelectionListener {
@@ -38,12 +39,11 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JButton createPortfolio = new JButton("Create Portfolio");
   private JButton openPortfolio = new JButton("Open Portfolio");
   private JButton closePortfolio = new JButton("Close Portfolio");
-  private JButton openStrategyMenu = new JButton("Open Strategy Menu");
   private JButton loadPortfolio = new JButton("Load Portfolio");
   private DefaultListModel listModel;
   private JComboBox listOfStrategies;
   private static List<JLabel> listOfStocks = new ArrayList<JLabel>();
-  private static List<JTextField> listOfweights = new ArrayList<JTextField>();
+  private static List<JTextField> listOfWeights = new ArrayList<JTextField>();
   private static final Object[][] rowData = {};
   private static final Object[] columnNames = {"Stock", "Number Of Shares"};
 
@@ -112,8 +112,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
     mainPortfolioPanel.add(openPortfolio);
     loadPortfolio.addActionListener(this);
     mainPortfolioPanel.add(loadPortfolio);
-    openStrategyMenu.addActionListener(this);
-    mainPortfolioPanel.add(openStrategyMenu);
     this.add(listOfPortfoliosPanel);
     this.add(mainPortfolioPanel);
     pack();
@@ -376,7 +374,7 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         for(String stockName: stocks.keySet()){
           message[counter] = "Enter weights for "+stockName;
           JTextField field = new JTextField();
-          listOfweights.add(field);
+          listOfWeights.add(field);
           message[counter+1] = field;
           counter+=2;
         }
@@ -393,9 +391,9 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
         } else {
           System.out.println("");
         }
-         List<Double> weights = new LinkedList<Double>();
-        for(int i=0; i<listOfweights.size();i++){
-          weights.add(Double.parseDouble(listOfweights.get(i).getText()));
+         List<Double> weights = new LinkedList<>();
+        for(int i = 0; i< listOfWeights.size(); i++){
+          weights.add(Double.parseDouble(listOfWeights.get(i).getText()));
         }
 
         controller.investWithWeights(Double.parseDouble(amount.getText()), date,
