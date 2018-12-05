@@ -136,4 +136,39 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       throw new IllegalArgumentException(ex);
     }
   }
+
+  public void openStrategyManager()
+  {
+    view.openHomeScreen(strategyModel.getAll());
+    view.addFeatures(this);
+  }
+
+  public void addStrategy(String strategyName) {
+    try{
+      strategyModel.create(strategyName);
+    }catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
+
+  public void openStrategies(String strategyToOpen) {
+    int counter = 1;
+    for(String pfolio: strategyModel.getAll()){
+      if(pfolio.equalsIgnoreCase(strategyToOpen)){
+        selectedStrategy = strategyModel.getByIndex(counter);
+        break;
+      }
+      counter++;
+    }
+    view.openPortfolioScreen(this);
+  }
+
+  public void addStockToStrategy(String stockNameEntered) {
+    try{
+      selectedStrategy.addStockToStrategy(stockNameEntered);
+      view.logMessage("Stock added");
+    } catch(IllegalArgumentException ex){
+      throw new IllegalArgumentException(ex);
+    }
+  }
 }

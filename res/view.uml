@@ -3,26 +3,26 @@
   <ID>JAVA</ID>
   <OriginalElement>howtoinvest.view</OriginalElement>
   <nodes>
-    <node x="0.0" y="368.0">howtoinvest.view.HowToInvestViewImpl</node>
+    <node x="0.0" y="389.0">howtoinvest.view.HowToInvestViewImpl</node>
     <node x="0.0" y="0.0">howtoinvest.view.IHowToInvestView</node>
   </nodes>
   <notes />
   <edges>
     <edge source="howtoinvest.view.HowToInvestViewImpl" target="howtoinvest.view.IHowToInvestView">
-      <point x="0.0" y="-193.0" />
-      <point x="0.0" y="159.0" />
+      <point x="0.0" y="-203.5" />
+      <point x="0.0" y="169.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.10479736328125" x="184.9999999999991" y="718.3946188340808" />
+  <settings layout="Hierarchic Group" zoom="0.7445804382447127" x="155.10080146290437" y="393.81160904118326" />
   <SelectedNodes>
     <node>howtoinvest.view.IHowToInvestView</node>
   </SelectedNodes>
   <Categories>
-    <Category>Inner Classes</Category>
-    <Category>Properties</Category>
-    <Category>Methods</Category>
-    <Category>Constructors</Category>
     <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
