@@ -14,6 +14,7 @@ import howtoinvest.view.HowToInvestViewGUI;
 import howtoinvest.view.IHowToInvestView;
 import howtoinvest.view.HowToInvestViewImpl;
 import howtoinvest.view.StrategyViewGUI;
+
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
  * would accept IManager based models and open the Portfolio manager for a user to perform
@@ -42,32 +43,33 @@ public class Main {
     IManager<DollarCostAveraging> strategyManager = new DollarCostAveragingStrategyManager();
 
     /**
-     * Creation of IHowToInvestView object which would be the view of the program.
+     * Creation of IHowToInvestView object which would be the view of the program for the console.
      */
     IHowToInvestView howToInvestView =
             new HowToInvestViewImpl(new InputStreamReader(System.in), System.out);
 
 
+    /**
+     * Creation of a GUI view object for the portfolio manager.
+     */
     HowToInvestViewGUI view = new HowToInvestViewGUI();
 
-    StrategyViewGUI sview = new StrategyViewGUI();
 
     /**
-     * Controller is given the control with the above model as the argument.
+     * Creation of a GUI view object for the strategy manager.
      */
+    StrategyViewGUI sview = new StrategyViewGUI();
 
-    if(args.length==0 || args[0] == "gui"){
 
-      HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,
-              strategyManager);
-      gui.openPortfolioManager();
-    }
-    else if(args[0] == "console"){
-    IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
-            strategyManager);
-    controller.openPortfolioManager();
-    }
-    else {
+    if (args.length == 0 || args[0] == "gui") {
+      IHowToInvestController guicontroller = new HowToInvestControllerGUI(view, sview,
+              portfolioManager, strategyManager);
+      guicontroller.openPortfolioManager();
+    } else if (args[0] == "console") {
+      IHowToInvestController consolecontroller = new HowToInvestController(howToInvestView,
+              portfolioManager, strategyManager);
+      consolecontroller.openPortfolioManager();
+    } else {
       throw new IllegalArgumentException("Cannot open application.");
     }
 

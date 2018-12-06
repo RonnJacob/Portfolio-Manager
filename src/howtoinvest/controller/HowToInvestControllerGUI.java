@@ -10,6 +10,7 @@ import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
 import howtoinvest.view.HowToInvestViewGUI;
+import howtoinvest.view.IHowToInvestGUIView;
 import howtoinvest.view.StrategyViewGUI;
 
 /**
@@ -97,14 +98,14 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   /**
    * Variables initializing models and view objects.
    */
-  private final HowToInvestViewGUI view;
-  private final StrategyViewGUI strategyView;
+  private final IHowToInvestGUIView view;
+  private final IHowToInvestGUIView strategyView;
   private final IManager<StockPortfolio> model;
   private final IManager<DollarCostAveraging> strategyModel;
   private StockPortfolio selectedPortfolio;
   private IInvestmentStrategy selectedStrategy;
 
-  public HowToInvestControllerGUI(HowToInvestViewGUI view, StrategyViewGUI strategyView,
+  public HowToInvestControllerGUI(IHowToInvestGUIView view, IHowToInvestGUIView strategyView,
                                   IManager<StockPortfolio> model,
                                   IManager<DollarCostAveraging> strategyModel) {
     this.model = model;

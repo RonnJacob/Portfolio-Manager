@@ -171,7 +171,7 @@ public class HowToInvestController implements IHowToInvestController {
           view.openHomeScreen();
           break;
         /**
-         * If a user inputs 3, then the third option which is opening a particular portfolio
+         * If a user inputs 4, then the fourth option which is loading a particular portfolio
          * operation is performed.
          */
         case "4":
@@ -321,7 +321,7 @@ public class HowToInvestController implements IHowToInvestController {
             view.openPortfolioMenu();
             break;
           /**
-           * Option 6 corresponds to opening a strategy manager menu.
+           * Option 7 corresponds to saving a portfolio.
            */
           case "7":
             this.savePortfolio(view.getInput("\nSave portfolio as: "));
@@ -347,6 +347,13 @@ public class HowToInvestController implements IHowToInvestController {
     return "r";
   }
 
+  /**
+   * Opens a strategy manager menu
+   * @param strategyModel the model for the strategies.
+   * @param selectedPFolio the portfolio for which the relevant strategy related operations are to
+   *                       be carried out.
+   * @return a return code specifying returning or quitting from the menu.
+   */
   private String openStrategyManager(IManager<DollarCostAveraging> strategyModel,
                                      IPortfolio selectedPFolio) {
 
@@ -382,7 +389,7 @@ public class HowToInvestController implements IHowToInvestController {
             view.openStrategyManagerMenu();
             break;
           /**
-           * If a user inputs 3, then the third option which is opening a particular portfolio
+           * If a user inputs 4, then the third option which is opening a particular strategy
            * operation is performed.
            */
           case "4":
@@ -462,7 +469,7 @@ public class HowToInvestController implements IHowToInvestController {
             view.openStrategyMenu();
             break;
           /**
-           * Option 3 corresponds to displaying the stocks in a strategy.
+           * Option 4 corresponds to save a strategy.
            */
           case "4":
             String fileName = view.getInput("\nSave strategy as: ");
