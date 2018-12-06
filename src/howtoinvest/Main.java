@@ -79,7 +79,7 @@ public class Main {
     /**
      * If no argument is provided, the default view would be the gui view.
      */
-    if(args.length==0){
+    if (args.length == 0) {
       guicontroller.openPortfolioManager();
     }
 
@@ -87,21 +87,22 @@ public class Main {
      * If an argument is given with argument starting with -view, the user would have to enter
      * the type of view 'gui' or 'console'.
      */
-    else if(args.length==2){
-      if(args[0].equals("-view")){
-        switch (args[1]){
-          case "gui": guicontroller.openPortfolioManager();
-                      break;
-          case "console": consolecontroller.openPortfolioManager();
-                          break;
-          default: System.out.println("Cannot open application. Invalid arguments.");
+    else if (args.length == 2) {
+      if (args[0].equals("-view")) {
+        switch (args[1]) {
+          case "gui":
+            guicontroller.openPortfolioManager();
+            break;
+          case "console":
+            consolecontroller.openPortfolioManager();
+            break;
+          default:
+            System.out.println("Cannot open application. Invalid arguments.");
         }
-      }
-      else{
+      } else {
         System.out.println("Cannot open application. Invalid arguments.");
       }
-    }
-    else{
+    } else {
       System.out.println("Cannot open application. Invalid arguments.");
     }
   }
