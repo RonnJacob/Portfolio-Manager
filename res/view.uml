@@ -3,19 +3,34 @@
   <ID>JAVA</ID>
   <OriginalElement>howtoinvest.view</OriginalElement>
   <nodes>
-    <node x="0.0" y="389.0">howtoinvest.view.HowToInvestViewImpl</node>
-    <node x="0.0" y="0.0">howtoinvest.view.IHowToInvestView</node>
+    <node x="468.0" y="189.0">howtoinvest.view.HowToInvestViewGUI</node>
+    <node x="996.0" y="388.0">howtoinvest.view.HowToInvestViewImpl</node>
+    <node x="0.0" y="200.0">howtoinvest.view.StrategyViewGUI</node>
+    <node x="996.0" y="0.0">howtoinvest.view.IHowToInvestView</node>
+    <node x="320.75" y="0.0">howtoinvest.view.IHowToInvestGUIView</node>
   </nodes>
   <notes />
   <edges>
+    <edge source="howtoinvest.view.HowToInvestViewGUI" target="howtoinvest.view.IHowToInvestGUIView">
+      <point x="0.0" y="-334.5" />
+      <point x="709.5" y="164.0" />
+      <point x="539.75" y="164.0" />
+      <point x="73.0" y="69.5" />
+    </edge>
+    <edge source="howtoinvest.view.StrategyViewGUI" target="howtoinvest.view.IHowToInvestGUIView">
+      <point x="0.0" y="-323.5" />
+      <point x="224.0" y="164.0" />
+      <point x="393.75" y="164.0" />
+      <point x="-73.0" y="69.5" />
+    </edge>
     <edge source="howtoinvest.view.HowToInvestViewImpl" target="howtoinvest.view.IHowToInvestView">
-      <point x="0.0" y="-203.5" />
-      <point x="0.0" y="169.5" />
+      <point x="0.0" y="-203.0" />
+      <point x="0.0" y="169.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7445804382447127" x="155.10080146290437" y="393.81160904118326" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="862.5" y="130.5" />
   <SelectedNodes>
-    <node>howtoinvest.view.IHowToInvestView</node>
+    <node>howtoinvest.view.IHowToInvestGUIView</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>
