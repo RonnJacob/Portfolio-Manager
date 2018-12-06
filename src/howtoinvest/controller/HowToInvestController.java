@@ -822,9 +822,8 @@ public class HowToInvestController implements IHowToInvestController {
   @Override
   public List<String> getStocksInStrategy() {
     List<String> m = selectedStrategy.getStocks();
-    for (int counter = 1; counter < m.size(); counter++) {
+    for (int counter = 1; counter <= m.size(); counter++) {
       view.displayList(counter, m.get(counter - 1), "Stocks");
-      counter += 1;
     }
     return m;
   }
