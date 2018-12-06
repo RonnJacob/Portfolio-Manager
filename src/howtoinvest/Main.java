@@ -1,6 +1,5 @@
 package howtoinvest;
 
-import java.io.Console;
 import java.io.InputStreamReader;
 
 import howtoinvest.controller.HowToInvestController;
@@ -15,11 +14,6 @@ import howtoinvest.view.HowToInvestViewGUI;
 import howtoinvest.view.IHowToInvestView;
 import howtoinvest.view.HowToInvestViewImpl;
 import howtoinvest.view.StrategyViewGUI;
-
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
  * would accept IManager based models and open the Portfolio manager for a user to perform
@@ -62,14 +56,13 @@ public class Main {
      * Controller is given the control with the above model as the argument.
      */
 
-    String arg1 = "gui";
-    if(arg1 == "gui"){
+    if(args.length==0 || args[0] == "gui"){
+
       HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,
               strategyManager);
       gui.openPortfolioManager();
     }
-    else if(arg1 == "console"){
-
+    else if(args[0] == "console"){
     IHowToInvestController controller = new HowToInvestController(howToInvestView, portfolioManager,
             strategyManager);
     controller.openPortfolioManager();

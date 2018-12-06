@@ -156,7 +156,6 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       } else if (typeOfList == "Strategy") {
         strategyModel.retrieve(filename);
       }
-      view.promptMessage(typeOfList + " " + filename + " has been added.");
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -250,6 +249,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void savePortfolio(String fileName) throws IllegalArgumentException {
     try {
       selectedPortfolio.savePortfolio(fileName);
+      view.logMessage("Portfolio saved as "+fileName+".json");
     } catch (IllegalStateException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -259,6 +259,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void saveStrategy(String fileName) throws IllegalArgumentException {
     try {
       selectedStrategy.saveStrategy(fileName);
+      view.logMessage("Strategy saved as "+fileName+".json");
     } catch (IllegalStateException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -295,7 +296,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void addStockToStrategy(String stockNameEntered) throws IllegalArgumentException {
     try {
       selectedStrategy.addStockToStrategy(stockNameEntered);
-      strategyView.logMessage("Stock added");
+      strategyView.logMessage("Stock "+ stockNameEntered+" added");
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -305,7 +306,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void setStrategyAmount(String amount) throws IllegalArgumentException {
     try {
       selectedStrategy.setAmount(Double.parseDouble(amount));
-      strategyView.logMessage("Amount set");
+      strategyView.logMessage("Amount "+amount+" set");
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -315,7 +316,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void setStrategyFrequency(String frequency) throws IllegalArgumentException {
     try {
       selectedStrategy.setAmount(Integer.parseInt(frequency));
-      strategyView.logMessage("Frequency set");
+      strategyView.logMessage("Frequency "+frequency+" set");
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
@@ -325,7 +326,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
   public void setStrategyTimerange(String begDate, String endDate) throws IllegalArgumentException {
     try {
       selectedStrategy.setTimeRange(begDate, endDate);
-      strategyView.logMessage("Timerange set");
+      strategyView.logMessage("Timerange set from " +begDate+" to "+endDate);
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }

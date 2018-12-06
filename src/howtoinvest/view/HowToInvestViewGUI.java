@@ -1,7 +1,10 @@
 package howtoinvest.view;
 
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -16,7 +19,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -31,7 +43,6 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JPanel mainPortfolioPanel = new JPanel();
   private JPanel loggerPanel = new JPanel();
   private JPanel listOfPortfoliosPanel = new JPanel();
-  private JPanel stocksPortfolioPanel = new JPanel();
   private JPanel stockDisplayPanel = new JPanel();
   private JTextArea log = new JTextArea();
   private JTextField newPortfolioName;
@@ -41,14 +52,14 @@ public class HowToInvestViewGUI extends JFrame implements ActionListener,
   private JButton loadPortfolio = new JButton("Load Portfolio");
   private DefaultListModel listModel;
   private JComboBox listOfStrategies;
-  private static List<JLabel> listOfStocks = new ArrayList<JLabel>();
-  private static List<JTextField> listOfWeights = new ArrayList<JTextField>();
+  private static List<JTextField> listOfWeights = new ArrayList<>();
   private static final Object[][] rowData = {};
   private static final Object[] columnNames = {"Stock", "Number Of Shares"};
 
 
   public HowToInvestViewGUI() {
     super();
+    this.setTitle("How To Invest For Dummies - Portfolio Manager");
     setLocation(200, 200);
     Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
     this.setPreferredSize(DimMax);
