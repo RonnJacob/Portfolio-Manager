@@ -53,7 +53,6 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     loggerPanel.add(log);
     this.add(loggerPanel);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    this.setLayout(new FlowLayout());
     this.setLayout(new GridLayout(6, 24));
 
   }
