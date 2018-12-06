@@ -1,5 +1,7 @@
 package howtoinvest.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +11,7 @@ import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IManager;
 import howtoinvest.model.StockPortfolio;
-import howtoinvest.view.HowToInvestViewGUI;
 import howtoinvest.view.IHowToInvestGUIView;
-import howtoinvest.view.StrategyViewGUI;
 
 /**
  * This class tends to the Graphical User Interface view which would have different user
@@ -235,8 +235,8 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       int counter = 1;
       for (String strategy : strategyModel.getAll()) {
         if (strategyToApply.equalsIgnoreCase(strategy)) {
-          strategyModel.getByIndex(counter)
-                  .applyStrategy(selectedPortfolio, selectedPortfolio.getCommission(commission));
+          apply(strategyModel.getByIndex(counter)
+                  .applyStrategy(selectedPortfolio, selectedPortfolio.getCommission(commission)));
           return;
         }
         counter++;
@@ -244,6 +244,44 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
+  }
+
+
+  /**
+   * Applies the strategies available for the user by listing out the options for strategies,
+   * waiting for the user to select a strategy and then applying the strategy. On successful
+   * application of the strategy, appropriate dates and transactions made on each date would be made
+   * available.
+   *
+   * @param strategyApplied the strategy model which would list out the strategies for the user to
+   *                        apply.
+   */
+  private void apply(TreeMap<Date, HashMap<String, Double>> strategyApplied) {
+    String appliedStrategyMessage = "";
+    String datePattern = "yyyy-MM-dd";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+    /**
+     * Cannot apply strategy to portfolio if the portfolio is empty.
+     */
+    if (strategyApplied.size() == 0) {
+      view.promptMessage("No stocks in portfolio to apply strategy.\n");
+    }
+
+    /**
+     * Applies the strategy on the portfolio and makes the transactions on the appropriate dates
+     * available.
+     */
+    for (Map.Entry<Date, HashMap<String, Double>> entry : strategyApplied.entrySet()) {
+      if (entry.getValue().entrySet().size() != 0) {
+        appliedStrategyMessage += "\n" + simpleDateFormat.format(entry.getKey()) + "\n";
+      }
+      for (HashMap.Entry<String, Double> stock : entry.getValue().entrySet()) {
+        String message = String.format("%.2f shares of %s bought.\n", stock.getValue(),
+                stock.getKey());
+        appliedStrategyMessage += message;
+      }
+    }
+    view.logMessage(appliedStrategyMessage);
   }
 
   @Override
@@ -350,7 +388,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
                       selectedPortfolio.getCommission(commision));
       for (Map.Entry<String, Double> investment : investments.entrySet()) {
         investmentsLog += investment.getValue() + " share(s) of " + investment.getKey()
-                + " on " + date + "\n";
+                + " bought on " + date + "\n";
       }
       view.logMessage(investmentsLog);
     } catch (IllegalArgumentException | IllegalStateException ex) {
@@ -377,11 +415,11 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
       String message = "";
       for (Map.Entry<String, Double> investment : investments.entrySet()) {
         message += investment.getValue() + " share(s) of " + investment.getKey()
-                + " on " + date + "\n";
+                + " bought on " + date + "\n";
       }
       view.logMessage(message);
     } catch (IllegalArgumentException | IllegalStateException ex) {
-      throw new IllegalArgumentException(ex.getMessage());
+      view.promptMessage("Invalid input. Please enter details again.");
     }
   }
 

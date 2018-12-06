@@ -1,5 +1,8 @@
 package howtoinvest.view;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.awt.Color;
@@ -208,6 +211,7 @@ public class HowToInvestViewGUI extends JFrame implements
      * ActionListener for create portfolio button.
      */
     createPortfolio.addActionListener((ActionEvent e) -> {
+              closePortfolioButtonClicked();
               String portfolioName = newPortfolioName.getText();
               /**
                * Prompt user to enter portfolio name if the user input is empty or is the
@@ -226,7 +230,7 @@ public class HowToInvestViewGUI extends JFrame implements
                 controller.createPortfolio(portfolioName);
                 listModel.insertElementAt(portfolioName, listModel.size() - 1);
                 newPortfolioName.setText("");
-                closePortfolioButtonClicked();
+                log.setText("Portfolio "+portfolioName+" has been created.");
               } catch (IllegalArgumentException ex) {
                 promptMessage("Portfolio " + portfolioName + " already exists.\n");
               }
@@ -274,7 +278,8 @@ public class HowToInvestViewGUI extends JFrame implements
                   log.setText("Portfolio " + fileName.getText() + " has been loaded.");
                   closePortfolioButtonClicked();
                 } catch (IllegalArgumentException ex) {
-                  promptMessage("Portfolio could not be loaded: " + ex.getMessage());
+                  promptMessage("Portfolio "+fileName.getText()+" could not be loaded: "
+                          + ex.getMessage());
                 }
               }
             }
@@ -303,6 +308,7 @@ public class HowToInvestViewGUI extends JFrame implements
   }
 
   /**
+   *
    * @param controller type of controller.
    */
   @Override
@@ -358,6 +364,7 @@ public class HowToInvestViewGUI extends JFrame implements
 
     invest.addActionListener((ActionEvent e) -> {
       this.investWithCustomWeights(controller, dateField.getText());
+      dateField.setText("");
 
     });
 
@@ -461,7 +468,7 @@ public class HowToInvestViewGUI extends JFrame implements
         controller.addStockToPortfolio(stockSymbol.getText(), Double.parseDouble(amount.getText()),
                 date.getText(), commision.getText());
       } catch (IllegalArgumentException ex) {
-        promptMessage("Transaction Unsuccessful: " + ex.getMessage());
+        promptMessage("Transaction Unsuccessful. Please enter valid buy details.");
       }
     }
   }
@@ -537,18 +544,17 @@ public class HowToInvestViewGUI extends JFrame implements
               "Apply Strategy",
               JOptionPane.OK_CANCEL_OPTION);
       if (option == JOptionPane.OK_OPTION) {
-        openStocksInPortfolio(controller, commision.getText());
+
+        /**
+         * Applies the strategy that is selected in the JComboBox.
+         */
+        String strategyToApply = listOfStrategies.getSelectedItem().toString();
+        controller.applyStrategy(strategyToApply, commision.getText());
+        openPortfolio.setEnabled(false);
+        closePortfolio.setEnabled(true);
       } else {
         System.out.println("");
       }
-      /**
-       * Applies the strategy that is selected in the JComboBox.
-       */
-      String strategyToApply = listOfStrategies.getSelectedItem().toString();
-      controller.applyStrategy(strategyToApply, commision.getText());
-      log.setText("Strategy " + strategyToApply + " has been applied.");
-      openPortfolio.setEnabled(false);
-      closePortfolio.setEnabled(true);
     } catch (IllegalArgumentException ex) {
       promptMessage("Action failed: " + ex.getMessage());
     }
@@ -595,6 +601,15 @@ public class HowToInvestViewGUI extends JFrame implements
    * @param date       the date for which the investment is to be made.
    */
   private void investWithCustomWeights(HowToInvestControllerGUI controller, String date) {
+
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
+    try{
+      Date sharedate = format.parse(date);
+    }catch(ParseException ex){
+      promptMessage("Invalid date input. Please enter date again.");
+      return;
+    }
     JTextField commision = new JTextField();
     JTextField amount = new JTextField();
     if (date.equals("") || date.equals("Enter Date To Invest [yyyy-mm-dd]")) {
@@ -609,6 +624,10 @@ public class HowToInvestViewGUI extends JFrame implements
       HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
       Object[] message = new Object[(stocks.size() * 2) + 6];
       int counter = 0;
+      if(stocks.size()==0){
+        promptMessage("There are no stocks in the portfolio.");
+        return;
+      }
       for (String stockName : stocks.keySet()) {
         message[counter] = "Enter weights for " + stockName;
         JTextField field = new JTextField();
@@ -625,21 +644,21 @@ public class HowToInvestViewGUI extends JFrame implements
               "Invest",
               JOptionPane.OK_CANCEL_OPTION);
       if (option == JOptionPane.OK_OPTION) {
+        /**
+         * Adding weights to a list of weights inorder to pass it to the controller to carry
+         * out investment operation with custom weights.
+         */
+        List<Double> weights = new LinkedList<>();
+        for (int i = 0; i < listOfWeights.size(); i++) {
+          weights.add(Double.parseDouble(listOfWeights.get(i).getText()));
+        }
+
+        controller.investWithWeights(Double.parseDouble(amount.getText()), date,
+                commision.getText(), weights);
       } else {
-        System.out.println("");
+        return;
       }
 
-      /**
-       * Adding weights to a list of weights inorder to pass it to the controller to carry
-       * out investment operation with custom weights.
-       */
-      List<Double> weights = new LinkedList<>();
-      for (int i = 0; i < listOfWeights.size(); i++) {
-        weights.add(Double.parseDouble(listOfWeights.get(i).getText()));
-      }
-
-      controller.investWithWeights(Double.parseDouble(amount.getText()), date,
-              commision.getText(), weights);
 
     } catch (IllegalArgumentException | IllegalStateException ex) {
       promptMessage("Action failed: " + ex.getMessage());
