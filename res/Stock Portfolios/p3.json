@@ -1,0 +1,30 @@
+{
+  "portfolio": {
+    "MSFT": {
+      "tickerSymbol": "MSFT",
+      "shareList": {
+        "Wed Oct 10 00:00:00 EDT 2018": {
+          "noOfShares": 19.41747572815534,
+          "shareCostBasis": 1999.9999999999998
+        },
+        "Fri Nov 09 00:00:00 EST 2018": {
+          "noOfShares": 18.278194114421495,
+          "shareCostBasis": 2000.0
+        }
+      }
+    },
+    "GOOGL": {
+      "tickerSymbol": "GOOGL",
+      "shareList": {
+        "Wed Oct 10 00:00:00 EDT 2018": {
+          "noOfShares": 0.0,
+          "shareCostBasis": 0.0
+        },
+        "Fri Nov 09 00:00:00 EST 2018": {
+          "noOfShares": 0.0,
+          "shareCostBasis": 0.0
+        }
+      }
+    }
+  }
+}

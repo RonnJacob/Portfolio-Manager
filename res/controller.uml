@@ -3,26 +3,26 @@
   <ID>JAVA</ID>
   <OriginalElement>howtoinvest.controller</OriginalElement>
   <nodes>
-    <node x="545.0" y="0.0">howtoinvest.controller.IHowToInvestController</node>
-    <node x="731.0" y="663.0">howtoinvest.controller.HowToInvestControllerGUI</node>
-    <node x="0.0" y="564.0">howtoinvest.controller.HowToInvestController</node>
+    <node x="641.0" y="0.0">howtoinvest.controller.IHowToInvestController</node>
+    <node x="0.0" y="664.0">howtoinvest.controller.HowToInvestControllerGUI</node>
+    <node x="923.0" y="565.0">howtoinvest.controller.HowToInvestController</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="howtoinvest.controller.HowToInvestControllerGUI" target="howtoinvest.controller.IHowToInvestController">
-      <point x="0.0" y="-346.0" />
-      <point x="1181.5" y="539.0" />
-      <point x="880.25" y="539.0" />
-      <point x="111.75" y="257.0" />
-    </edge>
     <edge source="howtoinvest.controller.HowToInvestController" target="howtoinvest.controller.IHowToInvestController">
-      <point x="0.0" y="-445.0" />
-      <point x="355.5" y="539.0" />
-      <point x="656.75" y="539.0" />
-      <point x="-111.75" y="257.0" />
+      <point x="0.0" y="-445.5" />
+      <point x="1279.5" y="540.0" />
+      <point x="977.75" y="540.0" />
+      <point x="112.25" y="257.5" />
+    </edge>
+    <edge source="howtoinvest.controller.HowToInvestControllerGUI" target="howtoinvest.controller.IHowToInvestController">
+      <point x="0.0" y="-346.5" />
+      <point x="451.5" y="540.0" />
+      <point x="753.25" y="540.0" />
+      <point x="-112.25" y="257.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7373134493724514" x="606.3542346315977" y="715.2692189210907" />
+  <settings layout="Hierarchic Group" zoom="0.45793541411038785" x="860.9729253821315" y="954.0371175457484" />
   <SelectedNodes>
     <node>howtoinvest.controller.HowToInvestController</node>
   </SelectedNodes>

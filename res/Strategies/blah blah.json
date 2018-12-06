@@ -1,0 +1,11 @@
+{
+  "stockWeights": {
+    "FB": 20.0,
+    "MSFT": 50.0,
+    "jdb": 30.0
+  },
+  "amount": 10.0,
+  "frequency": 30,
+  "startDate": "Sep 9, 2018 12:00:00 AM",
+  "endDate": "Sep 29, 2018 12:00:00 AM"
+}

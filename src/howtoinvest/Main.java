@@ -17,9 +17,11 @@ import howtoinvest.view.StrategyViewGUI;
 
 /**
  * This is the main class where the control is given to the HowToInvestController controller which
- * would accept IManager based models and open the Portfolio manager for a user to perform
- * operations related to investing in stocks of an organization and maintenance of various
- * portfolios.
+ * would accept IManager based models and open the Portfolio manager and the strategy manager for a
+ * user to perform operations related to investing in stocks of an organization and maintenance of
+ * various portfolios and strategies. The program accepts command-line options of the form -view
+ * "type-of-view". The type of view should be either “console” or “gui” to open the respective
+ * applications. By default it opens the gui application.
  */
 public class Main {
 
@@ -70,7 +72,8 @@ public class Main {
               portfolioManager, strategyManager);
       consolecontroller.openPortfolioManager();
     } else {
-      throw new IllegalArgumentException("Cannot open application.");
+      System.out.println("Cannot open application: Invalid argument");
+      return;
     }
 
   }

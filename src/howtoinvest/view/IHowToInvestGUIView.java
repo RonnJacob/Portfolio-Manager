@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The following interface represents a GUI view for an application to to manage data supported by
  * the controller K. The following interface would handle receiving specific input if necessary and
- * passing these inputs to the controller to carry out necessary options. The=is GUI view has two
+ * passing these inputs to the controller to carry out necessary options. This GUI view has two
  * layers one for managing a set of items and then another layer for editing those items.
  *
  * @param <K> type of controller.

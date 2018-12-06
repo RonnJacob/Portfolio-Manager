@@ -1,0 +1,51 @@
+{
+  "portfolio": {
+    "MSFT": {
+      "tickerSymbol": "MSFT",
+      "shareList": {
+        "Wed Oct 10 00:00:00 EDT 2018": {
+          "noOfShares": 3.2362459546925564,
+          "shareCostBasis": 333.3333333333333
+        },
+        "Sun Nov 11 00:00:00 EST 2018": {
+          "noOfShares": 19.039785535855724,
+          "shareCostBasis": 2085.333333333333
+        }
+      }
+    },
+    "GOOGL": {
+      "tickerSymbol": "GOOGL",
+      "shareList": {
+        "Mon Oct 10 00:00:00 EDT 2016": {
+          "noOfShares": 145.83333333333331,
+          "shareCostBasis": 583.3333333333333
+        },
+        "Wed Oct 10 00:00:00 EDT 2018": {
+          "noOfShares": 33.33333333333333,
+          "shareCostBasis": 333.33333333333326
+        },
+        "Sun Nov 11 00:00:00 EST 2018": {
+          "noOfShares": 79.9744081893794,
+          "shareCostBasis": 835.3333333333333
+        }
+      }
+    },
+    "FB": {
+      "tickerSymbol": "FB",
+      "shareList": {
+        "Mon Oct 10 00:00:00 EDT 2016": {
+          "noOfShares": 5.833333333333333,
+          "shareCostBasis": 583.3333333333333
+        },
+        "Wed Oct 10 00:00:00 EDT 2018": {
+          "noOfShares": 3.1746031746031744,
+          "shareCostBasis": 333.3333333333333
+        },
+        "Sun Nov 11 00:00:00 EST 2018": {
+          "noOfShares": 19.039785535855724,
+          "shareCostBasis": 2086.333333333333
+        }
+      }
+    }
+  }
+}

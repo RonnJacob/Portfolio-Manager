@@ -4,6 +4,38 @@ The following application has been written from scratch with the MVC(model-view-
 in mind whereby there is a separate distinction between the model of the program, controller and view of 
 the program.
 
+Design Changes
+---------------
+
+*********************  Since Assignment 8 ********************************
+- The model observers used to return strings, which makes it difficult for a client to get the data.
+For this very reason, the changes were made to return 'double' for cost basis and stock values instead
+of formatted strings.
+For eg: getStockCostBasis, getStockValue used to return strings and now we return the data without
+formatting as this would be handled by the view.
+- Now the design has a separate view which would handle everything as mentioned above. Previously the
+controller would do operations which were meant for the view such as formatting. The reason for this
+is so that we can have multiple variations of the view which would handle operations such as formatting
+and retrieving output that is to be passed onto to the controller as mentioned above.
+
+
+*********************  Since Assignment 9 ********************************
+
+- Methods in the HowToInvestController have been pulled to the IHowToInvestController interface
+which would almost all portfolio and strategy related controller operations. This design change
+was made so that other controllers (in our case HowToInvestControllerGUI) would be able to implement
+these methods which seem to be common across any controller that would carry out operations tending
+to portfolios and strategies.
+The IHowToInvestController interface now offers controller operations for the relevant operations
+in the application.
+
+- Added load method to the IManager model interface to support retrieval of portfolios and strategies in json format from the local system.
+  Also added save method in IPortfolio and IInvestmentStrategy to save portfolios and strategies to the local system as a Json file.
+
+- A IHowToInvestGUIView interface which would be implemented by HowToInvestViewGUI and StrategyViewGUI
+has been added. This interface would offer operations which are common between both GUIs (strategy
+and portfolio).
+
 Controller
 ----------
 - The controller consists of an interface class IHowToInvestController which would have a operations
@@ -180,7 +212,7 @@ as input.This class would be used by DollarCostAveragingStrategyManager class.
 
 - IManager<K> interface is parametrized over the type of items it manages which is
 created to manage items and provides operations for listing all the items, creation of
-items and retrieving an item. The StockPortfolioManager and DollarCostAveragingStrategyManager are classes
+items, retrieving an item and loading an item(persistence). The StockPortfolioManager and DollarCostAveragingStrategyManager are classes
 that implementing this interface and parametrized over StockPortfolio and DollarCostAveraging respectively.
 
 - Additionally, an interface IStockDataRetrieval was created to allow flexibility in retrieving stock data 
@@ -195,6 +227,8 @@ they are not upto date. These csv files are used by the API to query multiple ti
 
 View
 -----
+
+Console view-
 
 The view would handle everything related to the formatting of outputs, displaying the appropriate menus
 and retrieving output from the user to be passed to the controller.
@@ -211,33 +245,20 @@ quits and for prompting appropriate messages.
 
 - The view would also retrieve inputs to be passed to the controller (getInput and getShareBuyDetails).
 
+GUI view-
 
+- IHowToInvestGUIView interface represents a GUI view for an application to to manage data supported by
+  the controller. The following interface would handle receiving specific input if necessary and
+  passing these inputs to the controller to carry out necessary options. This GUI view has two
+  layers one for managing a set of items and then another layer for editing those items.
 
-Design Changes
----------------
+- This application has two views HowToInvestViewGUI(portfolio manager) and StrategyViewGUI(strategy manager)
+  implementing IHowToInvestGUIView and offers two separate windows for the operations related to portfolio management
+  and strategy management respectively.
 
-*********************  Since Assignment 8 ********************************
-- The model observers used to return strings, which makes it difficult for a client to get the data.
-For this very reason, the changes were made to return 'double' for cost basis and stock values instead
-of formatted strings.
-For eg: getStockCostBasis, getStockValue used to return strings and now we return the data without
-formatting as this would be handled by the view.
-- Now the design has a separate view which would handle everything as mentioned above. Previously the
-controller would do operations which were meant for the view such as formatting. The reason for this
-is so that we can have multiple variations of the view which would handle operations such as formatting
-and retrieving output that is to be passed onto to the controller as mentioned above.
+- Swing was used to create the user interface.
 
+- Apart from displaying menus, the view is responsible for what is to be displayed when the application
+  quits and for prompting appropriate messages.
 
-*********************  Since Assignment 9 ********************************
-
-- Methods in the HowToInvestController have been pulled to the IHowToInvestController interface
-which would almost all portfolio and strategy related controller operations. This design change
-was made so that other controllers (in our case HowToInvestControllerGUI) would be able to implement
-these methods which seem to be common across any controller that would carry out operations tending
-to portfolios and strategies.
-The IHowToInvestController interface now offers controller operations for the relevant operations
-in the application.
-
-- A IHowToInvestGUIView interface which would be implemented by HowToInvestViewGUI and StrategyViewGUI
-has been added. This interface would offer operations which are common between both GUIs (strategy
-and portfolio).
+- The view also receives user input and calls the necessary controller action for it.
