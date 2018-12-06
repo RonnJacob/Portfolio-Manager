@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import howtoinvest.controller.HowToInvestControllerGUI;
 
 public class StrategyViewGUI extends JFrame implements ActionListener,
-        ListSelectionListener {
+        ListSelectionListener,IHowToInvestGUIView<HowToInvestControllerGUI> {
 
   private JList list;
   private JPanel strategyPanel = new JPanel();
@@ -58,6 +58,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   }
 
+  @Override
   public void openHomeScreen(List<String> listItems) {
     mainStrategyPanel.add(new JLabel("List Of Strategies"));
     listModel = new DefaultListModel();
@@ -101,6 +102,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   }
 
+  @Override
   public void addFeatures(HowToInvestControllerGUI controller) {
     createStrategy.addActionListener((ActionEvent e) -> {
               String strategyName = newStrategyName.getText();
@@ -154,15 +156,18 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   }
 
+  @Override
   public void promptMessage(String message) {
     JOptionPane.showMessageDialog(this, message);
   }
 
+  @Override
   public void logMessage(String message) {
     log.setText(message);
   }
 
-  public void openStrategyScreen(HowToInvestControllerGUI controller) {
+  @Override
+  public void openModificationScreen(HowToInvestControllerGUI controller) {
     JButton displayStocks = new JButton("Display Stocks In Strategy");
     displayStocks.addActionListener((ActionEvent e) -> {
       try {

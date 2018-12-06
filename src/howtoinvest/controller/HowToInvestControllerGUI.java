@@ -144,7 +144,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
-    view.openPortfolioScreen(this);
+    view.openModificationScreen(this);
     return "opened";
   }
 
@@ -287,7 +287,7 @@ public class HowToInvestControllerGUI implements IHowToInvestController {
     } catch (IllegalArgumentException ex) {
       throw new IllegalArgumentException(ex.getMessage());
     }
-    strategyView.openStrategyScreen(this);
+    strategyView.openModificationScreen(this);
     return "Strategy Opened";
   }
 

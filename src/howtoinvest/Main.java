@@ -62,7 +62,7 @@ public class Main {
      * Controller is given the control with the above model as the argument.
      */
 
-    String arg1 = "console";
+    String arg1 = "gui";
     if(arg1 == "gui"){
       HowToInvestControllerGUI gui = new HowToInvestControllerGUI(view,sview,portfolioManager,
               strategyManager);
