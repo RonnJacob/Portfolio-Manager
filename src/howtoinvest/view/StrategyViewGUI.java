@@ -1,21 +1,29 @@
 package howtoinvest.view;
 
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.JTable;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +35,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   private JList list;
   private JPanel strategyPanel = new JPanel();
+  private JPanel listOfStrategiesPanel = new JPanel();
   private JPanel mainStrategyPanel = new JPanel();
   private JPanel loggerPanel = new JPanel();
   private JPanel stockDisplayPanel = new JPanel();
@@ -43,14 +52,19 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   public StrategyViewGUI() {
     super();
+    this.setTitle("How To Invest For Dummies - Strategy Manager");
     setLocation(200, 200);
     Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
     this.setPreferredSize(DimMax);
-    loggerPanel.setLayout(new GridLayout(6, 6));
-    strategyPanel.setLayout(new GridLayout(6, 6));
-    mainStrategyPanel.setLayout(new GridLayout(6, 6));
-    stockDisplayPanel.setLayout(new GridLayout(2, 12));
-    loggerPanel.add(log);
+    loggerPanel.setLayout(new GridLayout(3, 1));
+    strategyPanel.setLayout(new GridLayout(6, 2));
+    mainStrategyPanel.setLayout(new GridLayout(3, 2));
+    listOfStrategiesPanel.setLayout(new GridLayout(3,1));
+    stockDisplayPanel.setLayout(new GridLayout(2,12));
+    log.setEditable(false);
+    JScrollPane sp = new JScrollPane(log);
+    loggerPanel.add(new JLabel("Messages"));
+    loggerPanel.add(sp);
     this.add(loggerPanel);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLayout(new GridLayout(6, 24));
@@ -59,7 +73,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   @Override
   public void openHomeScreen(List<String> listItems) {
-    mainStrategyPanel.add(new JLabel("List Of Strategies"));
+    listOfStrategiesPanel.add(new JLabel("List Of Strategies"));
     listModel = new DefaultListModel();
     for (String listItem : listItems) {
       listModel.addElement(listItem);
@@ -69,22 +83,38 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     list.setSelectedIndex(0);
     list.addListSelectionListener(this);
     JScrollPane listScrollPane = new JScrollPane(list);
-    mainStrategyPanel.add(listScrollPane);
-    mainStrategyPanel.add(createStrategy);
+    listOfStrategiesPanel.add(listScrollPane);
+    listOfStrategiesPanel.add(createStrategy);
 
     /**
      * Create Strategy Button.
      */
-    JLabel strategyNameLabel = new JLabel("Enter strategy name to be created.");
-    newStrategyName = new JTextField(15);
+    newStrategyName = new JTextField("Enter Name Of Strategy Here");
+    newStrategyName.setForeground(Color.GRAY);
+    newStrategyName.addFocusListener(new FocusListener() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        if (newStrategyName.getText().equals("Enter Name Of Strategy Here")) {
+          newStrategyName.setText("");
+          newStrategyName.setForeground(Color.BLACK);
+        }
+      }
+      @Override
+      public void focusLost(FocusEvent e) {
+        if (newStrategyName.getText().isEmpty()) {
+          newStrategyName.setForeground(Color.GRAY);
+          newStrategyName.setText("Enter Name Of Strategy Here");
+        }
+      }
+    });
     createStrategy.addActionListener(this);
     mainStrategyPanel.add(createStrategy);
     openStrategy.addActionListener(this);
-    mainStrategyPanel.add(openStrategy);
-    mainStrategyPanel.add(strategyNameLabel);
     mainStrategyPanel.add(newStrategyName);
+    mainStrategyPanel.add(openStrategy);
     loadStrategy.addActionListener(this);
     mainStrategyPanel.add(loadStrategy);
+    this.add(listOfStrategiesPanel);
     this.add(mainStrategyPanel);
     pack();
     setVisible(true);
@@ -101,7 +131,6 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
 
   }
 
-  @Override
   public void addFeatures(HowToInvestControllerGUI controller) {
     createStrategy.addActionListener((ActionEvent e) -> {
               String strategyName = newStrategyName.getText();
@@ -138,19 +167,21 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
                       "Load Strategy :", fileName,
               };
 
-              int option = JOptionPane.showConfirmDialog(null, message,
-                      "Load Strategy",
-                      JOptionPane.OK_CANCEL_OPTION);
-              if (option == JOptionPane.OK_OPTION) {
-                try {
-                  controller.loadList(fileName.getText(), "Strategy");
-                  listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
-                  log.setText("Strategy " + fileName.getText() + " has been loaded.");
-                } catch (IllegalArgumentException ex) {
-                  promptMessage("Failed to load Strategy: " + ex.getMessage());
-                }
-              }
-            }
+      int option = JOptionPane.showConfirmDialog(null, message,
+              "Load Strategy",
+              JOptionPane.OK_CANCEL_OPTION);
+      if (option == JOptionPane.OK_OPTION) {
+        controller.loadList(fileName.getText(),"Strategy");
+        listModel.insertElementAt(fileName.getText(), listModel.size()-1);
+        String msg = "Strategy "+fileName.getText() + " has been loaded.";
+        log.setText(msg);
+        promptMessage(msg);
+      } else {
+        promptMessage("Strategy could not be loaded.");
+      }
+
+      closeStrategyButtonClicked();
+    }
     );
 
   }
@@ -208,6 +239,8 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
         } catch (IllegalArgumentException ex) {
           promptMessage("Action failed: " + ex.getMessage());
         }
+      } else {
+        System.out.println("Action failed");
       }
     });
     JButton setFrequency = new JButton("Set frequency");
@@ -313,17 +346,7 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     strategyPanel.add(closeS);
 
     closeS.addActionListener((ActionEvent e) -> {
-      for (Component c : this.getContentPane().getComponents()) {
-        if (c.equals(stockDisplayPanel)) {
-          stockDisplayPanel.removeAll();
-          this.remove(stockDisplayPanel);
-        }
-      }
-      strategyPanel.removeAll();
-      strategyPanel.revalidate();
-      strategyPanel.repaint();
-      openStrategy.setEnabled(true);
-      closeStrategy.setEnabled(false);
+      closeStrategyButtonClicked();
     });
     this.add(strategyPanel);
     pack();
@@ -377,6 +400,20 @@ public class StrategyViewGUI extends JFrame implements ActionListener,
     } catch (IllegalArgumentException ex) {
       promptMessage("Action failed: " + ex.getMessage());
     }
+  }
+
+  private void closeStrategyButtonClicked(){
+    for (Component c : this.getContentPane().getComponents()){
+      if (c.equals(stockDisplayPanel)) {
+        stockDisplayPanel.removeAll();
+        this.remove(stockDisplayPanel);
+      }
+    }
+    strategyPanel.removeAll();
+    strategyPanel.revalidate();
+    strategyPanel.repaint();
+    openStrategy.setEnabled(true);
+    closeStrategy.setEnabled(false);
   }
 }
 
