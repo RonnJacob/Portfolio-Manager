@@ -1,11 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileReader;
-
 import howtoinvest.model.Stock;
-import howtoinvest.model.StockPortfolio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -630,18 +626,4 @@ public class StockTest {
     }
   }
 
-  @Test
-  public void testPersistence() {
-    File folder = new File("./Stock Portfolios/");
-    File[] listOfFiles = folder.listFiles();
-
-    for (int i = 0; i < listOfFiles.length; i++) {
-      if (listOfFiles[i].isFile()) {
-        String name[] = listOfFiles[i].getName().split(".json");
-        System.out.println(name[0]);
-      } else if (listOfFiles[i].isDirectory()) {
-        System.out.println("Directory " + listOfFiles[i].getName());
-      }
-    }
-  }
 }

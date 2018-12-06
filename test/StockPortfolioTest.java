@@ -28,7 +28,8 @@ public class StockPortfolioTest {
     /**
      * Add a stock to the portfolio.
      */
-    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11", 0);
+    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11",
+            0);
 
     assertEquals(9.14, output, 0.01);
 
@@ -52,7 +53,8 @@ public class StockPortfolioTest {
   public void TestGetStockCostBasisAndStockValueInvalidDate() {
     portfolio = new StockPortfolio();
 
-    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11", 0);
+    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11",
+            0);
 
     assertEquals(9.14, output, 0.01);
     assertEquals(1000, portfolio.getStockCostBasis("2018-11-11"), 0.01);
@@ -111,7 +113,8 @@ public class StockPortfolioTest {
   public void testAddStockInvalidDateFormat() {
     portfolio = new StockPortfolio();
 
-    double output = portfolio.addStock("MSFT", 10000, "2018-01-01", 0);
+    double output = portfolio.addStock("MSFT", 10000, "2018-01-01",
+            0);
     assertEquals(100, output, 0.01);
 
     HashMap<String, Double> portfolioData = portfolio.getPortfolioData("2018-11-11");
@@ -275,7 +278,8 @@ public class StockPortfolioTest {
                       + "exist for given date.",
               ex.getMessage());
     }
-    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11", 0);
+    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11",
+            0);
 
     assertEquals(9.14, output, 0.01);
 
@@ -330,7 +334,8 @@ public class StockPortfolioTest {
   @Test
   public void testGetStockBasisAndStockValueDateFormat() {
     portfolio = new StockPortfolio();
-    double output = portfolio.addStock("MSFT", 10000, "2018-01-01", 0);
+    double output = portfolio.addStock("MSFT", 10000, "2018-01-01",
+            0);
     assertEquals(100.00, output, 0.01);
 
     HashMap<String, Double> portfolioData = portfolio.getPortfolioData("2018-11-11");
@@ -497,7 +502,8 @@ public class StockPortfolioTest {
     }
 
     try {
-      portfolio.addStock("This ticker does not exit ", 1000, "2018-01-01", 0);
+      portfolio.addStock("This ticker does not exit ", 1000, "2018-01-01",
+              0);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid stock name or ticker symbol", ex.getMessage());
@@ -521,7 +527,8 @@ public class StockPortfolioTest {
     assertEquals(0.00, portfolio.getStockCostBasis("2020-11-11"), 0.01);
     assertEquals(0.00, portfolio.getStockValue("2020-11-11"), 0.01);
 
-    double output = portfolio.addStock("MSFT", 10000, "2018-01-01", 0);
+    double output = portfolio.addStock("MSFT", 10000, "2018-01-01",
+            0);
 
     assertEquals(100.00, output, 0.01);
 
@@ -886,27 +893,28 @@ public class StockPortfolioTest {
     weights.put("MSFT", 75.0);
 
     HashMap<String, Double> output =
-            portfolio.invest(-1, weights, false, "2018-11-11", 0);
+            portfolio.invest(-1, weights, false, "2018-11-11",
+                    0);
     assertTrue(output.isEmpty());
 
-    output =
-            portfolio.invest(100, weights, false, null, 0);
+    output = portfolio.invest(100, weights, false, null, 0);
     assertTrue(output.isEmpty());
 
-    output =
-            portfolio.invest(1, weights, false, "2018-11-jadnlk", 0);
+    output = portfolio.invest(1, weights, false, "2018-11-jadnlk",
+                    0);
     assertTrue(output.isEmpty());
 
-    output =
-            portfolio.invest(1, weights, false, " ", 0);
+    output = portfolio.invest(1, weights, false, " ",
+                    0);
     assertTrue(output.isEmpty());
 
-    output =
-            portfolio.invest(1, weights, false, "2018-11-11", -0.01);
+    output = portfolio.invest(1, weights, false, "2018-11-11",
+            -0.01);
     assertTrue(output.isEmpty());
 
     try {
-      portfolio.invest(-1, null, false, "2018-11-11", 0);
+      portfolio.invest(-1, null, false, "2018-11-11",
+              0);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
@@ -915,7 +923,8 @@ public class StockPortfolioTest {
     weights.put("GOOGL", -150d);
 
     try {
-      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      output = portfolio.invest(100, weights, false, "2018-11-11",
+              0);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
@@ -924,7 +933,8 @@ public class StockPortfolioTest {
     weights.put("GOOGL", -50d);
 
     try {
-      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      output = portfolio.invest(100, weights, false, "2018-11-11",
+              0);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
@@ -933,7 +943,8 @@ public class StockPortfolioTest {
     weights.put("GOOGL", 0.01d);
 
     try {
-      output = portfolio.invest(100, weights, false, "2018-11-11", 0);
+      output = portfolio.invest(100, weights, false, "2018-11-11",
+              0);
       fail();
     } catch (IllegalArgumentException ex) {
       assertEquals("Invalid weights", ex.getMessage());
@@ -947,7 +958,8 @@ public class StockPortfolioTest {
 
 
     weights.put("GOOGL", 0.0);
-    output = portfolio.invest(1000, weights, false, "2018-11-11", 0);
+    output = portfolio.invest(1000, weights, false, "2018-11-11",
+            0);
     assertEquals(3, output.size());
     assertEquals(0.00, output.get("GOOGL"), 0.01);
     assertEquals(6.85, output.get("MSFT"), 0.01);
@@ -964,7 +976,8 @@ public class StockPortfolioTest {
 
     weights.put("GOOGL", 25.0);
     weights.put("MSFT", 50.0);
-    output = portfolio.invest(1000, weights, false, "2018-11-11", 0);
+    output = portfolio.invest(1000, weights, false, "2018-11-11",
+            0);
     assertEquals(3, output.size());
     assertEquals(23.99, output.get("GOOGL"), 0.01);
     assertEquals(4.56, output.get("MSFT"), 0.01);
@@ -982,7 +995,8 @@ public class StockPortfolioTest {
     /**
      * Investing when MSFT will throw an invalid date.
      */
-    output = portfolio.invest(1000, weights, false, "2016-10-10", 0);
+    output = portfolio.invest(1000, weights, false, "2016-10-10",
+            0);
     assertEquals(2, output.size());
     assertEquals(62.5, output.get("GOOGL"), 0.01);
     assertEquals(2.5, output.get("FB"), 0.01);
@@ -999,7 +1013,8 @@ public class StockPortfolioTest {
     /**
      * investing with equal weights
      */
-    output = portfolio.invest(1000, weights, true, "2018-10-10", 0);
+    output = portfolio.invest(1000, weights, true, "2018-10-10",
+            0);
     assertEquals(3, output.size());
     assertEquals(33.33, output.get("GOOGL"), 0.01);
     assertEquals(11.42, portfolioData.get("MSFT"), 0.01);
@@ -1014,7 +1029,8 @@ public class StockPortfolioTest {
     assertEquals(3500.00, portfolio.getStockCostBasis("2018-11-11"), 0.01);
     assertEquals(3973.60, portfolio.getStockValue("2018-11-11"), 0.01);
 
-    output = portfolio.invest(1000, weights, true, "2016-10-10", 0);
+    output = portfolio.invest(1000, weights, true, "2016-10-10",
+            0);
     assertEquals(2, output.size());
     assertEquals(83.33, output.get("GOOGL"), 0.01);
     assertEquals(3.33, output.get("FB"), 0.01);
@@ -1031,24 +1047,21 @@ public class StockPortfolioTest {
     try {
       portfolio.savePortfolio(null);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
 
     try {
       portfolio.savePortfolio("");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
 
     try {
       portfolio.savePortfolio(" ");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
   }

@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import howtoinvest.controller.HowToInvestControllerGUI;
@@ -76,8 +73,8 @@ public class StrategyViewGUI extends JFrame implements
     /**
      * Setting the dimensions of the frame as the maximum size of the screen.
      */
-    Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
-    this.setPreferredSize(DimMax);
+    Dimension dimMax = Toolkit.getDefaultToolkit().getScreenSize();
+    this.setPreferredSize(dimMax);
 
     /**
      * Setting the grid layouts for the panels that are to be in the frame.
@@ -183,72 +180,66 @@ public class StrategyViewGUI extends JFrame implements
      * ActionListener for create strategy button.
      */
     createStrategy.addActionListener((ActionEvent e) -> {
-              String strategyName = newStrategyName.getText();
-              if (strategyName.trim().isEmpty() ||
-                      strategyName.equals("Enter Name Of Strategy Here")) {
-                promptMessage("Please enter strategy name.\n");
-                return;
-              }
-              try {
-                /**
-                 * On successful creation of the strategy, the strategy name would be
-                 * added to the list of strategies in the mainStrategyPanel.
-                 */
-                controller.addStrategy(strategyName);
-                listModel.insertElementAt(strategyName, listModel.size() - 1);
-                newStrategyName.setText("");
-              } catch (IllegalArgumentException ex) {
-                promptMessage("Failed to create Strategy: " + ex.getMessage());
-              }
-            }
-    );
+      String strategyName = newStrategyName.getText();
+      if (strategyName.trim().isEmpty() || strategyName.equals("Enter Name Of Strategy Here")) {
+        promptMessage("Please enter strategy name.\n");
+        return;
+      }
+      try {
+        /**
+         * On successful creation of the strategy, the strategy name would be
+         * added to the list of strategies in the mainStrategyPanel.
+         */
+        controller.addStrategy(strategyName);
+        listModel.insertElementAt(strategyName, listModel.size() - 1);
+        newStrategyName.setText("");
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Failed to create Strategy: " + ex.getMessage());
+      }
+    });
 
     /**
      * ActionListener for open strategy button.
      */
     openStrategy.addActionListener((ActionEvent e) -> {
-              try {
-                String strategyToOpen = list.getSelectedValue().toString();
-                controller.openStrategies(strategyToOpen);
-                log.setText("Strategy " + strategyToOpen + " has been opened.");
-                openStrategy.setEnabled(false);
-                closeStrategy.setEnabled(true);
-              } catch (IllegalArgumentException ex) {
-                promptMessage("Failed to open Strategy: " + ex.getMessage());
-              }
-            }
-    );
+      try {
+        String strategyToOpen = list.getSelectedValue().toString();
+        controller.openStrategies(strategyToOpen);
+        log.setText("Strategy " + strategyToOpen + " has been opened.");
+        openStrategy.setEnabled(false);
+        closeStrategy.setEnabled(true);
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Failed to open Strategy: " + ex.getMessage());
+      }
+    });
 
     /**
      * ActionListener for load strategy button.
      */
     loadStrategy.addActionListener((ActionEvent e) -> {
-              JTextField fileName = new JTextField();
-              Object[] message = {
-                      "Load Strategy :", fileName,
-              };
+      JTextField fileName = new JTextField();
+      Object[] message = {"Load Strategy :", fileName};
 
-              int option = JOptionPane.showConfirmDialog(null, message,
-                      "Load Strategy",
-                      JOptionPane.OK_CANCEL_OPTION);
-              if (option == JOptionPane.OK_OPTION) {
-                try {
-                  /**
-                   * On successful load of the strategy, the strategy name would be
-                   * added to the list of strategies in the mainStrategyPanel.
-                   */
-                  controller.loadList(fileName.getText(), "Strategy");
-                  listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
-                  String msg = "Strategy " + fileName.getText() + " has been loaded.";
-                  log.setText(msg);
-                  promptMessage(msg);
-                } catch (IllegalArgumentException ex) {
-                  promptMessage("STrategy could not be loaded: " + ex.getMessage());
-                }
-              }
-              closeStrategyButtonClicked();
-            }
-    );
+      int option = JOptionPane.showConfirmDialog(null, message,
+              "Load Strategy",
+              JOptionPane.OK_CANCEL_OPTION);
+      if (option == JOptionPane.OK_OPTION) {
+        try {
+          /**
+           * On successful load of the strategy, the strategy name would be
+           * added to the list of strategies in the mainStrategyPanel.
+           */
+          controller.loadList(fileName.getText(), "Strategy");
+          listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
+          String msg = "Strategy " + fileName.getText() + " has been loaded.";
+          log.setText(msg);
+          promptMessage(msg);
+        } catch (IllegalArgumentException ex) {
+          promptMessage("STrategy could not be loaded: " + ex.getMessage());
+        }
+      }
+      closeStrategyButtonClicked();
+    });
 
   }
 
@@ -368,9 +359,7 @@ public class StrategyViewGUI extends JFrame implements
   private void addStocksActionListener(HowToInvestControllerGUI controller) {
 
     JTextField stockSymbol = new JTextField();
-    Object[] message = {
-            "Stock :", stockSymbol,
-    };
+    Object[] message = {"Stock :", stockSymbol};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Add stock",
             JOptionPane.OK_CANCEL_OPTION);
@@ -390,9 +379,7 @@ public class StrategyViewGUI extends JFrame implements
    */
   private void setAmountActionListener(HowToInvestControllerGUI controller) {
     JTextField amount = new JTextField();
-    Object[] message = {
-            "Amount :", amount,
-    };
+    Object[] message = {"Amount :", amount};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Set amount",
             JOptionPane.OK_CANCEL_OPTION);
@@ -412,9 +399,7 @@ public class StrategyViewGUI extends JFrame implements
    */
   private void setFrequencyActionListener(HowToInvestControllerGUI controller) {
     JTextField frequency = new JTextField();
-    Object[] message = {
-            "Frequency :", frequency,
-    };
+    Object[] message = {"Frequency :", frequency};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Set amount",
             JOptionPane.OK_CANCEL_OPTION);
@@ -435,10 +420,7 @@ public class StrategyViewGUI extends JFrame implements
   private void setTimeRangeActionListener(HowToInvestControllerGUI controller) {
     JTextField begDate = new JTextField();
     JTextField endDate = new JTextField();
-    Object[] message = {
-            "Beginning date :", begDate,
-            "End date :", endDate
-    };
+    Object[] message = {"Beginning date :",begDate,"End date :",endDate};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Set amount",
             JOptionPane.OK_CANCEL_OPTION);
@@ -459,9 +441,7 @@ public class StrategyViewGUI extends JFrame implements
   private void saveStrategyActionListener(HowToInvestControllerGUI controller) {
     try {
       JTextField fileName = new JTextField();
-      Object[] message = {
-              "Save as :", fileName,
-      };
+      Object[] message = {"Save as :", fileName};
 
       int option = JOptionPane.showConfirmDialog(null, message,
               "Save Strategy",
@@ -517,7 +497,7 @@ public class StrategyViewGUI extends JFrame implements
 
   /**
    * Displays the stocks within a strategy  by creating a scrollable table containing the names of
-   * the stocks int he strategy
+   * the stocks in the strategy.
    *
    * @param controller the GUI controller.
    * @throws IllegalArgumentException if stocks cannot be retrieved for a portfolio for that date.

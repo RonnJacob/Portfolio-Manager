@@ -37,7 +37,8 @@ public class StockPortfolioManagerTest {
     assertEquals(0, portfolio.getStockValue("2018-11-11"), 0.01);
 
 
-    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11", 0);
+    double output = this.portfolio.addStock("MSFT", 1000, "2018-11-11",
+            0);
 
     assertEquals(9.14, output, 0.01);
 
@@ -85,7 +86,8 @@ public class StockPortfolioManagerTest {
     assertEquals(0, portfolio.getStockValue("2018-11-11"), 0.01);
 
 
-    double output = this.portfolio.addStock("GOOGL", 1000, "2018-11-11", 0);
+    double output = this.portfolio.addStock("GOOGL", 1000, "2018-11-11",
+            0);
 
     assertEquals(95.96, output, 0.01);
 
@@ -112,7 +114,8 @@ public class StockPortfolioManagerTest {
       portfolioManager.retrieve("p1");
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("File not found: ./Stock Portfolios/p1.json (No such file or directory)",
+      assertEquals("File not found: ./Stock Portfolios/p1.json (No such file or directory)"
+              ,
               ex.getMessage());
     }
 
@@ -130,8 +133,8 @@ public class StockPortfolioManagerTest {
       portfolioManager.retrieve(null);
       fail();
     } catch (IllegalArgumentException ex) {
-      assertEquals("File not found: ./Stock Portfolios/null.json (No such file or directory)",
-              ex.getMessage());
+      assertEquals("File not found: ./Stock Portfolios/null.json (No such file or "
+                      + "directory)", ex.getMessage());
     }
 
     /**
@@ -226,8 +229,8 @@ public class StockPortfolioManagerTest {
     weights.put("GOOGL", 25.0);
     weights.put("MSFT", 75.0);
 
-    HashMap<String, Double> outputInvest =
-            portfolio.invest(1000, weights, false, "2018-11-11", 0);
+    HashMap<String, Double> outputInvest = portfolio.invest(1000, weights,
+            false, "2018-11-11", 0);
     assertEquals(2, outputInvest.size());
     assertEquals(6.85, outputInvest.get("MSFT"), 0.01);
     assertEquals(23.99, outputInvest.get("GOOGL"), 0.01);
@@ -243,11 +246,10 @@ public class StockPortfolioManagerTest {
      */
     portfolio.savePortfolio("saved portfolio");
 
-    try{
+    try {
       portfolioManager.retrieve("saved portfolio");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("StockPortfolio already exists", ex.getMessage());
     }
 

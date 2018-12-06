@@ -98,7 +98,7 @@ public interface IHowToInvestController {
    *
    * @param date the date for which stocks in a portfolio are to be retrieved.
    * @return the stocks and the number of stocks in portfolio as of a particular date which is
-   * input.
+   *         input.
    */
   HashMap<String, Double> getStocksInPortfolio(String date);
 

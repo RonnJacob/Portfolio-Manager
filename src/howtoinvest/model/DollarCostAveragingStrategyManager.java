@@ -100,9 +100,8 @@ public class DollarCostAveragingStrategyManager
     builder.setDateFormat("MMM dd, yyyy HH:mm:ss");
     Gson gson = builder.create();
     try {
-      DollarCostAveraging strategy = gson.fromJson
-              (new FileReader("./Strategies/" + name + ".json")
-                      , DollarCostAveraging.class);
+      DollarCostAveraging strategy = gson.fromJson(new FileReader("./Strategies/"
+                      + name + ".json"), DollarCostAveraging.class);
       create(name);
       this.strategies.put(name, strategy);
     } catch (FileNotFoundException ex) {

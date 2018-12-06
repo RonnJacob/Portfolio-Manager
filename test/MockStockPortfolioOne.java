@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import howtoinvest.model.IPortfolio;
 import howtoinvest.model.StockPortfolio;
 
 /**
@@ -17,7 +16,7 @@ import howtoinvest.model.StockPortfolio;
  * called would log that the method was called and display parameters along within the log message
  * if parameters were provided.
  */
-public class MockStockPortfolioOne extends StockPortfolio{
+public class MockStockPortfolioOne extends StockPortfolio {
 
   private StringBuilder log;
 
@@ -64,7 +63,7 @@ public class MockStockPortfolioOne extends StockPortfolio{
 
   @Override
   public void savePortfolio(String name) throws IllegalArgumentException, IllegalStateException {
-    this.log.append("Save portfolio " + name+"\n");
+    this.log.append("Save portfolio " + name + "\n");
   }
 
   @Override

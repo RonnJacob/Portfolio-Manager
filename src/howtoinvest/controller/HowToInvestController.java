@@ -1,6 +1,5 @@
 package howtoinvest.controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IPortfolio;
@@ -211,10 +209,10 @@ public class HowToInvestController implements IHowToInvestController {
   @Override
   public void loadList(String fileName, String type) {
     try {
-      if (type == "Portfolio") {
+      if (type.equals("Portfolio")) {
         model.retrieve(fileName);
         displayPortfolios();
-      } else if (type == "Strategy") {
+      } else if (type.equals("Strategy")) {
         strategyModel.retrieve(fileName);
       }
       view.promptMessage(type + " " + fileName + " has been added.");
@@ -348,7 +346,7 @@ public class HowToInvestController implements IHowToInvestController {
   }
 
   /**
-   * Opens a strategy manager menu
+   * Opens a strategy manager menu.
    * @param strategyModel the model for the strategies.
    * @param selectedPFolio the portfolio for which the relevant strategy related operations are to
    *                       be carried out.

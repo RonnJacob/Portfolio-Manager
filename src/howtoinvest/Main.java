@@ -61,11 +61,11 @@ public class Main {
     StrategyViewGUI sview = new StrategyViewGUI();
 
 
-    if (args.length == 0 || args[0] == "gui") {
+    if (args.length == 0 || args[0].equals("gui")) {
       IHowToInvestController guicontroller = new HowToInvestControllerGUI(view, sview,
               portfolioManager, strategyManager);
       guicontroller.openPortfolioManager();
-    } else if (args[0] == "console") {
+    } else if (args[0].equals("console")) {
       IHowToInvestController consolecontroller = new HowToInvestController(howToInvestView,
               portfolioManager, strategyManager);
       consolecontroller.openPortfolioManager();

@@ -33,7 +33,7 @@ public class HowToInvestControllerTest {
           + "4. Get Value of portfolio\n"
           + "5. Invest on stocks in portfolio. \n"
           + "6. Open Strategy Manager Menu. \n"
-          +"7. Save Portfolio. \n"
+          + "7. Save Portfolio. \n"
           + "Enter the number for performing operation, r to return to the main "
           + "menu or q to quit the application.";
 
@@ -41,7 +41,7 @@ public class HowToInvestControllerTest {
           + "1. Create Strategy\n"
           + "2. Enter A Strategy\n"
           + "3. Display Strategies\n"
-          +"4. Load Strategy\n"
+          + "4. Load Strategy\n"
           + "Enter the number for performing operation or r to return to the main menu.";
 
 
@@ -888,7 +888,7 @@ public class HowToInvestControllerTest {
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
     assertEquals("All Portfolios\nAll Portfolios\nAll Portfolios\nAll Portfolios\nGet "
-                    + "Portfolio 1\nSetting weights\n\n", logStrategyModel.toString());
+            + "Portfolio 1\nSetting weights\n\n", logStrategyModel.toString());
   }
 
   @Test
@@ -992,7 +992,7 @@ public class HowToInvestControllerTest {
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n",
             logPortfolioModel.toString());
     assertEquals("All Portfolios\nAll Portfolios\nAll Portfolios\nAll Portfolios\nGet "
-            + "Portfolio 1\nChange date from 2018-10-10 to 2018-12-12 \n",
+                    + "Portfolio 1\nChange date from 2018-10-10 to 2018-12-12 \n",
             logStrategyModel.toString());
   }
 
@@ -1099,8 +1099,8 @@ public class HowToInvestControllerTest {
     IHowToInvestView view = new MockViewOne(logView, in, out);
     IHowToInvestController controller = new HowToInvestController(view, model, strategyModel);
     controller.openPortfolioManager();
-    expected = "Home Screen Opened.\nInput received : 4\nInput received for: \n" +
-            "Enter name of file to be loaded.\nInput received : p2\nPrompt: Portfolio p2 has been"
+    expected = "Home Screen Opened.\nInput received : 4\nInput received for: \n"
+            + "Enter name of file to be loaded.\nInput received : p2\nPrompt: Portfolio p2 has been"
             + " added.Home Screen Opened.\nInput received : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Retrieve portfolio p2\nGet All Portfolios\n",
@@ -1130,8 +1130,8 @@ public class HowToInvestControllerTest {
             + " : q\n\nQuitting Manager.\n";
     assertEquals(expected, logView.toString());
     assertEquals("Get All Portfolios\nGet Portfolio 1\nGet Portfolio 1\n"
-                    + "Add stock FB for 100.0 on 2018-10-10 with 100.0\nSave portfolio"
-                    + " savedportfolio\n", logPortfolioModel.toString());
+            + "Add stock FB for 100.0 on 2018-10-10 with 100.0\nSave portfolio"
+            + " savedportfolio\n", logPortfolioModel.toString());
 
   }
 
@@ -1195,8 +1195,6 @@ public class HowToInvestControllerTest {
   }
 
 
-
-
   @Test
   public void TestControllerModelIntegration() {
     Reader in = new StringReader("3 1 2 FB 1000 2018-10-10 l n 1 2018-10-10 6 2 1 1 l r q");
@@ -1215,11 +1213,11 @@ public class HowToInvestControllerTest {
     String stockValue = "\nEnter date in format yyyy-mm-dd: \n\n9.523809523809524 share(s) "
             + "of FB\n";
     String strategyMenu = "\n\nList of Strategies\n1: Default DollarCostAveraging\n"
-            +this.strategyMenu+"\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
+            + this.strategyMenu + "\n\nList of Strategies\n1: Default DollarCostAveraging\n\n"
             + "Enter index of strategy to apply.\n\n\n"
             + "Strategy Menu\n1. Apply Strategy\n2. Modify strategy\n"
             + "3. Display Stocks\n"
-            +"4. Save Strategy\n"
+            + "4. Save Strategy\n"
             + "Enter the number for performing operation or r to return to the main menu.\n"
             + "Enter the commission option for the transaction [l, m, h] or enter "
             + "custom commission value \n";
@@ -1237,17 +1235,17 @@ public class HowToInvestControllerTest {
             + "1. Apply Strategy\n" + "2. Modify strategy\n"
             + "3. Display Stocks\n4. Save Strategy\n"
             + "Enter the number for performing operation or r to return to the main menu.\n";
-    String strategyManagerMenu = "\n" +
-            "Strategy Manager Menu\n" +
-            "1. Create Strategy\n" +
-            "2. Enter A Strategy\n" +
-            "3. Display Strategies\n" +
-            "4. Load Strategy\n"+
-            "Enter the number for performing operation or r to return to the main menu.\n" +
-            "Quitting manager\n";
+    String strategyManagerMenu = "\n"
+            + "Strategy Manager Menu\n"
+            + "1. Create Strategy\n"
+            + "2. Enter A Strategy\n"
+            + "3. Display Strategies\n"
+            + "4. Load Strategy\n"
+            + "Enter the number for performing operation or r to return to the main menu.\n"
+            + "Quitting manager\n";
     String expected = welcome + listOfPortfolios + "\nEnter index of Portfolio to open.\n"
             + portfolioScreen + queries + portfolioScreen + stockValue + portfolioScreen
-            + strategyMenu + text +strategyManagerMenu+ portfolioScreen+"\n";
+            + strategyMenu + text + strategyManagerMenu + portfolioScreen + "\n";
     assertEquals(expected, out.toString());
   }
 

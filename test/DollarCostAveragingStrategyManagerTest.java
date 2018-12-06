@@ -1,5 +1,3 @@
-import com.sun.javafx.tools.packager.PackagerException;
-
 import org.junit.Test;
 
 import java.text.ParseException;

@@ -59,7 +59,7 @@ public class AlphaVantage implements IStockDataRetrieval {
    *
    * @param tickerName the unique symbol representing a particular company/organization.
    * @return the live share price of a company/organization based on the ticker symbol at that
-   * minute.
+   *         minute.
    */
   private String getCurrentSharePrice(String tickerName) throws IllegalArgumentException {
     setURL(tickerName, true);

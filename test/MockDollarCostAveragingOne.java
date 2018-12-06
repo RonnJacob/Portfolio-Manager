@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
-import howtoinvest.model.DollarCostAveraging;
 import howtoinvest.model.IInvestmentStrategy;
 import howtoinvest.model.IPortfolio;
 
@@ -74,7 +73,7 @@ public class MockDollarCostAveragingOne implements IInvestmentStrategy<IPortfoli
 
   @Override
   public void saveStrategy(String name) throws IllegalArgumentException, IllegalStateException {
-    this.log.append("Save strategy " + name+"\n");
+    this.log.append("Save strategy " + name + "\n");
   }
 
   @Override

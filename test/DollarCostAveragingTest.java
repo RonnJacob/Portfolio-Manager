@@ -507,24 +507,21 @@ public class DollarCostAveragingTest {
     try {
       dca.saveStrategy(null);
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
 
     try {
       dca.saveStrategy("");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
 
     try {
       dca.saveStrategy(" ");
       fail();
-    }
-    catch (IllegalArgumentException ex){
+    } catch (IllegalArgumentException ex) {
       assertEquals("Invalid file name", ex.getMessage());
     }
   }

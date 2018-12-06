@@ -5,12 +5,9 @@ import com.google.gson.GsonBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
-
-import javafx.util.converter.LocalDateTimeStringConverter;
 
 
 /**
@@ -106,9 +103,8 @@ public class StockPortfolioManager implements IManager<StockPortfolio> {
     builder.setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
     Gson gson = builder.create();
     try {
-      StockPortfolio stockPortfolio = gson.fromJson
-              (new FileReader("./Stock Portfolios/" + name + ".json")
-                      , StockPortfolio.class);
+      StockPortfolio stockPortfolio = gson.fromJson(new FileReader("./Stock Portfolios/"
+                      + name + ".json"), StockPortfolio.class);
       create(name);
       this.portfolios.put(name, stockPortfolio);
     } catch (FileNotFoundException ex) {

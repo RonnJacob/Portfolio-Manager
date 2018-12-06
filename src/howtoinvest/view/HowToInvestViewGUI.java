@@ -83,8 +83,8 @@ public class HowToInvestViewGUI extends JFrame implements
     /**
      * Setting the dimensions of the frame as the maximum size of the screen.
      */
-    Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
-    this.setPreferredSize(DimMax);
+    Dimension dimMax = Toolkit.getDefaultToolkit().getScreenSize();
+    this.setPreferredSize(dimMax);
 
     /**
      * Setting the grid layouts for the panels that are to be in the frame.
@@ -199,78 +199,73 @@ public class HowToInvestViewGUI extends JFrame implements
      * ActionListener for create portfolio button.
      */
     createPortfolio.addActionListener((ActionEvent e) -> {
-              String portfolioName = newPortfolioName.getText();
-              /**
-               * Prompt user to enter portfolio name if the user input is empty or is the
-               * placeholder.
-               */
-              if (portfolioName.trim().isEmpty() ||
-                      portfolioName.equals("Enter Name Of Portfolio Here")) {
-                promptMessage("Please enter portfolio name.\n");
-                return;
-              }
-              try {
-                /**
-                 * On successful creation of the portfolio, the portfolio name would be
-                 * added to the list of portfolios in the mainPortfolioPanel.
-                 */
-                controller.createPortfolio(portfolioName);
-                listModel.insertElementAt(portfolioName, listModel.size() - 1);
-                newPortfolioName.setText("");
-                log.setText("Portfolio "+portfolioName+" has been created.");
-              } catch (IllegalArgumentException ex) {
-                promptMessage("Portfolio " + portfolioName + " already exists.\n");
-              }
-            }
-    );
+      String portfolioName = newPortfolioName.getText();
+      /**
+       * Prompt user to enter portfolio name if the user input is empty or is the
+       * placeholder.
+       */
+      if (portfolioName.trim().isEmpty()
+              || portfolioName.equals("Enter Name Of Portfolio Here")) {
+        promptMessage("Please enter portfolio name.\n");
+        return;
+      }
+      try {
+        /**
+         * On successful creation of the portfolio, the portfolio name would be
+         * added to the list of portfolios in the mainPortfolioPanel.
+         */
+        controller.createPortfolio(portfolioName);
+        listModel.insertElementAt(portfolioName, listModel.size() - 1);
+        newPortfolioName.setText("");
+        log.setText("Portfolio " + portfolioName + " has been created.");
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Portfolio " + portfolioName + " already exists.\n");
+      }
+    });
 
 
     /**
      * ActionListener for open portfolio button.
      */
     openPortfolio.addActionListener((ActionEvent e) -> {
-              try {
-                String portfolioToOpen = list.getSelectedValue().toString();
-                controller.openPortfolios(portfolioToOpen);
-                log.setText("Portfolio " + portfolioToOpen + " has been opened.");
-                openPortfolio.setEnabled(false);
-                closePortfolio.setEnabled(true);
-              } catch (IllegalArgumentException ex) {
-                promptMessage("Unable to open portfolio " + ex.getMessage());
-              }
-            }
-    );
+      try {
+        String portfolioToOpen = list.getSelectedValue().toString();
+        controller.openPortfolios(portfolioToOpen);
+        log.setText("Portfolio " + portfolioToOpen + " has been opened.");
+        openPortfolio.setEnabled(false);
+        closePortfolio.setEnabled(true);
+      } catch (IllegalArgumentException ex) {
+        promptMessage("Unable to open portfolio " + ex.getMessage());
+      }
+    });
 
 
     /**
      * ActionListener for load portfolio button.
      */
     loadPortfolio.addActionListener((ActionEvent e) -> {
-              JTextField fileName = new JTextField();
-              Object[] message = {
-                      "Load Portfolio :", fileName,
-              };
+      JTextField fileName = new JTextField();
+      Object[] message = {"Load Portfolio :", fileName};
 
-              int option = JOptionPane.showConfirmDialog(null, message,
-                      "Load Portfolio",
-                      JOptionPane.OK_CANCEL_OPTION);
-              if (option == JOptionPane.OK_OPTION) {
-                try {
-                  /**
-                   * On successful load of the portfolio, the portfolio name would be
-                   * added to the list of portfolios in the mainPortfolioPanel.
-                   */
-                  controller.loadList(fileName.getText(), "Portfolio");
-                  listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
-                  log.setText("Portfolio " + fileName.getText() + " has been loaded.");
-                  closePortfolioButtonClicked();
-                } catch (IllegalArgumentException ex) {
-                  promptMessage("Portfolio "+fileName.getText()+" could not be loaded: "
-                          + ex.getMessage());
-                }
-              }
-            }
-    );
+      int option = JOptionPane.showConfirmDialog(null, message,
+              "Load Portfolio",
+              JOptionPane.OK_CANCEL_OPTION);
+      if (option == JOptionPane.OK_OPTION) {
+        try {
+          /**
+           * On successful load of the portfolio, the portfolio name would be
+           * added to the list of portfolios in the mainPortfolioPanel.
+           */
+          controller.loadList(fileName.getText(), "Portfolio");
+          listModel.insertElementAt(fileName.getText(), listModel.size() - 1);
+          log.setText("Portfolio " + fileName.getText() + " has been loaded.");
+          closePortfolioButtonClicked();
+        } catch (IllegalArgumentException ex) {
+          promptMessage("Portfolio " + fileName.getText() + " could not be loaded: "
+                  + ex.getMessage());
+        }
+      }
+    });
   }
 
   /**
@@ -280,7 +275,8 @@ public class HowToInvestViewGUI extends JFrame implements
    */
   @Override
   public void promptMessage(String message) {
-    JOptionPane.showMessageDialog(this, message);
+    JOptionPane.showMessageDialog(this,
+            message);
   }
 
   /**
@@ -411,9 +407,7 @@ public class HowToInvestViewGUI extends JFrame implements
    */
   private void displayStocksActionListener(HowToInvestControllerGUI controller) {
     JTextField date = new JTextField();
-    Object[] message = {
-            "Date [yyyy-mm-dd] :", date,
-    };
+    Object[] message = {"Date [yyyy-mm-dd] :", date};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Display Shares",
             JOptionPane.OK_CANCEL_OPTION);
@@ -443,12 +437,8 @@ public class HowToInvestViewGUI extends JFrame implements
     JTextField amount = new JTextField();
     JTextField date = new JTextField();
     JTextField commision = new JTextField();
-    Object[] message = {
-            "Stock :", stockSymbol,
-            "Amount :", amount,
-            "Date [yyyy-mm-dd] :", date,
-            "Commision :", commision
-    };
+    Object[] message = {"Stock :", stockSymbol, "Amount :", amount, "Date [yyyy-mm-dd] :", date,
+      "Commision :", commision};
 
     int option = JOptionPane.showConfirmDialog(null, message, "Buy Shares",
             JOptionPane.OK_CANCEL_OPTION);
@@ -471,9 +461,7 @@ public class HowToInvestViewGUI extends JFrame implements
   private void getCostBasisActionListener(HowToInvestControllerGUI controller) {
     JTextField date = new JTextField();
     JTextField commision = new JTextField();
-    Object[] message = {
-            "Date :", date
-    };
+    Object[] message = {"Date :", date};
 
     int option = JOptionPane.showConfirmDialog(null, message,
             "Portfolio Cost Basis",
@@ -497,9 +485,7 @@ public class HowToInvestViewGUI extends JFrame implements
    */
   private void getPortfolioValueListener(HowToInvestControllerGUI controller) {
     JTextField date = new JTextField();
-    Object[] message = {
-            "Date :", date,
-    };
+    Object[] message = {"Date :", date};
 
     int option = JOptionPane.showConfirmDialog(null, message,
             "Portfolio Value",
@@ -525,9 +511,7 @@ public class HowToInvestViewGUI extends JFrame implements
   private void applyStrategyListener(HowToInvestControllerGUI controller) {
     try {
       JTextField commision = new JTextField();
-      Object[] message = {
-              "Commision :", commision,
-      };
+      Object[] message = {"Commision :", commision};
 
       int option = JOptionPane.showConfirmDialog(null, message,
               "Apply Strategy",
@@ -556,9 +540,7 @@ public class HowToInvestViewGUI extends JFrame implements
   private void savePortfolioListener(HowToInvestControllerGUI controller) {
     try {
       JTextField fileName = new JTextField();
-      Object[] message = {
-              "Save as :", fileName,
-      };
+      Object[] message = {"Save as :", fileName};
 
       /**
        * Request the user to enter the file name under which portfolio is to be saved. Portfolios
@@ -591,9 +573,9 @@ public class HowToInvestViewGUI extends JFrame implements
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     format.setLenient(false);
-    try{
+    try {
       Date sharedate = format.parse(date);
-    }catch(ParseException ex){
+    } catch (ParseException ex) {
       promptMessage("Invalid date input. Please enter date again.");
       return;
     }
@@ -615,7 +597,7 @@ public class HowToInvestViewGUI extends JFrame implements
       HashMap<String, Double> stocks = controller.getStocksInPortfolio(date);
       Object[] message = new Object[(stocks.size() * 2) + 6];
       int counter = 0;
-      if(stocks.size()==0){
+      if (stocks.size() == 0) {
         promptMessage("There are no stocks in the portfolio.");
         return;
       }
@@ -667,11 +649,8 @@ public class HowToInvestViewGUI extends JFrame implements
     JTextField dateToInvest = new JTextField();
     JTextField commision = new JTextField();
     JTextField amount = new JTextField();
-    Object[] message = {
-            "Date [yyyy-mm-dd] :", dateToInvest,
-            "Amount: ", amount,
-            "Commision: ", commision
-    };
+    Object[] message = {"Date [yyyy-mm-dd] :", dateToInvest, "Amount: ", amount, "Commision: ",
+      commision};
     int option = JOptionPane.showConfirmDialog(null, message,
             "Invest",
             JOptionPane.OK_CANCEL_OPTION);
