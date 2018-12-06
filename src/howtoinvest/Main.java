@@ -63,19 +63,47 @@ public class Main {
     StrategyViewGUI sview = new StrategyViewGUI();
 
 
-    if (args.length == 0 || args[0].equals("gui")) {
-      IHowToInvestController guicontroller = new HowToInvestControllerGUI(view, sview,
-              portfolioManager, strategyManager);
+    /**
+     * Creation of GUI controller.
+     */
+    IHowToInvestController guicontroller = new HowToInvestControllerGUI(view, sview,
+            portfolioManager, strategyManager);
+
+    /**
+     * Creation of the console controller.
+     */
+    IHowToInvestController consolecontroller = new HowToInvestController(
+            howToInvestView, portfolioManager, strategyManager);
+
+
+    /**
+     * If no argument is provided, the default view would be the gui view.
+     */
+    if(args.length==0){
       guicontroller.openPortfolioManager();
-    } else if (args[0].equals("console")) {
-      IHowToInvestController consolecontroller = new HowToInvestController(howToInvestView,
-              portfolioManager, strategyManager);
-      consolecontroller.openPortfolioManager();
-    } else {
-      System.out.println("Cannot open application: Invalid argument");
-      return;
     }
 
+    /**
+     * If an argument is given with argument starting with -view, the user would have to enter
+     * the type of view 'gui' or 'console'.
+     */
+    else if(args.length==2){
+      if(args[0].equals("-view")){
+        switch (args[1]){
+          case "gui": guicontroller.openPortfolioManager();
+                      break;
+          case "console": consolecontroller.openPortfolioManager();
+                          break;
+          default: System.out.println("Cannot open application. Invalid arguments.");
+        }
+      }
+      else{
+        System.out.println("Cannot open application. Invalid arguments.");
+      }
+    }
+    else{
+      System.out.println("Cannot open application. Invalid arguments.");
+    }
   }
 }
 
