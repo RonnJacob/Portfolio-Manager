@@ -39,10 +39,10 @@ import howtoinvest.controller.HowToInvestControllerGUI;
 /**
  * The following class is an implementation of the IHowToInvestViewGUI interface which implements
  * all the necessary operations specified in the interface. This class would represent a GUI based
- * view implementation of the interview whereby the program and the necessary outputs/inputs and
- * messages would be displayed to the user through appropriate components of the Swing framework.
- * This class would implement the ActionListener, ListSelectionListener interfaces as well because
- * of the use of components such as JButtons, JTables, JLists.
+ * view implementation of a portfolio manager whereby the program and the necessary outputs/inputs
+ * and messages would be displayed to the user through appropriate components of the Swing
+ * framework. This class would implement the ActionListener, ListSelectionListener interfaces as
+ * well because of the use of components such as JButtons, JTables, JLists.
  */
 public class HowToInvestViewGUI extends JFrame implements
         IHowToInvestGUIView<HowToInvestControllerGUI> {
@@ -70,18 +70,6 @@ public class HowToInvestViewGUI extends JFrame implements
   private JPanel listOfPortfoliosPanel = new JPanel();
 
   private JComboBox listOfStrategies;
-
-  /**
-   * Initializing the Object arrays for displaying the stocks on user input of the date.
-   */
-  private static final Object[][] rowData = {};
-  private static final Object[] columnNames = {"Stock", "Number Of Shares"};
-
-  /**
-   * Initializing a JTextField array for dynamic creation of text fields.
-   */
-  private static List<JTextField> listOfWeights = new ArrayList<>();
-
 
   /**
    * Constructor which would initialize the portfolio manager screen and carries out the necessary
@@ -211,7 +199,6 @@ public class HowToInvestViewGUI extends JFrame implements
      * ActionListener for create portfolio button.
      */
     createPortfolio.addActionListener((ActionEvent e) -> {
-              closePortfolioButtonClicked();
               String portfolioName = newPortfolioName.getText();
               /**
                * Prompt user to enter portfolio name if the user input is empty or is the
@@ -308,6 +295,8 @@ public class HowToInvestViewGUI extends JFrame implements
   }
 
   /**
+   * Displays the view to edit and manage the portfolio supported by the controller. Relevant UI
+   * controls along with the action listeners are added to the panel to support these operations.
    *
    * @param controller type of controller.
    */
@@ -468,7 +457,7 @@ public class HowToInvestViewGUI extends JFrame implements
         controller.addStockToPortfolio(stockSymbol.getText(), Double.parseDouble(amount.getText()),
                 date.getText(), commision.getText());
       } catch (IllegalArgumentException ex) {
-        promptMessage("Transaction Unsuccessful. Please enter valid buy details.");
+        promptMessage("Transaction Unsuccessful: " + ex.getMessage());
       }
     }
   }
@@ -552,8 +541,6 @@ public class HowToInvestViewGUI extends JFrame implements
         controller.applyStrategy(strategyToApply, commision.getText());
         openPortfolio.setEnabled(false);
         closePortfolio.setEnabled(true);
-      } else {
-        System.out.println("");
       }
     } catch (IllegalArgumentException ex) {
       promptMessage("Action failed: " + ex.getMessage());
@@ -610,6 +597,10 @@ public class HowToInvestViewGUI extends JFrame implements
       promptMessage("Invalid date input. Please enter date again.");
       return;
     }
+    /**
+     * Initializing a JTextField array for dynamic creation of text fields.
+     */
+    List<JTextField> listOfWeights = new ArrayList<>();
     JTextField commision = new JTextField();
     JTextField amount = new JTextField();
     if (date.equals("") || date.equals("Enter Date To Invest [yyyy-mm-dd]")) {
@@ -706,6 +697,12 @@ public class HowToInvestViewGUI extends JFrame implements
    */
   private void openStocksInPortfolio(HowToInvestControllerGUI controller, String date)
           throws IllegalArgumentException {
+
+    /**
+     * Initializing the Object arrays for displaying the stocks on user input of the date.
+     */
+    Object[][] rowData = {};
+    Object[] columnNames = {"Stock", "Number Of Shares"};
 
     /**
      * Check if a list of stocks is being displayed already. If so, remove the list and refresh

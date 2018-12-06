@@ -104,5 +104,8 @@ public interface IHowToInvestView {
    */
   void openStrategyMenu();
 
+  /**
+   * Opens the stategy manager menu option where we can create, open or load strategies from a file.
+   */
   void openStrategyManagerMenu();
 }
