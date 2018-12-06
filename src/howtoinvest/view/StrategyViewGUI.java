@@ -184,7 +184,8 @@ public class StrategyViewGUI extends JFrame implements
      */
     createStrategy.addActionListener((ActionEvent e) -> {
               String strategyName = newStrategyName.getText();
-              if (strategyName.trim().isEmpty()) {
+              if (strategyName.trim().isEmpty() ||
+                      strategyName.equals("Enter Name Of Strategy Here")) {
                 promptMessage("Please enter strategy name.\n");
                 return;
               }
