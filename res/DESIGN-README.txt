@@ -6,17 +6,19 @@ the program.
 
 Controller
 ----------
-- The controller consists of an interface class IHowToInvestController which would have a single operation
+- The controller consists of an interface class IHowToInvestController which would have a operations
 to open a portfolio manager which would start receiving inputs and perform operations based on these inputs.
 The openPortfolioManager method in the interface has no return type. The controller would delegate and call
 the model inorder to perform certain operations based on the user input.
 
-- The controller would take two models and a view. The view would be an implementatino of the IHowToInvestView
-interface and the models are of type IManager - one for a strategies and one for portfolio related operations.
+- There would be two controllers for the current design where one would tend to the console version of
+the application and the other would tend to the GUI version of the application.
 
-- The following HowToInvestController class is an implementation of the IHowToInvestController interface and 
-provides an operation to open up a portfolio manager wherein a user would be able to make choices provided by 
-specific implementation of IPortfolio manager type class. A portfolio manager would offer operations such as 
+- The HowToInvestController would take two models and a view. The view would be an implementation of the
+IHowToInvestViewinterface and the models are of type IManager - one for a strategies and one for portfolio
+related operations.The following HowToInvestController class is an implementation of the IHowToInvestController
+interface and provides an operation to open up a portfolio manager wherein a user would be able to make choices
+provided by specific implementation of IPortfolio manager type class. A portfolio manager would offer operations such as
 creation of portfolios, examining the composition of portfolios which would ideally be made up of stocks and 
 shares for a particular company or organization, adding shares/stocks to a portfolio for a particular date 
 and retrieving the cost basis and value of stocks or of a portfolio for a given date. This would aid the 
@@ -27,11 +29,32 @@ or could enter weights of the user's choice. Another feature offered would be th
 offered by the program. This would allow for a user to apply a strategy and modify the strategies preferences
 namely the stock(s) in the strategy, the weights for investment, the frequency of investing, the start and end
 date for investment and the amount to be invested. Note that each transaction (adding/buying of a stock to a
-portfolio) would include a commission charge which would be included in the cost basis/value.
+portfolio) would include a commission charge which would be included in the cost basis/value.Additionally,
+there would be operations to load and save strategies and portfolios.
+
+-  This HowToInvestControllerGUI class tends to the Graphical User Interface view which would have different user
+interactions as compared to the console. The following HowToInvestControllerGUI class is an implementation of the
+IHowToInvestController interface and provides an operation to open up a portfolio manager wherein a user would be
+able to make choices provided by a specific implementation of IPortfolio manager type class.This implementation
+offers operations similar to the HowToInvestController. But would take two views as arguments - a view that
+implements IHowToInvestGUIView (which would be the portfolio manager's view) and a view that would be the
+StrategyViewGUI (which would be the strategy manager's view). The models that are passed as input would be
+of type IManager same as HowToInvestController - one for strategies and one for portfolio related operations.
+
+- Additionally, the strategy model handles all strategy related operations and would allow the controller
+to choose operations pertaining to strategies.
+
+
+- The controller would also handle options in both types of menus (both strategy and menu) for
+loading and saving a portfolio or strategy whereby a filename would be taken as input and the
+appropriate operation would be carried out.
+
+
+*************************  HowToInvestController *************************
 
 - The controller would provide a method for opening up the home screen wherein the user can choose to perform
 operations depending on the specific input. The home screen would provide operations for a user to create a 
-portfolio, retrieve a list of portfolios and enter a particular portfolio.
+portfolio, retrieve a list of portfolios, enter a particular portfolio and load a portfolio.
 
 - If a user enters a particular portfolio then further operations are made open to the user where a user
 can observe the composition of a particular portfolio at the time, add a share/stock at a particular date
@@ -39,8 +62,8 @@ that is input by the user. The valid sequence of inputs for adding a share would
 representing a company in string format, the amount for which a user wants to buy shares of that company
 and the date for which the user is planning to add or buy that share for. The next two operations in the stock
 menu would be to get or retrieve the cost basis or value of a portfolio at a particular date which is input
-by the user again. The other operations would be to invest in stocks with specified weights and applying
-a particular strategy to the portfolio.
+by the user again. The other operations would be to invest in stocks with specified weights, applying
+a particular strategy to the portfolio and save a portfolio.
 
 - If the user chooses to invest in a fixed amount at a particular time, then there are two options for
 the user - the first one is to either invest using a fixed amount and equal weights for each stock in
@@ -49,7 +72,8 @@ that on calling both methods, the user is prompted to enter a commission value.
 
 - If the user chooses to invest in applying a strategy, list of strategies are displayed for the user
 to choose from. On the choosing a strategy, the strategy model would allow the user to either apply
-the strategy to the portfolio or modify the settings of that strategy.
+the strategy to the portfolio, modify the settings of that strategy, display strategies or load
+a strategy.
 
 - If the user chooses to apply the strategy to the portfolio, the user is asked for the commmision to
 be used to apply the strategy.
@@ -58,6 +82,8 @@ be used to apply the strategy.
 that can be made to the strategy. This would include addition of stock(s) to the portfolio, modifying
 the frequency of investment, amount of investment, time range of investment and modifying the weights
 to be used for the strategy.
+
+- The user would also have the option to save a strategy with the settings.
 
 - The controller mandates that each of the input sequences would end with the user closing the application 
 (which would be an input of 'q' in the controller implementation).
@@ -76,8 +102,48 @@ make it hard for the user to keep track of what was input previously. Having thi
 only needs to input data that are relevant to a level of operation and can go up a level or down a level of
 operation by giving a simple input.
 
-- Additionally, the strategy model handles all strategy related operations and would allow the controller
-to choose operations pertaining to strategies.
+
+************************* HowToInvestControllerGUI *************************************
+
+- This class would provide operations to be used by the GUI view which would be straightforward. The class
+offers operations to open a portfolio manager which would reflect by opening the portfolio manager frame
+and adding the features (which in this case would be the action listeners) for the view.
+
+- The portfolio manager menu would contain several operations.Creating a portfolio is an operation
+supported which would take in a file name from the view and pass it onto the model in order to create
+the portfolio. Opening a portfolio would take a portfolio name as input and pass it to the model to
+display portfolio related operations for that portfolio. Loading portfolios is possible with the
+loadList method by passing the type of list as a Portfolio.
+
+- Once a portfolio is opened, the view would display the operations that could be carried out by the
+portfolio. This would be done within the openPortfolio method. Adding/Buying a stock to the portfolio
+is an operation which would take in stock name, commission, date and amount as input from the view
+and add it to the list of stocks in the portfolio if the transaction was successful by passing all
+the information to the model. The controller would handle receiving inputs for retrieving cost basis
+and value of the portfolio which would be passed to the model to retrieve the same and to be
+displayed in the view. Displaying the stocks in the portfolio would retrieve the list of stocks
+in the portfolio and display it as a table in the view. Additionally, investment is possible
+both with equal and custom weights by accepting input from the user and passing the input onto the
+model to carry out the investment operation. The controller would also offer operations to apply
+a selected strategy and save a portfolio by passing these inputs to the model.
+
+- The strategy manager menu would contain several operations. Creating a strategy is an operation
+supported which would take in a file name from the view and pass it onto the model in order to create
+the strategy. Opening a strategy would take a strategy name as input and pass it to the model to
+display strategy related operations for that strategy. Loading strategy is possible with the
+loadList method by passing the type of list as a Strategy.
+
+- Once a strategy is opened, the controller would offer operations for showing the strategies in
+a list of strategies which would retrieve strategies from the model. Adding a stock to the strategy
+is possible with the which would take in a stock name and add it to the list of strategies. Setting
+amount is another operation that would take user input and modify the amount by passing it onto the
+model. Setting frequency is another operation that would take user input and modify the frequency by
+passing it onto the model.Setting time range is another operation that would take user input and
+modify the time range by passing it onto the model. The controller offers operations to modify
+weights as well, which would take in a list of weights and pass it on to the model for modification
+of weights for stocks within the strategy. Saving a strategy would be possible by the controller
+taking a file name as input from the view and passing it on to the model which would carry out the
+saving operation.
 
 Model
 ------
@@ -101,14 +167,16 @@ adding an investment worth a particular amount for a specified date, investing w
 for the stocks in the portfolio and a meaningful representation of data. All investments take the commmision
 values into account. StockPortfolio is a class implementing this interface and provides all the above
 operations. This class contains a HashMap where the key is the identifier for the Stock and value would
-be the Stock object. This class would be used by StockPortfolioManager class.
+be the Stock object. Additionally, the interface also offers operations to save a portfolio taking a filename as input.
+This class would be used by StockPortfolioManager class.
 
 - IInvestmentStrategy is an interface that represents a strategy in the real world.
 The interface provides operations like adding stocks to the portfolio, setting weights for the stocks,
 setting the amount to be invested, setting the time range and frequency for the investments,
 applying the strategy on a portfolio taking into account the commission fees.
 DollarCostAveraging is a class implementing this interface and provides all the above
-operations. This class would be used by DollarCostAveragingStrategyManager class.
+operations. Additionally, the interface also offers operations to save a portfolio taking a filename
+as input.This class would be used by DollarCostAveragingStrategyManager class.
 
 - IManager<K> interface is parametrized over the type of items it manages which is
 created to manage items and provides operations for listing all the items, creation of
@@ -145,8 +213,10 @@ quits and for prompting appropriate messages.
 
 
 
-Design Changes (from prev. assignment)
+Design Changes
 ---------------
+
+*********************  Since Assignment 8 ********************************
 - The model observers used to return strings, which makes it difficult for a client to get the data.
 For this very reason, the changes were made to return 'double' for cost basis and stock values instead
 of formatted strings.
@@ -156,3 +226,18 @@ formatting as this would be handled by the view.
 controller would do operations which were meant for the view such as formatting. The reason for this
 is so that we can have multiple variations of the view which would handle operations such as formatting
 and retrieving output that is to be passed onto to the controller as mentioned above.
+
+
+*********************  Since Assignment 9 ********************************
+
+- Methods in the HowToInvestController have been pulled to the IHowToInvestController interface
+which would almost all portfolio and strategy related controller operations. This design change
+was made so that other controllers (in our case HowToInvestControllerGUI) would be able to implement
+these methods which seem to be common across any controller that would carry out operations tending
+to portfolios and strategies.
+The IHowToInvestController interface now offers controller operations for the relevant operations
+in the application.
+
+- A IHowToInvestGUIView interface which would be implemented by HowToInvestViewGUI and StrategyViewGUI
+has been added. This interface would offer operations which are common between both GUIs (strategy
+and portfolio).
